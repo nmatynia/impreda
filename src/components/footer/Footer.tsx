@@ -10,17 +10,17 @@ type FooterProps = {
 };
 export const Footer = ({ className }: FooterProps) => {
   return (
-    <div
+    <footer
       className={clsxm(
-        "flex w-full gap-2 bg-primaryBlack px-14 py-6 text-primaryWhite",
+        "flex w-full gap-2 self-end bg-primaryBlack px-14 py-6 text-primaryWhite",
         className
       )}
     >
-      <LogoText className="tracking-paragraph font-primary text-base font-black">
+      <LogoText className="font-primary text-base font-black tracking-paragraph">
         {websiteName}
       </LogoText>
       <Dot className="bg-primaryWhite" />
       <BodyText className="font-light">{authorName} </BodyText>
-    </div>
+    </footer>
   );
 };
