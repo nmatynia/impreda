@@ -8,7 +8,10 @@ module.exports = {
         primaryWhite: "#FFFFFF",
       },
       fontFamily: {
-        primary: "Roboto",
+        primary: "Roboto Condensed, sans-serif",
+      },
+      letterSpacing: {
+        paragraph: "0.02em",
       },
     },
   },
