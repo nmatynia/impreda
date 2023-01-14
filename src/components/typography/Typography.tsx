@@ -1,5 +1,5 @@
-import clsx from "clsx";
 import React, { CSSProperties } from "react";
+import clsxm from "../../utils/clsxm";
 
 export type TypographyVariant =
   | "body"
@@ -7,6 +7,7 @@ export type TypographyVariant =
   | "bigHeading"
   | "mediumHeading"
   | "smallHeading"
+  | "logo"
   | "bold";
 export interface TypographyProps {
   variant?: TypographyVariant;
@@ -32,14 +33,21 @@ export interface TypographyProps {
   style?: CSSProperties | undefined;
 }
 export const variantToClasses: { [key in TypographyVariant]: string[] } = {
-  body: ["text-base", "leading-6", "text-current", "tracking-wide"],
+  body: ["text-base", "leading-6", "text-current", "tracking-paragraph"],
   bigBody: [],
   bigHeading: [],
   mediumHeading: [],
   smallHeading: [],
   bold: [],
+  logo: [
+    "text-2xl",
+    "tracking-[0.15em]",
+    "text-current",
+    "uppercase",
+    "font-primary",
+    "font-black",
+  ],
 };
-
 /**
  * Simple typography component
  */
@@ -53,7 +61,7 @@ export function Typography({
   return React.createElement(
     as,
     {
-      className: clsx(variantToClasses[variant], className),
+      className: clsxm(variantToClasses[variant], className),
       ...rest,
     },
     children
@@ -69,7 +77,7 @@ export function Bold({
 }: TypographyProps) {
   return React.createElement(
     as,
-    { className: clsx(variantToClasses[variant], className), ...rest },
+    { className: clsxm(variantToClasses[variant], className), ...rest },
     children
   );
 }
@@ -86,7 +94,7 @@ export const PageTitle = (props: TypographyPropsWithoutVariant) => {
     <Typography
       variant="bigHeading"
       as="h1"
-      className={clsx(
+      className={clsxm(
         "text-superWhite",
         "font-medium",
         "tracking-wide",
@@ -99,7 +107,9 @@ export const PageTitle = (props: TypographyPropsWithoutVariant) => {
     />
   );
 };
-
+export const LogoText = (props: TypographyPropsWithoutVariant) => (
+  <Typography variant="logo" as="p" {...props} />
+);
 export const BigHeading = (props: TypographyPropsWithoutVariant) => (
   <Typography variant="bigHeading" as="h2" {...props} />
 );
