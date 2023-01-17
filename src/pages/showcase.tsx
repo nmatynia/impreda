@@ -2,11 +2,7 @@ import React from "react";
 import { Layout } from "../components/layout/Layout";
 
 const showcase = () => {
-  return (
-    <Layout>
-      <div></div>
-    </Layout>
-  );
+  return <div>witam</div>;
 };
 
 export default showcase;

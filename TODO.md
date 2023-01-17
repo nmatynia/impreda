@@ -11,6 +11,7 @@
 ##Components
 
 - create NavBar
+- searchBar enhancement - maybe fuzzy search?
 
 ## Pages
 
