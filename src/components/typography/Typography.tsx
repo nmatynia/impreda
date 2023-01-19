@@ -1,59 +1,52 @@
-import React, { CSSProperties } from "react";
-import clsxm from "../../utils/clsxm";
+import React, { CSSProperties } from 'react';
+import clsxm from '../../utils/clsxm';
 
 export type TypographyVariant =
-  | "body"
-  | "bigBody"
-  | "bigHeading"
-  | "mediumHeading"
-  | "smallHeading"
-  | "logo"
-  | "bold";
+  | 'body'
+  | 'bigBody'
+  | 'bigHeading'
+  | 'mediumHeading'
+  | 'smallHeading'
+  | 'logo'
+  | 'bold';
 export interface TypographyProps {
   variant?: TypographyVariant;
   as?:
-    | "p"
-    | "h1"
-    | "h2"
-    | "h3"
-    | "h4"
-    | "h5"
-    | "h6"
-    | "span"
-    | "div"
-    | "section"
-    | "strong"
-    | "ul"
-    | "ol"
-    | "li"
-    | "b";
+    | 'p'
+    | 'h1'
+    | 'h2'
+    | 'h3'
+    | 'h4'
+    | 'h5'
+    | 'h6'
+    | 'span'
+    | 'div'
+    | 'section'
+    | 'strong'
+    | 'ul'
+    | 'ol'
+    | 'li'
+    | 'b';
   className?: string;
   children?: React.ReactNode;
   id?: string;
   style?: CSSProperties | undefined;
 }
 export const variantToClasses: { [key in TypographyVariant]: string[] } = {
-  body: ["text-base", "leading-6", "text-current", "tracking-paragraph"],
+  body: ['text-base', 'leading-6', 'text-current', 'tracking-paragraph'],
   bigBody: [],
   bigHeading: [],
   mediumHeading: [],
   smallHeading: [],
   bold: [],
-  logo: [
-    "text-2xl",
-    "tracking-[0.15em]",
-    "text-current",
-    "uppercase",
-    "font-primary",
-    "font-black",
-  ],
+  logo: ['text-2xl', 'tracking-[0.15em]', 'text-current', 'uppercase', 'font-primary', 'font-black']
 };
 /**
  * Simple typography component
  */
 export function Typography({
-  variant = "body",
-  as = "p",
+  variant = 'body',
+  as = 'p',
   className,
   children,
   ...rest
@@ -62,15 +55,15 @@ export function Typography({
     as,
     {
       className: clsxm(variantToClasses[variant], className),
-      ...rest,
+      ...rest
     },
     children
   );
 }
 
 export function Bold({
-  as = "b",
-  variant = "bold",
+  as = 'b',
+  variant = 'bold',
   className,
   children,
   ...rest
@@ -82,7 +75,7 @@ export function Bold({
   );
 }
 
-export type TypographyPropsWithoutVariant = Omit<TypographyProps, "variant">;
+export type TypographyPropsWithoutVariant = Omit<TypographyProps, 'variant'>;
 
 export const BodyText = (props: TypographyPropsWithoutVariant) => (
   <Typography variant="body" as="p" {...props} />
@@ -95,12 +88,12 @@ export const PageTitle = (props: TypographyPropsWithoutVariant) => {
       variant="bigHeading"
       as="h1"
       className={clsxm(
-        "text-superWhite",
-        "font-medium",
-        "tracking-wide",
-        "text-center",
-        "whitespace-pre-line",
-        "uppercase",
+        'text-superWhite',
+        'font-medium',
+        'tracking-wide',
+        'text-center',
+        'whitespace-pre-line',
+        'uppercase',
         className
       )}
       {...rest}

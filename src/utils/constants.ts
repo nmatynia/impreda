@@ -1,2 +1,2 @@
-export const websiteName = "Impreda";
-export const authorName = "Norbert Matynia";
+export const websiteName = 'Impreda';
+export const authorName = 'Norbert Matynia';

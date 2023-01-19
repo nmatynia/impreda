@@ -25,10 +25,9 @@
     font-weight: light;
     font-style: normal;
     font-display: swap;
-
   }
 
   html {
-    @apply text-primaryBlack font-primary font-medium
+    @apply font-primary font-medium text-primaryBlack;
   }
 }

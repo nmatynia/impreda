@@ -1,6 +1,6 @@
-import React from "react";
-import { SvgIcon } from "../icons/SvgIcon";
-import { BodyText } from "../typography/Typography";
+import React from 'react';
+import { SvgIcon } from '../icons/SvgIcon';
+import { BodyText } from '../typography/Typography';
 //* https://github.com/jeancroy/FuzzySearch
 //TODO Enhance it
 export const SearchHeader = () => {

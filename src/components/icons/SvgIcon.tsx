@@ -1,13 +1,13 @@
-import { SVGProps } from "react";
-import { BsSearch, BsFillPersonFill } from "react-icons/bs";
-import { FaShoppingBag, FaSearch } from "react-icons/fa";
-import { HiOutlineSearch } from "react-icons/hi";
+import { SVGProps } from 'react';
+import { BsSearch, BsFillPersonFill } from 'react-icons/bs';
+import { FaShoppingBag, FaSearch } from 'react-icons/fa';
+import { HiOutlineSearch } from 'react-icons/hi';
 export type SvgIconComponent = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
 const iconMap = {
   Search: HiOutlineSearch,
   Cart: FaShoppingBag,
-  Person: BsFillPersonFill,
+  Person: BsFillPersonFill
 };
 
 export type IconName = keyof typeof iconMap;
