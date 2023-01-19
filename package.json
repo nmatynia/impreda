@@ -50,10 +50,5 @@
   },
   "ct3aMetadata": {
     "initVersion": "6.11.3"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   }
 }
