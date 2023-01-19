@@ -11,7 +11,11 @@
 ##Components
 
 - create NavBar
+- transition on Box
+- Box - on clicking outside the Box is closed
+
 - searchBar enhancement - maybe fuzzy search?
+- make cart responsive
 
 ## Pages
 

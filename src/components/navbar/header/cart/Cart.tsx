@@ -1,13 +1,13 @@
 import React from 'react';
 import clsxm from '../../../../utils/clsxm';
-import Box from '../../../box/Box';
+import Box, { BoxProps } from '../../../box/Box';
 import { Bold, LargeBodyText } from '../../../typography/Typography';
 import CartItem, { CartItemProps } from './CartItem';
 import DefaultTee from '../../../../../public/images/default-tee.webp';
 import Button from '../../../button/Button';
 type CartProps = {
   className?: string;
-};
+} & BoxProps;
 
 const hardCodedItems: CartItemProps[] = [
   {
@@ -39,11 +39,11 @@ const hardCodedItems: CartItemProps[] = [
     quantity: 1
   }
 ];
+const total = 10500;
 
-const Cart = ({ className }: CartProps) => {
-  const total = 10500;
+const Cart = ({ className, ...props }: CartProps) => {
   return (
-    <Box className={clsxm('absolute w-[440px]', className)}>
+    <Box className={clsxm('absolute w-[440px]', className)} {...props}>
       <div className="flex flex-col justify-between">
         <div className="mr-2 max-h-[500px] overflow-y-auto">
           {hardCodedItems.map((item, index) => (
