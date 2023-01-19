@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header } from './Header';
+import { Header } from './header/Header';
 import { ItemHeader } from './ItemHeader';
 import { SearchHeader } from './SearchHeader';
 

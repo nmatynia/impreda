@@ -3,7 +3,7 @@ import clsxm from '../../utils/clsxm';
 
 export type TypographyVariant =
   | 'body'
-  | 'bigBody'
+  | 'largeBody'
   | 'bigHeading'
   | 'mediumHeading'
   | 'smallHeading'
@@ -34,11 +34,11 @@ export interface TypographyProps {
 }
 export const variantToClasses: { [key in TypographyVariant]: string[] } = {
   body: ['text-base', 'leading-6', 'text-current', 'tracking-paragraph'],
-  bigBody: [],
+  largeBody: ['text-xl', 'text-current', 'tracking-paragraph'],
   bigHeading: [],
   mediumHeading: [],
   smallHeading: [],
-  bold: [],
+  bold: ['font-bold'],
   logo: ['text-2xl', 'tracking-[0.15em]', 'text-current', 'uppercase', 'font-primary', 'font-black']
 };
 /**
@@ -79,6 +79,10 @@ export type TypographyPropsWithoutVariant = Omit<TypographyProps, 'variant'>;
 
 export const BodyText = (props: TypographyPropsWithoutVariant) => (
   <Typography variant="body" as="p" {...props} />
+);
+
+export const LargeBodyText = (props: TypographyPropsWithoutVariant) => (
+  <Typography variant="largeBody" as="p" {...props} />
 );
 
 export const PageTitle = (props: TypographyPropsWithoutVariant) => {
