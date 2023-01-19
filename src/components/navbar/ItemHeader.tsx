@@ -1,5 +1,5 @@
-import React from "react";
-import { BodyText } from "../typography/Typography";
+import React from 'react';
+import { BodyText } from '../typography/Typography';
 
 export const ItemHeader = () => {
   return (

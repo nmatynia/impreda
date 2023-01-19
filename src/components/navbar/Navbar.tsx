@@ -1,7 +1,7 @@
-import React from "react";
-import { Header } from "./Header";
-import { ItemHeader } from "./ItemHeader";
-import { SearchHeader } from "./SearchHeader";
+import React from 'react';
+import { Header } from './Header';
+import { ItemHeader } from './ItemHeader';
+import { SearchHeader } from './SearchHeader';
 
 export const Navbar = () => {
   return (
