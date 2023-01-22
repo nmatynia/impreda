@@ -16,6 +16,7 @@
 
 - searchBar enhancement - maybe fuzzy search?
 - make cart responsive
+- Nav underline current category that the user is on
 
 ## Pages
 

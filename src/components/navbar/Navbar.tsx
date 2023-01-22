@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Header } from './header/Header';
-import { ItemHeader } from './ItemHeader';
+import { ItemHeader } from './item-header/ItemHeader';
 import { SearchHeader } from './SearchHeader';
 
 export const Navbar = () => {

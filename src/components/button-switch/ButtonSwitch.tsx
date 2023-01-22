@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import clsxm from '../../utils/clsxm';
 type OpenButtonProps = {
   className?: string;
   children: JSX.Element;
@@ -21,7 +22,7 @@ const ButtonSwitch = ({ elementToOpen, children, className }: OpenButtonProps) =
   }, [clickOutsideRef, setIsOpen]);
 
   return (
-    <div className={className} ref={clickOutsideRef}>
+    <div className={clsxm('relative h-fit w-fit', className)} ref={clickOutsideRef}>
       <div onClick={() => setIsOpen(!isOpen)}>{children}</div>
       {elementToOpen(isOpen)}
     </div>

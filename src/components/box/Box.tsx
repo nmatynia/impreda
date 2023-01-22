@@ -18,7 +18,7 @@ const Box = ({ className, children, isOpen, position = 'left' }: BoxProps) => {
   return (
     <div
       className={clsxm(
-        'w-max border-[1px] border-primaryBlack bg-primaryWhite p-8',
+        'z-10 w-max border-[1px] border-primaryBlack bg-primaryWhite p-8',
         className,
         isOpen || 'hidden',
         positionVariant[position]

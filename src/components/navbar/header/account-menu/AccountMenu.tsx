@@ -24,7 +24,7 @@ const AccountMenu = ({ className, ...props }: AccountMenuProps) => {
   return (
     <Box className={clsxm('absolute', className)} {...props}>
       {menuItems.map(item => (
-        <div className="flex cursor-pointer items-center gap-4 border-b-[1px] border-primaryBlack py-4 first:pt-0 last:border-0 last:pb-0">
+        <div className="flex cursor-pointer select-none items-center gap-4 border-b-[1px] border-primaryBlack py-4 first:pt-0 last:border-0 last:pb-0">
           {item.icon}
           <BodyText>{item.text}</BodyText>
         </div>
