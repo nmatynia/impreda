@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Header } from './header/Header';
 import { ItemHeader } from './ItemHeader';
 import { SearchHeader } from './SearchHeader';
 
 export const Navbar = () => {
+  const [showSearch, setShowSearch] = useState(false);
+  const handleShowSearch = () => {
+    setShowSearch(!showSearch);
+  };
+  const navRef = useRef<any>();
+
   return (
-    <div>
-      <Header />
+    <nav ref={navRef} className="relative">
+      <Header handleShowSearch={handleShowSearch} />
       <ItemHeader />
-      <SearchHeader />
-    </div>
+      <SearchHeader isOpen={showSearch} setIsOpen={setShowSearch} navRef={navRef} />
+    </nav>
   );
 };

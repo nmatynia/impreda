@@ -7,18 +7,18 @@ type OpenButtonProps = {
 const ButtonSwitch = ({ elementToOpen, children, className }: OpenButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const clickOutsideRef = useRef<any>();
+  const clickOutsideRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const closeDropdown = (e: any) => {
-      if (!clickOutsideRef.current.contains(e.target)) {
+      if (!clickOutsideRef.current?.contains(e.target)) {
         setIsOpen(false);
       }
     };
     document.body.addEventListener('mousedown', closeDropdown);
 
     return () => document.body.removeEventListener('mousedown', closeDropdown);
-  }, []);
+  }, [clickOutsideRef, setIsOpen]);
 
   return (
     <div className={className} ref={clickOutsideRef}>
