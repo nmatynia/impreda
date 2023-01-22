@@ -17,6 +17,7 @@
 - searchBar enhancement - maybe fuzzy search?
 - make cart responsive
 - Nav underline current category that the user is on
+- make the ItemHeader menus hoverable instead of clickable
 
 ## Pages
 
