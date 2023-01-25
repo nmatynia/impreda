@@ -21,6 +21,8 @@
 
 ## Pages
 
+- get better image quality and optimize it - https://squoosh.app/
+
 ## Misc
 
 - custom scroll (e.g. cart)

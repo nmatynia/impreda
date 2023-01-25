@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import ShopMenImg from '../../public/images/shop-men.png';
 import ShopWomenImg from '../../public/images/shop-women.png';
+import NewArravialsImg from '../../public/images/new-arrivals.png';
 import { trpc } from '../utils/trpc';
 import Image from 'next/image';
 import { BodyText, Bold, LargeBodyText } from '../components/typography/Typography';
@@ -17,7 +18,6 @@ const Home: NextPage = () => {
       <div className="flex h-[960px] w-full">
         <div className="relative h-full w-1/2  cursor-pointer">
           <BodyText className="absolute right-0 z-10 m-10 text-4xl font-medium">MEN</BodyText>
-
           <Image src={ShopMenImg} alt="Shop Men" className="object-cover object-top" fill />
         </div>
         <div className="relative h-full w-1/2 cursor-pointer">
@@ -26,6 +26,12 @@ const Home: NextPage = () => {
           </BodyText>
           <Image src={ShopWomenImg} alt="Shop Women" className="object-cover object-top" fill />
         </div>
+      </div>
+      <div className="relative flex h-[960px] w-full">
+        <BodyText className="absolute left-0 z-10 m-20 text-4xl text-primaryWhite">
+          NEW ARRIVALS
+        </BodyText>
+        <Image src={NewArravialsImg} alt="Shop Women" className="object-cover object-top" fill />
       </div>
     </main>
   );
