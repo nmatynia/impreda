@@ -1,17 +1,25 @@
 import { SVGProps } from 'react';
-import { BsFillPersonFill, BsPerson, BsGear, BsBoxArrowRight } from 'react-icons/bs';
+import {
+  BsFillPersonFill,
+  BsPerson,
+  BsGear,
+  BsBoxArrowRight,
+  BsPencilSquare
+} from 'react-icons/bs';
 import { FaShoppingBag } from 'react-icons/fa';
 import { HiOutlineSearch } from 'react-icons/hi';
 import clsxm from '../../utils/clsxm';
 export type SvgIconComponent = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
+//TODO: Optimize fonts
 const iconMap = {
   Search: HiOutlineSearch,
   Cart: FaShoppingBag,
   Person: BsFillPersonFill,
   OutlinedPerson: BsPerson,
   OutlinedSettings: BsGear,
-  Logout: BsBoxArrowRight
+  Logout: BsBoxArrowRight,
+  Edit: BsPencilSquare
 };
 
 export type IconName = keyof typeof iconMap;

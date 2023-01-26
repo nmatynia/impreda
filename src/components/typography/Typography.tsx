@@ -34,13 +34,14 @@ export interface TypographyProps {
 }
 export const variantToClasses: { [key in TypographyVariant]: string[] } = {
   body: ['text-base', 'leading-6', 'text-current', 'tracking-paragraph'],
-  largeBody: ['text-xl', 'text-current', 'tracking-paragraph'],
+  largeBody: ['text-2xl', 'text-current', 'tracking-paragraph'],
   bigHeading: [],
   mediumHeading: [],
   smallHeading: [],
   bold: ['font-bold'],
   logo: ['text-2xl', 'tracking-[0.15em]', 'text-current', 'uppercase', 'font-primary', 'font-black']
 };
+
 /**
  * Simple typography component
  */

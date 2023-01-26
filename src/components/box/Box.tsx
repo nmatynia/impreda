@@ -14,7 +14,7 @@ export type BoxProps = {
   isOpen?: boolean;
   position?: PositionVariant; //If needed add more options
 };
-const Box = ({ className, children, isOpen, position = 'left' }: BoxProps) => {
+const Box = ({ className, children, isOpen = true, position = 'left' }: BoxProps) => {
   return (
     <div
       className={clsxm(
