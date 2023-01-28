@@ -1,25 +1,37 @@
 import React from 'react';
-import { OrderType } from '../../pages/account';
+import clsxm from '../../utils/clsxm';
 import RoundedBox from '../box/RoundedBox';
 import { SvgIcon } from '../icons/SvgIcon';
+import { OrderType } from '../order-history-section/OrderHistorySection';
 import { BodyText } from '../typography/Typography';
+
 type HistoryItemProps = {
   order: OrderType;
+  showBuyer?: boolean;
+  className?: string;
 };
-const HistoryItem = ({ order }: HistoryItemProps) => {
+
+const HistoryItem = ({ order, showBuyer = false, className }: HistoryItemProps) => {
   return (
-    <div>
-      <RoundedBox className="flex w-full items-center justify-between bg-primaryBlack text-primaryWhite">
-        <div className="flex flex-col">
-          <BodyText>{order.items[0]?.itemName}</BodyText>
-          <div className="flex gap-24">
-            <BodyText>Price: {order.items[0]?.itemPrice}</BodyText>
-            <BodyText>Date: {order.date}</BodyText>
-          </div>
+    <RoundedBox
+      className={clsxm(
+        'flex w-full items-center justify-between',
+        'bg-primaryBlack py-5 text-primaryWhite',
+        className
+      )}
+    >
+      <div className="flex flex-col gap-3">
+        <BodyText>{order.items[0]?.itemName}</BodyText>
+        <div className="flex gap-24">
+          <BodyText>Price: {order.items[0]?.itemPrice}</BodyText>
+          <BodyText>Date: {order.date}</BodyText>
+          {showBuyer && <BodyText>Buyer: {order.buyer}</BodyText>}
         </div>
+      </div>
+      <button className="cursor-pointer">
         <SvgIcon name="Eye" className="fill-primaryWhite" />
-      </RoundedBox>
-    </div>
+      </button>
+    </RoundedBox>
   );
 };
 
