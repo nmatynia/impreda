@@ -2,6 +2,7 @@ import React, { CSSProperties } from 'react';
 import clsxm from '../../utils/clsxm';
 
 export type TypographyVariant =
+  | 'smallBody'
   | 'body'
   | 'largeBody'
   | 'bigHeading'
@@ -33,6 +34,7 @@ export interface TypographyProps {
   style?: CSSProperties | undefined;
 }
 export const variantToClasses: { [key in TypographyVariant]: string[] } = {
+  smallBody: ['text-xs sm:text-sm', 'leading-5', 'text-current', 'tracking-paragraph'],
   body: ['text-base', 'leading-6', 'text-current', 'tracking-paragraph'],
   largeBody: ['text-2xl', 'text-current', 'tracking-paragraph'],
   bigHeading: [],
@@ -77,6 +79,10 @@ export function Bold({
 }
 
 export type TypographyPropsWithoutVariant = Omit<TypographyProps, 'variant'>;
+
+export const SmallBodyText = (props: TypographyPropsWithoutVariant) => (
+  <Typography variant="smallBody" as="p" {...props} />
+);
 
 export const BodyText = (props: TypographyPropsWithoutVariant) => (
   <Typography variant="body" as="p" {...props} />

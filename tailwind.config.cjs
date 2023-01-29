@@ -12,6 +12,19 @@ module.exports = {
       },
       letterSpacing: {
         paragraph: '0.02em'
+      },
+      keyframes: {
+        rotate: {
+          from: {
+            transform: 'rotate(0deg)'
+          },
+          to: {
+            transform: 'rotate(180deg)'
+          }
+        }
+      },
+      animation: {
+        rotate: 'rotate 2s linear;'
       }
     }
   },

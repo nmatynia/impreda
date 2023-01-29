@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 import clsxm from '../../utils/clsxm';
 import RoundedBox from '../box/RoundedBox';
+import HistoryItem from '../history-item/HistoryItem';
 import { SvgIcon } from '../icons/SvgIcon';
 import { OrderType } from '../order-history-section/OrderHistorySection';
-import { BodyText } from '../typography/Typography';
+import { BodyText, SmallBodyText } from '../typography/Typography';
 
 type HistoryBundleProps = {
   order: OrderType;
@@ -11,10 +12,18 @@ type HistoryBundleProps = {
   className?: string;
 };
 const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProps) => {
+  const [open, setOpen] = React.useState(false);
+  const handleExpandBundle = () => {
+    setOpen(!open);
+  };
   const bundleName = useMemo(
     () => `Bundle: ${order.items[0]?.itemName} and ${order.items.length} more`,
     [order]
   );
+
+  //TODO: Consider making this logic on backend
+  const total = useMemo(() => order.items.reduce((acc, item) => acc + item.itemPrice, 0), [order]);
+
   return (
     <>
       <RoundedBox
@@ -26,18 +35,38 @@ const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProps) => {
       >
         <div className="flex flex-col gap-3">
           <BodyText>{bundleName}</BodyText>
-          <div className="flex gap-24">
-            <BodyText>Price: {order.items[0]?.itemPrice}</BodyText>
-            <BodyText>Items: {order.items.length}</BodyText>
-            <BodyText>Date: {order.date}</BodyText>
-            {showBuyer && <BodyText>Buyer: {order.buyer}</BodyText>}
+          <div className="flex gap-4 sm:gap-24">
+            <SmallBodyText>Price: {total}£</SmallBodyText>
+            <SmallBodyText>Items: {order.items.length}</SmallBodyText>
+            <SmallBodyText>
+              Date: <span className="whitespace-pre">{order.date}</span>
+            </SmallBodyText>
+            {showBuyer && <SmallBodyText>Buyer: {order.buyer}</SmallBodyText>}
           </div>
         </div>
-        <button className="flex cursor-pointer gap-2">
-          <SvgIcon name="Eye" className="fill-primaryWhite" />
-          <SvgIcon name="CaretDown" className="fill-primaryWhite" />
-        </button>
+        <div className="ml-2 flex gap-2">
+          <button className="cursor-pointer">
+            <SvgIcon name="Eye" className="fill-primaryWhite" />
+          </button>
+          <button
+            className={clsxm(
+              'transform cursor-pointer transition-transform duration-500 ease-in-out',
+              open && 'rotate-180'
+            )}
+            onClick={handleExpandBundle}
+          >
+            <SvgIcon name="CaretDown" className="fill-primaryWhite" />
+          </button>
+        </div>
       </RoundedBox>
+      {open &&
+        order.items.map(item => {
+          const itemOrder = {
+            ...order,
+            items: [item]
+          };
+          return <HistoryItem order={itemOrder} className="ml-auto w-[90%]" />;
+        })}
     </>
   );
 };
