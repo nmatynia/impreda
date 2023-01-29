@@ -31,6 +31,10 @@ const orderHistory: OrderType[] = [
   {
     items: [
       { itemName: 'Vetements T-shirt', itemPrice: 300 },
+      { itemName: 'Balenciaga Jacket', itemPrice: 700 },
+      { itemName: 'Vetements T-shirt', itemPrice: 300 },
+      { itemName: 'Balenciaga Jacket', itemPrice: 700 },
+      { itemName: 'Vetements T-shirt', itemPrice: 300 },
       { itemName: 'Balenciaga Jacket', itemPrice: 700 }
     ],
     date: '2021-10-10',

@@ -1,3 +1,4 @@
+import { Transition } from '@headlessui/react';
 import React, { useMemo } from 'react';
 import clsxm from '../../utils/clsxm';
 import RoundedBox from '../box/RoundedBox';
@@ -25,11 +26,11 @@ const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProps) => {
   const total = useMemo(() => order.items.reduce((acc, item) => acc + item.itemPrice, 0), [order]);
 
   return (
-    <>
+    <div>
       <RoundedBox
         className={clsxm(
           'flex w-full items-center justify-between',
-          'bg-primaryBlack py-5 text-primaryWhite',
+          'mb-6 bg-primaryBlack py-5 text-primaryWhite',
           className
         )}
       >
@@ -59,15 +60,28 @@ const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProps) => {
           </button>
         </div>
       </RoundedBox>
-      {open &&
-        order.items.map(item => {
-          const itemOrder = {
-            ...order,
-            items: [item]
-          };
-          return <HistoryItem order={itemOrder} className="ml-auto w-[90%]" />;
-        })}
-    </>
+      <Transition
+        style={{ direction: 'rtl' }}
+        className="flex flex-col overflow-y-auto"
+        show={open}
+        enter="transition-all duration-1000"
+        enterFrom="opacity-0 max-h-0"
+        enterTo={`opacity-100 translate-y-0 max-h-[600px]`}
+        leave="transition-all duration-1000"
+        leaveFrom="opacity-100 translate-y-0 max-h-[600px]"
+        leaveTo="opacity-0 max-h-0"
+      >
+        <div className="flex flex-col gap-6" style={{ direction: 'ltr' }}>
+          {order.items.map(item => {
+            const itemOrder = {
+              ...order,
+              items: [item]
+            };
+            return <HistoryItem order={itemOrder} className="ml-auto w-[90%]" />;
+          })}
+        </div>
+      </Transition>
+    </div>
   );
 };
 
