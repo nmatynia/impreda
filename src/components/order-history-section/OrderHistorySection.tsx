@@ -1,6 +1,8 @@
 import React from 'react';
 import clsxm from '../../utils/clsxm';
 import RoundedBox from '../box/RoundedBox';
+import FilterPanel from '../filter-panel/FilterPanel';
+import FilterSection from '../filter-panel/FilterPanel';
 import HistoryBundle from '../history-bundle/HistoryBundle';
 import HistoryItem from '../history-item/HistoryItem';
 import { SvgIcon } from '../icons/SvgIcon';
@@ -48,13 +50,8 @@ type OrderHistorySectionProps = {
 const OrderHistorySection = ({ className }: OrderHistorySectionProps) => {
   return (
     <section className={clsxm('flex flex-col', className)}>
-      <RoundedBox className="mt-16 flex w-full items-center justify-between">
-        <LargeBodyText>Order History</LargeBodyText>
-        <button className="cursor-pointer">
-          <SvgIcon name="Filter" className="fill-primaryBlack" />
-        </button>
-      </RoundedBox>
-      <div className="my-6 flex flex-col gap-6">
+      <FilterPanel sectionName="Order History" />
+      <div className="z-10 my-6 flex flex-col gap-6">
         {orderHistory.map((order, idx) => {
           if (order.items.length === 1) {
             return <HistoryItem key={`order-${idx}`} order={order} />;

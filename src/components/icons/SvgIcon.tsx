@@ -4,6 +4,7 @@ import {
   BsPerson,
   BsGear,
   BsBoxArrowRight,
+  BsChevronDown,
   BsPencilSquare,
   BsFilterSquare,
   BsEye,
@@ -25,7 +26,8 @@ const iconMap = {
   Edit: BsPencilSquare,
   Filter: BsFilterSquare,
   Eye: BsEye,
-  CaretDown: BsCaretDown
+  CaretDown: BsCaretDown,
+  ChevronDown: BsChevronDown
 };
 
 export type IconName = keyof typeof iconMap;
