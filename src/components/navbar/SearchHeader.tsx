@@ -28,10 +28,10 @@ export const SearchHeader = ({ isOpen, setIsOpen, navRef }: SearchHeaderProps) =
         isOpen || 'hidden'
       )}
     >
-      <SvgIcon name="Search" className="ml-8 h-[18px] w-[18px] md:ml-16 " />
+      <SvgIcon name="Search" className="ml-8 h-[16px] w-[16px] md:ml-16 " />
       <input
         type="text"
-        className="mx-8 flex-1 uppercase focus-within:outline-none md:mr-32 md:ml-20"
+        className="mx-8 flex-1 text-xs uppercase focus-within:outline-none sm:text-sm md:mr-32 md:ml-20"
         placeholder="Search Products"
       />
     </div>
