@@ -24,14 +24,14 @@ export const SearchHeader = ({ isOpen, setIsOpen, navRef }: SearchHeaderProps) =
   return (
     <div
       className={clsxm(
-        ' absolute z-10 flex w-full items-center border-b-[1px] border-primaryBlack bg-primaryWhite',
+        ' absolute z-10 flex w-full items-center border-b-[1px] border-primaryBlack bg-primaryWhite py-2',
         isOpen || 'hidden'
       )}
     >
-      <SvgIcon name="Search" className="ml-16 h-[18px] w-[18px] " />
+      <SvgIcon name="Search" className="ml-8 h-[18px] w-[18px] md:ml-16 " />
       <input
         type="text"
-        className="ml-32 w-full uppercase focus-within:outline-none"
+        className="mx-8 flex-1 uppercase focus-within:outline-none md:mr-32 md:ml-20"
         placeholder="Search Products"
       />
     </div>

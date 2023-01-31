@@ -15,9 +15,6 @@ const FilterMenu = ({ className, isOpen }: FilterMenuProps) => {
   return (
     <Transition
       show={isOpen}
-      enter="transition-all duration-300"
-      enterFrom="opacity-0 "
-      enterTo={`opacity-100 `}
       leave="transition-all duration-300"
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
