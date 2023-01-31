@@ -14,7 +14,7 @@ export const ItemHeader = () => {
         </SmallBodyText>
       </ButtonSwitch>
 
-      <ButtonSwitch elementToOpen={open => <CollectionsMenu isOpen={open} position="center" />}>
+      <ButtonSwitch elementToOpen={open => <CollectionsMenu isOpen={open} position="right" />}>
         <SmallBodyText className="cursor-pointer select-none hover:underline">
           Collections
         </SmallBodyText>

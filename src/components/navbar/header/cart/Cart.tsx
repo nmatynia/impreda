@@ -43,7 +43,7 @@ const total = 10500;
 
 const Cart = ({ className, ...props }: CartProps) => {
   return (
-    <Box className={clsxm('absolute w-[440px]', className)} {...props}>
+    <Box className={clsxm('absolute w-screen sm:w-[440px]', className)} {...props}>
       <div className="flex flex-col justify-between">
         <div className="mr-2 max-h-[500px] overflow-y-auto">
           {hardCodedItems.map((item, index) => (
@@ -58,7 +58,7 @@ const Cart = ({ className, ...props }: CartProps) => {
           <LargeBodyText>
             <Bold>Total: £{total}</Bold>
           </LargeBodyText>
-          <Button>Checkout</Button>
+          <Button variant="primary">Checkout</Button>
         </div>
       </div>
     </Box>

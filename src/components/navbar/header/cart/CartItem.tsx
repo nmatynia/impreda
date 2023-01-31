@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import clsxm from '../../../../utils/clsxm';
-import { BodyText, Bold } from '../../../typography/Typography';
+import { BodyText, Bold, SmallBodyText } from '../../../typography/Typography';
 
 export type CartItemProps = {
   src: string;
@@ -24,16 +24,16 @@ const CartItem = ({
       <div className="flex gap-4">
         <Image src={src} alt={name} className="select-none object-contain" width={48} height={48} />
         <div className="flex min-w-fit flex-col flex-nowrap justify-between whitespace-nowrap">
-          <BodyText>
+          <SmallBodyText>
             <Bold>{designer}</Bold>
-          </BodyText>
-          <BodyText>{name}</BodyText>
+          </SmallBodyText>
+          <SmallBodyText>{name}</SmallBodyText>
         </div>
       </div>
 
       <div className="flex min-w-fit flex-col flex-nowrap justify-between whitespace-nowrap">
-        <BodyText>Price: £{price}</BodyText>
-        <BodyText>Quantity: {quantity}</BodyText>
+        <SmallBodyText>Price: £{price}</SmallBodyText>
+        <SmallBodyText>Quantity: {quantity}</SmallBodyText>
       </div>
     </div>
   );

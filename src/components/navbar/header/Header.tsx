@@ -19,7 +19,10 @@ export const Header = ({ handleShowSearch }: HeaderProps) => {
       </LogoText>
       <div className="mr-7 flex items-center gap-6 justify-self-end">
         <SvgIcon name="Search" className="h-5 w-5 cursor-pointer" onClick={handleShowSearch} />
-        <ButtonSwitch elementToOpen={open => <Cart className="mt-3" isOpen={open} />}>
+        <ButtonSwitch
+          elementToOpen={open => <Cart className="mt-6 md:mt-3" isOpen={open} />}
+          className="static md:relative"
+        >
           <SvgIcon name="Cart" className="h-5 w-5 cursor-pointer" />
         </ButtonSwitch>
         <ButtonSwitch elementToOpen={open => <AccountMenu className="mt-3" isOpen={open} />}>
