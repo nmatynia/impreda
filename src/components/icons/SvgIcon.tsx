@@ -8,7 +8,9 @@ import {
   BsPencilSquare,
   BsFilterSquare,
   BsEye,
-  BsCaretDown
+  BsCaretDown,
+  BsBookmark,
+  BsBookmarkFill
 } from 'react-icons/bs';
 import { FaShoppingBag } from 'react-icons/fa';
 import { HiOutlineSearch } from 'react-icons/hi';
@@ -27,7 +29,9 @@ const iconMap = {
   Filter: BsFilterSquare,
   Eye: BsEye,
   CaretDown: BsCaretDown,
-  ChevronDown: BsChevronDown
+  ChevronDown: BsChevronDown,
+  Bookmark: BsBookmark,
+  BookmarkFill: BsBookmarkFill
 };
 
 export type IconName = keyof typeof iconMap;

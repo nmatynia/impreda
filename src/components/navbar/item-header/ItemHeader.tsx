@@ -8,7 +8,7 @@ import CollectionsMenu from './collections-menu/CollectionsMenu';
 export const ItemHeader = () => {
   return (
     <div className="flex w-full justify-around border-y-[1px] border-primaryBlack py-2 uppercase">
-      <ButtonSwitch elementToOpen={open => <ClothingMenu isOpen={open} position="center" />}>
+      <ButtonSwitch elementToOpen={open => <ClothingMenu isOpen={open} position="right" />}>
         <SmallBodyText className="cursor-pointer select-none hover:underline">
           Clothing
         </SmallBodyText>

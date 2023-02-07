@@ -21,7 +21,7 @@
 
 ## Pages
 
-- get better image quality and optimize it - https://squoosh.app/
+- ~~get better image quality and optimize it - https://squoosh.app/~~
 
 ## Misc
 
