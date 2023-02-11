@@ -1,0 +1,11 @@
+.itemCard {
+  &:hover {
+    .itemBasicInfo {
+      display: none;
+    }
+
+    .itemDetailInfo {
+      display: flex;
+    }
+  }
+}
