@@ -5,7 +5,7 @@ import RoundedBox from '../box/RoundedBox';
 import HistoryItem from '../history-item/HistoryItem';
 import { SvgIcon } from '../icons/SvgIcon';
 import { OrderType } from '../order-history-section/OrderHistorySection';
-import { BodyText, SmallBodyText } from '../typography/Typography';
+import { BodyText } from '../typography/Typography';
 
 type HistoryBundleProps = {
   order: OrderType;
@@ -37,12 +37,12 @@ const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProps) => {
         <div className="flex flex-col gap-3">
           <BodyText>{bundleName}</BodyText>
           <div className="flex gap-4 sm:gap-24">
-            <SmallBodyText>Price: {total}£</SmallBodyText>
-            <SmallBodyText>Items: {order.items.length}</SmallBodyText>
-            <SmallBodyText>
+            <BodyText>Price: {total}£</BodyText>
+            <BodyText>Items: {order.items.length}</BodyText>
+            <BodyText>
               Date: <span className="whitespace-pre">{order.date}</span>
-            </SmallBodyText>
-            {showBuyer && <SmallBodyText>Buyer: {order.buyer}</SmallBodyText>}
+            </BodyText>
+            {showBuyer && <BodyText>Buyer: {order.buyer}</BodyText>}
           </div>
         </div>
         <div className="ml-2 flex gap-2">

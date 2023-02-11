@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import clsxm from '../../../../utils/clsxm';
 import Box, { BoxProps } from '../../../box/Box';
-import { BodyText, SmallBodyText } from '../../../typography/Typography';
+import { BodyText } from '../../../typography/Typography';
 type ClothingMenuProps = {
   className?: string;
 } & BoxProps;
@@ -37,34 +37,31 @@ const ClothingMenu = ({ ...props }) => {
     <Box className={clsxm('absolute flex flex-col')} {...props}>
       <div className="grid grid-cols-2 gap-x-16 gap-y-1 normal-case">
         <button onClick={() => setGender('men')} className="mb-4 text-left">
-          <SmallBodyText
+          <BodyText
             className={clsxm(
               'cursor-pointer hover:underline',
               gender === 'men' && 'font-semibold underline'
             )}
           >
             Men
-          </SmallBodyText>
+          </BodyText>
         </button>
 
         <button onClick={() => setGender('women')} className="mb-4 text-left">
-          <SmallBodyText
+          <BodyText
             className={clsxm(
               'cursor-pointer hover:underline',
               gender === 'women' && 'font-semibold underline'
             )}
           >
             Women
-          </SmallBodyText>
+          </BodyText>
         </button>
 
         {categories.map((category, index) => (
-          <SmallBodyText
-            className={clsxm('cursor-pointer hover:underline')}
-            key={`category-${index}`}
-          >
+          <BodyText className={clsxm('cursor-pointer hover:underline')} key={`category-${index}`}>
             <Link href={`/${gender}/${category.name.toLowerCase()}`}>{category.name}</Link>
-          </SmallBodyText>
+          </BodyText>
         ))}
       </div>
     </Box>

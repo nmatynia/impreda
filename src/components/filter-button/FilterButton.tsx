@@ -1,7 +1,7 @@
 import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { SvgIcon } from '../icons/SvgIcon';
-import { BodyText, SmallBodyText } from '../typography/Typography';
+import { BodyText } from '../typography/Typography';
 
 type FilterButtonProps = {
   filterName: string;
@@ -16,7 +16,7 @@ const FilterButton = ({ filterName, className }: FilterButtonProps) => {
         className
       )}
     >
-      <SmallBodyText>{filterName}</SmallBodyText>
+      <BodyText>{filterName}</BodyText>
       <SvgIcon name="ChevronDown" className="h-4 w-4" />
     </div>
   );

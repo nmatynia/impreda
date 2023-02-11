@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import clsxm from '../../../../utils/clsxm';
 import Box, { BoxProps } from '../../../box/Box';
-import { SmallBodyText } from '../../../typography/Typography';
+import { BodyText } from '../../../typography/Typography';
 
 const collections = [
   { name: 'FALL 2022 / OMNISPHERE' },
@@ -19,7 +19,7 @@ const CollectionsMenu = ({ className, ...props }: CollectionsMenuProps) => {
         {collections.map((collection, index) => (
           <li key={`collection-${index}`} className="cursor-pointer hover:underline">
             <Link href={`/${encodeURIComponent(collection.name.toLowerCase())}`}>
-              <SmallBodyText>{collection.name}</SmallBodyText>
+              <BodyText>{collection.name}</BodyText>
             </Link>
           </li>
         ))}

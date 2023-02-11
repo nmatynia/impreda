@@ -38,22 +38,19 @@ export const ItemCard = ({
       </div>
       <div
         className={clsxm(
-          'item-basic-info flex flex-col items-center justify-center bg-primaryWhite p-4',
+          'item-basic-info flex h-24 flex-col items-center justify-center bg-primaryWhite p-4',
           styles.itemBasicInfo
         )}
       >
-        <SmallBodyText>
+        <BodyText>
           <Bold>{brand}</Bold>
-        </SmallBodyText>
-        <div className="flex gap-2">
-          <SmallBodyText>{name}</SmallBodyText>
-          <Dot />
-          <SmallBodyText>£{price}</SmallBodyText>
-        </div>
+        </BodyText>
+        <BodyText>{name}</BodyText>
+        <BodyText>£{price}</BodyText>
       </div>
       <div
         className={clsxm(
-          'item-detail-info hidden flex-col items-center justify-center gap-4 bg-primaryWhite p-4',
+          'item-detail-info hidden h-24 flex-col items-center justify-center gap-4 bg-primaryWhite p-4',
           styles.itemDetailInfo
         )}
       >
@@ -62,7 +59,7 @@ export const ItemCard = ({
             <SmallBodyText
               key={`size-${idx}`}
               className={clsxm(
-                'flex aspect-square w-7 items-center justify-center rounded-lg bg-primaryBlack p-1 text-primaryWhite',
+                'flex aspect-square w-6 items-center justify-center rounded-md bg-primaryBlack p-1 text-primaryWhite',
                 'cursor-pointer'
               )}
             >

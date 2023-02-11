@@ -34,9 +34,10 @@ export interface TypographyProps {
   style?: CSSProperties | undefined;
 }
 export const variantToClasses: { [key in TypographyVariant]: string[] } = {
-  smallBody: ['text-xs sm:text-sm', 'leading-5', 'text-current', 'tracking-paragraph'],
-  body: ['text-base', 'leading-6', 'text-current', 'tracking-paragraph'],
-  largeBody: ['text-2xl', 'text-current', 'tracking-paragraph'],
+  smallBody: ['text-[10px]', 'md:text-xs', 'leading-4', 'text-current', 'tracking-paragraph'],
+  body: ['text-xs sm:text-sm', 'leading-5', 'text-current', 'tracking-paragraph'],
+  largeBody: ['text-base', 'leading-6', 'text-current', 'tracking-paragraph'],
+  // hugeBody: ['text-2xl', 'text-current', 'tracking-paragraph'],
   bigHeading: [],
   mediumHeading: [],
   smallHeading: [],

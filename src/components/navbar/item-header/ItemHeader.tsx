@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import ButtonSwitch from '../../button-switch/ButtonSwitch';
-import { BodyText, SmallBodyText } from '../../typography/Typography';
+import { BodyText } from '../../typography/Typography';
 import ClothingMenu from './clothing-menu/ClothingMenu';
 import CollectionsMenu from './collections-menu/CollectionsMenu';
 
@@ -9,24 +9,20 @@ export const ItemHeader = () => {
   return (
     <div className="flex w-full justify-around border-y-[1px] border-primaryBlack py-2 uppercase">
       <ButtonSwitch elementToOpen={open => <ClothingMenu isOpen={open} position="right" />}>
-        <SmallBodyText className="cursor-pointer select-none hover:underline">
-          Clothing
-        </SmallBodyText>
+        <BodyText className="cursor-pointer select-none hover:underline">Clothing</BodyText>
       </ButtonSwitch>
 
       <ButtonSwitch elementToOpen={open => <CollectionsMenu isOpen={open} position="right" />}>
-        <SmallBodyText className="cursor-pointer select-none hover:underline">
-          Collections
-        </SmallBodyText>
+        <BodyText className="cursor-pointer select-none hover:underline">Collections</BodyText>
       </ButtonSwitch>
 
-      <SmallBodyText className="cursor-pointer select-none hover:underline">
+      <BodyText className="cursor-pointer select-none hover:underline">
         <Link href="/new-arrivals">New Arrivals</Link>
-      </SmallBodyText>
+      </BodyText>
 
-      <SmallBodyText className="cursor-pointer select-none hover:underline">
+      <BodyText className="cursor-pointer select-none hover:underline">
         <Link href="/sale">Sale</Link>
-      </SmallBodyText>
+      </BodyText>
     </div>
   );
 };

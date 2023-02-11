@@ -5,7 +5,7 @@ import ShopWomenImg from '../../public/images/shop-women.webp';
 import NewArravialsImg from '../../public/images/new-arrivals.webp';
 // import { trpc } from '../utils/trpc';
 import Image from 'next/image';
-import { BodyText } from '../components/typography/Typography';
+import { BodyText, LargeBodyText } from '../components/typography/Typography';
 
 const Home: NextPage = () => {
   // const hello = trpc.example.hello.useQuery({ text: 'from tRPC' });
@@ -15,7 +15,9 @@ const Home: NextPage = () => {
       <div className="flex h-[1600px] w-full flex-col sm:h-[960px] sm:flex-row">
         <div className="relative h-full cursor-pointer  sm:w-1/2">
           <Link href="/men">
-            <BodyText className="absolute right-0 z-10 m-10 text-4xl font-bold">MEN</BodyText>
+            <LargeBodyText className="absolute right-0 z-10 m-10 text-4xl font-bold">
+              MEN
+            </LargeBodyText>
             <Image
               src={ShopMenImg}
               alt="Shop Men"
@@ -27,9 +29,9 @@ const Home: NextPage = () => {
         </div>
         <div className="relative h-full cursor-pointer sm:w-1/2">
           <Link href="/women">
-            <BodyText className="absolute right-0 z-10 m-10 text-4xl font-bold text-primaryWhite">
+            <LargeBodyText className="absolute right-0 z-10 m-10 text-4xl font-bold text-primaryWhite">
               WOMEN
-            </BodyText>
+            </LargeBodyText>
             <Image
               src={ShopWomenImg}
               alt="Shop Women"
@@ -42,9 +44,9 @@ const Home: NextPage = () => {
       </div>
       <div className="relative flex h-[960px] w-full">
         <Link href="/new-arrivals">
-          <BodyText className="absolute left-0 z-10 m-20 text-center text-4xl font-bold text-primaryWhite">
+          <LargeBodyText className="absolute left-0 z-10 m-20 text-center text-4xl font-bold text-primaryWhite">
             NEW ARRIVALS
-          </BodyText>
+          </LargeBodyText>
           <Image src={NewArravialsImg} alt="Shop Women" className="object-cover object-top " fill />
         </Link>
       </div>
