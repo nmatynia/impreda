@@ -40,7 +40,14 @@ export const variantToClasses: { [key in TypographyVariant]: string[] } = {
   smallBody: ['text-[10px]', 'md:text-xs', 'leading-4', 'text-current', 'tracking-paragraph'],
   body: ['text-xs sm:text-sm', 'leading-5', 'text-current', 'tracking-paragraph'],
   largeBody: ['text-base', 'leading-6', 'text-current', 'tracking-paragraph'],
-  bigHeading: ['text-6xl', 'md:text-7xl', 'text-current', 'tracking-paragraph'],
+  bigHeading: [
+    'text-4xl',
+    'sm:text-6xl',
+    'md:text-5xl',
+    'lg:text-7xl',
+    'text-current',
+    'tracking-paragraph'
+  ],
   mediumHeading: [],
   smallHeading: [],
   bold: ['font-bold'],
@@ -120,7 +127,7 @@ export const LogoText = (props: TypographyPropsWithoutVariant & { inheritSize?: 
     <Typography
       variant="logo"
       as="span"
-      className={clsxm(!inheritSize && 'text-2xl', className)}
+      className={clsxm('inline-block', !inheritSize && 'text-2xl', className)}
       {...rest}
     />
   );
