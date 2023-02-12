@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import clsxm from '../../utils/clsxm';
 import RoundedBox from '../box/RoundedBox';
 import ButtonSwitch from '../button-switch/ButtonSwitch';
 import FilterMenu from '../filter-menu/FilterMenu';
@@ -6,15 +7,21 @@ import { SvgIcon } from '../icons/SvgIcon';
 import { LargeBodyText } from '../typography/Typography';
 type FilterSectionProps = {
   sectionName: string;
+  className?: string;
 };
-const FilterPanel = ({ sectionName = 'Filters' }: FilterSectionProps) => {
+const FilterPanel = ({ sectionName = 'Filters', className }: FilterSectionProps) => {
   const [openMenu, setOpenMenu] = useState(false);
   const handleOpenMenu = () => {
     setOpenMenu(!openMenu);
   };
 
   return (
-    <RoundedBox className="mt-16 flex w-full items-center justify-between">
+    <RoundedBox
+      className={clsxm(
+        'mt-16 flex w-full items-center justify-between overflow-visible',
+        className
+      )}
+    >
       <LargeBodyText>{sectionName}</LargeBodyText>
       <div className="relative cursor-pointer">
         <ButtonSwitch

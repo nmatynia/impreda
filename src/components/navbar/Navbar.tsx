@@ -11,7 +11,7 @@ export const Navbar = () => {
   const navRef = useRef<any>();
 
   return (
-    <nav ref={navRef} className="relative">
+    <nav ref={navRef} className="relative z-10">
       <Header handleShowSearch={handleShowSearch} />
       <ItemHeader />
       <SearchHeader isOpen={showSearch} setIsOpen={setShowSearch} navRef={navRef} />

@@ -34,7 +34,7 @@ const FilterMenu = ({ className, isOpen }: FilterMenuProps) => {
           <FilterButton filterName="Gender" />
           <FilterButton filterName="Season" />
         </div>
-        <Button variant="primary" className="mt-4">
+        <Button variant="primary" className="mt-4 w-full">
           <BodyText>Reset filters</BodyText>
         </Button>
       </Box>

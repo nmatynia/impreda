@@ -23,7 +23,7 @@ export const Layout = ({ children, className }: LayoutProps) => {
         )}
       >
         <Navbar />
-        <main className="w-full flex-1">{children}</main>
+        <main className="z-0 w-full flex-1">{children}</main>
         <Footer />
       </div>
     </>
