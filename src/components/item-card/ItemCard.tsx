@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import React from 'react';
-import DefaultTeeImg from '../../../public/images/default-tee.webp';
 import clsxm from '../../utils/clsxm';
 import { Dot } from '../dot/Dot';
 import { SvgIcon } from '../icons/SvgIcon';
@@ -20,6 +19,7 @@ export type ItemCardProps = {
   }[];
   price: number;
   saved: boolean;
+  image: string;
 };
 
 export const ItemCard = ({
@@ -27,14 +27,21 @@ export const ItemCard = ({
   price,
   saved,
   brand,
-  className,
   sizes,
-  colors
+  colors,
+  image,
+  className
 }: ItemCardProps) => {
   return (
-    <div className={clsxm('border-[1px] border-primaryBlack', styles.itemCard)}>
-      <div className="relative flex h-80 w-64 select-none flex-col justify-between p-6">
-        <Image src={DefaultTeeImg.src} alt="holder" fill className="absolute -z-10 object-cover" />
+    <div className={clsxm('border-[1px] border-primaryBlack', styles.itemCard, className)}>
+      <div className="relative flex h-96 w-72 select-none flex-col justify-between p-6">
+        <Image
+          src={image}
+          alt={name}
+          fill
+          className="absolute -z-10 object-cover p-3"
+          sizes="288px"
+        />
       </div>
       <div
         className={clsxm(
