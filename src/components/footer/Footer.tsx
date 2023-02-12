@@ -1,9 +1,8 @@
-import { env } from 'process';
 import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { authorName, websiteName } from '../../utils/constants';
 import { Dot } from '../dot/Dot';
-import { BodyText, LogoText } from '../typography/Typography';
+import { LargeBodyText, LogoText } from '../typography/Typography';
 
 type FooterProps = {
   className?: string;
@@ -20,7 +19,7 @@ export const Footer = ({ className }: FooterProps) => {
         {websiteName}
       </LogoText>
       <Dot className="bg-primaryWhite" />
-      <BodyText className="font-light">{authorName} </BodyText>
+      <LargeBodyText className="font-light">{authorName} </LargeBodyText>
     </footer>
   );
 };

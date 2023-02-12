@@ -32,7 +32,7 @@ items.push(...items);
 
 const shop = () => {
   return (
-    <Container className="my-6">
+    <Container>
       <ItemContainer>
         {items.map(item => (
           <ItemCard {...item} />

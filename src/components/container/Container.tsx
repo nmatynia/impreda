@@ -11,6 +11,7 @@ export const Container = ({ children, className }: ContainerProps) => {
     <div
       className={clsxm(
         'flex w-full flex-col items-center justify-center overflow-hidden',
+        'py-16 px-4',
         className
       )}
     >

@@ -27,24 +27,25 @@ export interface TypographyProps {
     | 'ul'
     | 'ol'
     | 'li'
-    | 'b';
+    | 'b'
+    | 'label';
   className?: string;
   children?: React.ReactNode;
   id?: string;
   style?: CSSProperties | undefined;
 }
+
+//old largeBody ['text-2xl', 'text-current', 'tracking-paragraph'],
 export const variantToClasses: { [key in TypographyVariant]: string[] } = {
   smallBody: ['text-[10px]', 'md:text-xs', 'leading-4', 'text-current', 'tracking-paragraph'],
   body: ['text-xs sm:text-sm', 'leading-5', 'text-current', 'tracking-paragraph'],
   largeBody: ['text-base', 'leading-6', 'text-current', 'tracking-paragraph'],
-  // hugeBody: ['text-2xl', 'text-current', 'tracking-paragraph'],
-  bigHeading: [],
+  bigHeading: ['text-6xl', 'md:text-7xl', 'text-current', 'tracking-paragraph'],
   mediumHeading: [],
   smallHeading: [],
   bold: ['font-bold'],
-  logo: ['text-2xl', 'tracking-[0.15em]', 'text-current', 'uppercase', 'font-primary', 'font-black']
+  logo: ['tracking-[0.15em]', 'text-current', 'uppercase', 'font-primary', 'font-black']
 };
-
 /**
  * Simple typography component
  */
@@ -112,17 +113,26 @@ export const PageTitle = (props: TypographyPropsWithoutVariant) => {
     />
   );
 };
-export const LogoText = (props: TypographyPropsWithoutVariant) => (
-  <Typography variant="logo" as="p" {...props} />
-);
+
+export const LogoText = (props: TypographyPropsWithoutVariant & { inheritSize?: boolean }) => {
+  const { className, inheritSize, ...rest } = props;
+  return (
+    <Typography
+      variant="logo"
+      as="span"
+      className={clsxm(!inheritSize && 'text-2xl', className)}
+      {...rest}
+    />
+  );
+};
 export const BigHeading = (props: TypographyPropsWithoutVariant) => (
-  <Typography variant="bigHeading" as="h2" {...props} />
+  <Typography variant="bigHeading" as="h1" {...props} />
 );
 
 export const MediumHeading = (props: TypographyPropsWithoutVariant) => (
-  <Typography variant="mediumHeading" as="h3" {...props} />
+  <Typography variant="mediumHeading" as="h2" {...props} />
 );
 
 export const SmallHeading = (props: TypographyPropsWithoutVariant) => (
-  <Typography variant="smallHeading" as="h4" {...props} />
+  <Typography variant="smallHeading" as="h3" {...props} />
 );

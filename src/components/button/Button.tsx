@@ -14,7 +14,7 @@ const buttonVariant = {
 
 const Button = ({ children, variant = 'primary', className }: ButtonProps) => {
   return (
-    <button className={clsxm('rounded-md px-8 py-2', buttonVariant[variant], className)}>
+    <button className={clsxm('w-fit rounded-md px-8 py-2', buttonVariant[variant], className)}>
       {children}
     </button>
   );
