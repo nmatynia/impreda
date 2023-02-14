@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import React from 'react';
 import RoundedBox from '../components/box/RoundedBox';
-import { BigHeading, LogoText } from '../components/typography/Typography';
+import { BigHeading, BodyText, LogoText } from '../components/typography/Typography';
 import RegisterThumbnail from '../../public/images/register-thumbnail.webp';
 import { Container } from '../components/container/Container';
 import Button from '../components/button/Button';
 import { Input } from '../components/input/Input';
 import { Checkbox } from '../components/checkbox/Checkbox';
-
+import { signIn } from 'next-auth/react';
 //TODO - use form library
 const register = () => {
   return (
@@ -35,12 +35,22 @@ const register = () => {
             <Checkbox label="I agree with the terms and conditions.*" />
             <Checkbox label="Subscribe for fashion updates & exclusive offers" />
           </div>
-          <Button
-            variant={'outlined'}
-            className="w-full border-primaryWhite text-primaryWhite sm:w-fit"
-          >
-            Register
-          </Button>
+          <div className="flex w-fit gap-4">
+            <Button
+              variant={'outlined'}
+              className="w-full border-primaryWhite text-primaryWhite sm:w-fit"
+            >
+              Register
+            </Button>
+            <BodyText>or</BodyText>
+            <Button
+              variant={'outlined'}
+              className="w-full border-primaryWhite text-primaryWhite sm:w-fit"
+              onClick={() => signIn()}
+            >
+              Login
+            </Button>
+          </div>
         </div>
       </RoundedBox>
     </Container>
