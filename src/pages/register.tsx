@@ -1,15 +1,20 @@
 import Image from 'next/image';
 import React from 'react';
 import RoundedBox from '../components/box/RoundedBox';
-import { BigHeading, LogoText } from '../components/typography/Typography';
+import { BigHeading, BodyText, LogoText } from '../components/typography/Typography';
 import RegisterThumbnail from '../../public/images/register-thumbnail.webp';
 import { Container } from '../components/container/Container';
 import Button from '../components/button/Button';
 import { Input } from '../components/input/Input';
 import { Checkbox } from '../components/checkbox/Checkbox';
+import { signIn, useSession } from 'next-auth/react';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { getServerAuthSession } from '../server/common/get-server-auth-session';
 
 //TODO - use form library
-const register = () => {
+const register = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { data: session, status } = useSession();
+  console.log(session);
   return (
     <Container className="h-full bg-primaryBlack px-0 md:h-fit md:bg-primaryWhite md:px-4">
       <RoundedBox className="flex w-full max-w-[1200px] bg-primaryBlack p-0 text-primaryWhite">
@@ -35,12 +40,26 @@ const register = () => {
             <Checkbox label="I agree with the terms and conditions.*" />
             <Checkbox label="Subscribe for fashion updates & exclusive offers" />
           </div>
-          <Button
-            variant={'outlined'}
-            className="w-full border-primaryWhite text-primaryWhite sm:w-fit"
-          >
-            Register
-          </Button>
+          <div className="flex w-fit items-center gap-4">
+            <Button
+              variant={'outlined'}
+              className="w-full border-primaryWhite text-primaryWhite sm:w-fit"
+            >
+              Register
+            </Button>
+            <BodyText>or</BodyText>
+            <Button
+              variant={'outlined'}
+              className="w-full border-primaryWhite text-primaryWhite sm:w-fit"
+              onClick={() =>
+                signIn('google', {
+                  callbackUrl: '/'
+                })
+              }
+            >
+              Register with Google
+            </Button>
+          </div>
         </div>
       </RoundedBox>
     </Container>
@@ -48,3 +67,14 @@ const register = () => {
 };
 
 export default register;
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const session = await getServerAuthSession(ctx);
+  if (session) {
+    return { redirect: { destination: '/' }, props: {} };
+  }
+
+  return {
+    props: {}
+  };
+};
