@@ -1,9 +1,12 @@
 import React from 'react';
+import { trpc } from '../../utils/trpc';
 import RoundedBox from '../box/RoundedBox';
 import { SvgIcon } from '../icons/SvgIcon';
 import { BodyText, Bold, LargeBodyText } from '../typography/Typography';
 
 const UserAccountBox = () => {
+  const { data } = trpc.user.getCurrent.useQuery();
+  console.log(data);
   return (
     <RoundedBox className="mt-16 w-full p-0">
       <div className="flex w-full items-center justify-between border-b-[1px] border-primaryBlack p-8">
@@ -17,25 +20,25 @@ const UserAccountBox = () => {
           <div>
             <BodyText>Name:</BodyText>
             <BodyText>
-              <Bold>Norbert Matynia</Bold>
+              <Bold>{data?.name ?? '----'}</Bold>
             </BodyText>
           </div>
           <div>
             <BodyText>Address:</BodyText>
             <BodyText>
-              <Bold>Ullswater 11</Bold>
+              <Bold>{data?.address ?? '----'}</Bold>
             </BodyText>
           </div>
           <div>
             <BodyText>City:</BodyText>
             <BodyText>
-              <Bold>Leicester</Bold>
+              <Bold>{data?.city ?? '----'}</Bold>
             </BodyText>
           </div>
           <div>
             <BodyText>Zip-code:</BodyText>
             <BodyText>
-              <Bold>XX-XXX</Bold>
+              <Bold>{data?.zipCode ?? '----'}</Bold>
             </BodyText>
           </div>
         </div>
@@ -43,13 +46,13 @@ const UserAccountBox = () => {
           <div>
             <BodyText>Card Details:</BodyText>
             <BodyText>
-              <Bold>1234 5678 9012 4210</Bold>
+              <Bold>{data?.cardNumber ?? '----'}</Bold>
             </BodyText>
           </div>
           <div>
             <BodyText>Phone number:</BodyText>
             <BodyText>
-              <Bold>734 241 411</Bold>
+              <Bold>{data?.phoneNumber ?? '----'}</Bold>
             </BodyText>
           </div>
         </div>
