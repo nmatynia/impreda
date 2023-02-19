@@ -2,7 +2,7 @@ import React, { ButtonHTMLAttributes, ReactNode } from 'react';
 import clsxm from '../../utils/clsxm';
 type ButtonProps = {
   children: ReactNode;
-  variant: ButtonVariant;
+  variant?: ButtonVariant;
   className?: string;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 type ButtonVariant = 'primary' | 'outlined';
