@@ -82,11 +82,7 @@ const UserAccountBox = () => {
               <div>
                 <BodyText>Name:</BodyText>
                 {isEditing ? (
-                  <Input
-                    placeholder={'Enter name'}
-                    fieldName="name"
-                    defaultValue={data?.name ?? ''}
-                  />
+                  <Input placeholder={'Enter name'} fieldName="name" />
                 ) : (
                   <BodyText>
                     <Bold>{data?.name ?? '----'}</Bold>
@@ -148,11 +144,12 @@ const UserAccountBox = () => {
             </div>
           </div>
           {isEditing && (
-            <div className="flex justify-end gap-3">
+            // Prevents clicking Cancel button on enter in the form
+            <div className="flex flex-row-reverse justify-start gap-3">
+              <Button type="submit">Save</Button>
               <Button variant="outlined" onClick={handleDisableEditing}>
                 Cancel
               </Button>
-              <Button type="submit">Save</Button>
             </div>
           )}
         </form>
