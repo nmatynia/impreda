@@ -32,7 +32,7 @@ export const Input = ({
       placeholder={placeholder}
       type={password ? 'password' : 'text'}
       className={clsxm(
-        'text-base',
+        'text-xs sm:text-sm',
         'flex-1 bg-transparent focus-within:outline-none',
         'border-b-[1px] pb-2',
         !isValid && 'border-b-red-400 text-red-400 placeholder:text-red-400',
