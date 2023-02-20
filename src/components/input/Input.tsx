@@ -12,8 +12,9 @@ export type InputProps = {
 
 type InputColorVariant = 'black' | 'white';
 
+//TODO - input color variants based on field state (isDirty etc.)
 const colorVariant = {
-  white: 'text-primaryWhite placeholder:text-primaryWhite border-primaryWhite',
+  white: 'text-primaryWhite border-primaryWhite placeholder:text-gray-400',
   black:
     'text-primaryBlack placeholder:text-gray-400 focus-within:border-primaryBlack border-gray-400'
 };

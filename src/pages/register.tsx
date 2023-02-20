@@ -7,14 +7,12 @@ import { Container } from '../components/container/Container';
 import Button from '../components/button/Button';
 import { Input } from '../components/input/Input';
 import { Checkbox } from '../components/checkbox/Checkbox';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getServerAuthSession } from '../server/common/get-server-auth-session';
 
 //TODO - use form library
 const register = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { data: session, status } = useSession();
-  console.log(session);
   return (
     <Container className="h-full bg-primaryBlack px-0 md:h-fit md:bg-primaryWhite md:px-4">
       <RoundedBox className="flex w-full max-w-[1200px] bg-primaryBlack p-0 text-primaryWhite">
@@ -31,16 +29,16 @@ const register = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) =>
             <LogoText inheritSize>fashion</LogoText>.
           </BigHeading>
           <div className="flex w-full flex-col gap-x-4 gap-y-10 sm:flex-row">
-            <Input placeholder="First name*" className="w-full sm:w-1/2" />
-            <Input placeholder="Last name*" className="w-full sm:w-1/2" />
+            <Input placeholder="First name*" className="w-full sm:w-1/2" color="white" />
+            <Input placeholder="Last name*" className="w-full sm:w-1/2" color="white" />
           </div>
-          <Input placeholder="Email*" className="w-full" />
-          <Input placeholder="Password*" className="w-full" password />
+          <Input placeholder="Email*" className="w-full" color="white" />
+          <Input placeholder="Password*" className="w-full" type="password" color="white" />
           <div className="flex flex-col">
             <Checkbox label="I agree with the terms and conditions.*" />
             <Checkbox label="Subscribe for fashion updates & exclusive offers" />
           </div>
-          <div className="flex w-fit items-center gap-4">
+          <div className="flex w-fit flex-col flex-wrap items-center  gap-4 sm:flex-row">
             <Button
               variant={'outlined'}
               className="w-full border-primaryWhite text-primaryWhite sm:w-fit"
@@ -50,7 +48,7 @@ const register = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) =>
             <BodyText>or</BodyText>
             <Button
               variant={'outlined'}
-              className="w-full border-primaryWhite text-primaryWhite sm:w-fit"
+              className="w-full whitespace-nowrap border-primaryWhite text-primaryWhite sm:w-fit"
               onClick={() =>
                 signIn('google', {
                   callbackUrl: '/'
