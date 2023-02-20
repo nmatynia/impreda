@@ -2,38 +2,31 @@ import React, { InputHTMLAttributes } from 'react';
 import { useFormContext } from 'react-hook-form';
 import clsxm from '../../utils/clsxm';
 
-type InputProps = {
+export type InputProps = {
   placeholder: string;
   className?: string;
   password?: boolean;
   color?: InputColorVariant;
   isValid?: boolean;
-  value?: string;
-  fieldName?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 type InputColorVariant = 'black' | 'white';
 
+//TODO - input color variants based on field state (isDirty etc.)
 const colorVariant = {
-  white: 'text-primaryWhite placeholder:text-primaryWhite border-primaryWhite',
+  white: 'text-primaryWhite border-primaryWhite placeholder:text-gray-400',
   black:
     'text-primaryBlack placeholder:text-gray-400 focus-within:border-primaryBlack border-gray-400'
 };
 
-//TODO - add error message
 export const Input = ({
   placeholder,
   className,
   password,
   color = 'black',
   isValid = true,
-  onChange,
-  value,
-  fieldName,
   ...rest
 }: InputProps) => {
-  const { register } = useFormContext();
   return (
     <input
       placeholder={placeholder}
@@ -47,7 +40,6 @@ export const Input = ({
         colorVariant[color],
         className
       )}
-      {...(fieldName && register(fieldName))}
       {...rest}
     />
   );

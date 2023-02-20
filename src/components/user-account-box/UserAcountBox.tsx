@@ -8,6 +8,8 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '../button/Button';
 import { Input } from '../input/Input';
+import InputField from '../forms/InputField';
+import Form from '../forms/Form';
 
 export const UserDetailsSchema = z.object({
   name: z.string().min(1).max(50).nullish(),
@@ -75,85 +77,83 @@ const UserAccountBox = () => {
           <SvgIcon name="Edit" className="fill-primaryBlack" />
         </button>
       </div>
-      <FormProvider {...methods}>
-        <form className="flex flex-col gap-7 p-8" onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col gap-7 sm:flex-row sm:gap-14">
-            <div className="flex flex-col gap-7">
-              <div>
-                <BodyText>Name:</BodyText>
-                {isEditing ? (
-                  <Input placeholder={'Enter name'} fieldName="name" />
-                ) : (
-                  <BodyText>
-                    <Bold>{data?.name ?? '----'}</Bold>
-                  </BodyText>
-                )}
-              </div>
-              <div>
-                <BodyText>Address:</BodyText>
-                {isEditing ? (
-                  <Input placeholder={'Enter address'} fieldName="address" />
-                ) : (
-                  <BodyText>
-                    <Bold>{data?.address ?? '----'}</Bold>
-                  </BodyText>
-                )}
-              </div>
-              <div>
-                <BodyText>City:</BodyText>
-                {isEditing ? (
-                  <Input placeholder={'Enter city'} fieldName="city" />
-                ) : (
-                  <BodyText>
-                    <Bold>{data?.city ?? '----'}</Bold>
-                  </BodyText>
-                )}
-              </div>
-              <div>
-                <BodyText>Zip code:</BodyText>
-                {isEditing ? (
-                  <Input placeholder={'Enter zip code'} fieldName="zipCode" />
-                ) : (
-                  <BodyText>
-                    <Bold>{data?.zipCode ?? '----'}</Bold>
-                  </BodyText>
-                )}
-              </div>
+      <Form className="flex flex-col gap-7 p-8" onSubmit={handleSubmit(onSubmit)} {...methods}>
+        <div className="flex flex-col gap-7 sm:flex-row sm:gap-14">
+          <div className="flex flex-col gap-7">
+            <div>
+              <BodyText>Name:</BodyText>
+              {isEditing ? (
+                <InputField placeholder={'Enter name'} name="name" />
+              ) : (
+                <BodyText>
+                  <Bold>{data?.name ?? '----'}</Bold>
+                </BodyText>
+              )}
             </div>
-            <div className="flex flex-col gap-7">
-              <div>
-                <BodyText>Card Details:</BodyText>
-                {isEditing ? (
-                  <Input placeholder={'Enter card details'} fieldName="cardDetails" />
-                ) : (
-                  <BodyText>
-                    <Bold>{data?.cardNumber ?? '----'}</Bold>
-                  </BodyText>
-                )}
-              </div>
-              <div>
-                <BodyText>Phone Number:</BodyText>
-                {isEditing ? (
-                  <Input placeholder={'Enter phone number'} fieldName="phoneNumber" />
-                ) : (
-                  <BodyText>
-                    <Bold>{data?.phoneNumber ?? '----'}</Bold>
-                  </BodyText>
-                )}
-              </div>
+            <div>
+              <BodyText>Address:</BodyText>
+              {isEditing ? (
+                <InputField placeholder={'Enter address'} name="address" />
+              ) : (
+                <BodyText>
+                  <Bold>{data?.address ?? '----'}</Bold>
+                </BodyText>
+              )}
+            </div>
+            <div>
+              <BodyText>City:</BodyText>
+              {isEditing ? (
+                <InputField placeholder={'Enter city'} name="city" />
+              ) : (
+                <BodyText>
+                  <Bold>{data?.city ?? '----'}</Bold>
+                </BodyText>
+              )}
+            </div>
+            <div>
+              <BodyText>Zip code:</BodyText>
+              {isEditing ? (
+                <InputField placeholder={'Enter zip code'} name="zipCode" />
+              ) : (
+                <BodyText>
+                  <Bold>{data?.zipCode ?? '----'}</Bold>
+                </BodyText>
+              )}
             </div>
           </div>
-          {isEditing && (
-            // Prevents clicking Cancel button on enter in the form
-            <div className="flex flex-row-reverse justify-start gap-3">
-              <Button type="submit">Save</Button>
-              <Button variant="outlined" onClick={handleDisableEditing}>
-                Cancel
-              </Button>
+          <div className="flex flex-col gap-7">
+            <div>
+              <BodyText>Card Details:</BodyText>
+              {isEditing ? (
+                <InputField placeholder={'Enter card details'} name="cardDetails" />
+              ) : (
+                <BodyText>
+                  <Bold>{data?.cardNumber ?? '----'}</Bold>
+                </BodyText>
+              )}
             </div>
-          )}
-        </form>
-      </FormProvider>
+            <div>
+              <BodyText>Phone Number:</BodyText>
+              {isEditing ? (
+                <InputField placeholder={'Enter phone number'} name="phoneNumber" />
+              ) : (
+                <BodyText>
+                  <Bold>{data?.phoneNumber ?? '----'}</Bold>
+                </BodyText>
+              )}
+            </div>
+          </div>
+        </div>
+        {isEditing && (
+          // Prevents clicking Cancel button on enter in the form
+          <div className="flex flex-row-reverse justify-start gap-3">
+            <Button type="submit">Save</Button>
+            <Button variant="outlined" onClick={handleDisableEditing}>
+              Cancel
+            </Button>
+          </div>
+        )}
+      </Form>
     </RoundedBox>
   );
 };
