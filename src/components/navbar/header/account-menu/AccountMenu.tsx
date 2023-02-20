@@ -1,3 +1,4 @@
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import React from 'react';
 import clsxm from '../../../../utils/clsxm';
@@ -7,7 +8,15 @@ import { BodyText } from '../../../typography/Typography';
 type AccountMenuProps = {
   className?: string;
 } & BoxProps;
-const menuItems: { icon: IconName; text: string; path?: string }[] = [
+
+type MenuItemProps = {
+  icon: IconName;
+  text: string;
+  path?: string;
+  onClick?: () => void;
+};
+
+const menuItems: MenuItemProps[] = [
   {
     icon: 'OutlinedPerson',
     text: 'Account',
@@ -19,7 +28,8 @@ const menuItems: { icon: IconName; text: string; path?: string }[] = [
   },
   {
     icon: 'Logout',
-    text: 'Logout'
+    text: 'Logout',
+    onClick: () => signOut()
   }
 ];
 const AccountMenu = ({ className, ...props }: AccountMenuProps) => {
@@ -27,10 +37,17 @@ const AccountMenu = ({ className, ...props }: AccountMenuProps) => {
     <Box className={clsxm('absolute', className)} {...props}>
       {menuItems.map(item => (
         <div className="flex cursor-pointer select-none items-center gap-4 border-b-[1px] border-primaryBlack py-4 first:pt-0 last:border-0 last:pb-0">
-          <Link href={item.path || '/'} className="flex items-center justify-center gap-4">
-            <SvgIcon name={item.icon} />
-            <BodyText>{item.text}</BodyText>
-          </Link>
+          {item.onClick ? (
+            <button className="flex items-center justify-center gap-4" onClick={item.onClick}>
+              <SvgIcon name={item.icon} />
+              <BodyText>{item.text}</BodyText>
+            </button>
+          ) : (
+            <Link href={item.path || '/'} className="flex items-center justify-center gap-4">
+              <SvgIcon name={item.icon} />
+              <BodyText>{item.text}</BodyText>
+            </Link>
+          )}
         </div>
       ))}
     </Box>

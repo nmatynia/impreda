@@ -1,6 +1,8 @@
+import { GetServerSideProps } from 'next';
 import React from 'react';
 import OrderHistorySection from '../components/order-history-section/OrderHistorySection';
 import UserAccountBox from '../components/user-account-box/UserAcountBox';
+import { getServerAuthSession } from '../server/common/get-server-auth-session';
 
 const account = () => {
   return (
@@ -12,3 +14,14 @@ const account = () => {
 };
 
 export default account;
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const session = await getServerAuthSession(ctx);
+  if (!session) {
+    return { redirect: { destination: '/register' }, props: {} };
+  }
+
+  return {
+    props: {}
+  };
+};
