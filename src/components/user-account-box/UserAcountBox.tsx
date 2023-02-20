@@ -65,7 +65,6 @@ const UserAccountBox = () => {
 
   const onSubmit: SubmitHandler<UserDetailsType> = async (data, e) => {
     e?.preventDefault();
-    console.log({ data });
     await updateUser(data);
     handleDisableEditing();
   };

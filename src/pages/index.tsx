@@ -9,7 +9,6 @@ import { BodyText, LargeBodyText } from '../components/typography/Typography';
 
 const Home: NextPage = () => {
   // const hello = trpc.example.hello.useQuery({ text: 'from tRPC' });
-  console.log(process.env.GOOGLE_ID);
   return (
     <main className="flex min-h-full flex-col items-center justify-center bg-primaryBlack">
       <div className="flex h-[1600px] w-full flex-col sm:h-[960px] sm:flex-row">
