@@ -23,7 +23,7 @@ const items: ItemCardProps[] = [
     ],
     price: 30,
     saved: true,
-    image: DefaultRickTeeImg.src
+    images: [DefaultRickTeeImg.src]
   },
   {
     brand: '1017 ALYX 9SM x Moncler',
@@ -42,7 +42,7 @@ const items: ItemCardProps[] = [
     ],
     price: 30,
     saved: true,
-    image: DefaultAlyxJacketImg.src
+    images: [DefaultAlyxJacketImg.src]
   }
 ];
 

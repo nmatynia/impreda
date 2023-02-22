@@ -27,3 +27,4 @@
 
 - custom scroll (e.g. cart)
 - custom cursor (e.g. when hovering on out of stock items)
+- give size chart functionality

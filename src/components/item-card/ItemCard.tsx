@@ -21,7 +21,7 @@ export type ItemCardProps = {
   }[];
   price: number;
   saved: boolean;
-  image: string;
+  images: string[];
   description?: string;
   fabrics?: {
     name: string;
@@ -36,14 +36,14 @@ export const ItemCard = ({
   brand,
   sizes,
   colors,
-  image,
+  images,
   className
 }: ItemCardProps) => {
   return (
     <div className={clsxm('border-[1px] border-primaryBlack', styles.itemCard, className)}>
       <div className="relative flex h-96 w-72 select-none flex-col justify-between p-6">
         <Image
-          src={image}
+          src={images[0]!}
           alt={name}
           fill
           className="absolute -z-10 object-cover p-3"
