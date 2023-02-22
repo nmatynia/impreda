@@ -11,7 +11,12 @@ const items: ItemCardProps[] = [
     brand: 'Rick Owens',
     name: 'DRKSHDW Oversized Graphic T-Shirt',
     sex: 'man',
-    sizes: ['S', 'M', 'L', 'XL'],
+    sizes: [
+      { name: 'S', available: 1 },
+      { name: 'M', available: 1 },
+      { name: 'L', available: 1 },
+      { name: 'XL', available: 1 }
+    ],
     colors: [
       { name: 'Black', hex: '#000000' },
       { name: 'White', hex: 'white' }
@@ -24,7 +29,12 @@ const items: ItemCardProps[] = [
     brand: '1017 ALYX 9SM x Moncler',
     name: 'Almondis Jacket',
     sex: 'man',
-    sizes: ['S', 'M', 'L', 'XL'],
+    sizes: [
+      { name: 'S', available: 1 },
+      { name: 'M', available: 1 },
+      { name: 'L', available: 1 },
+      { name: 'XL', available: 1 }
+    ],
     colors: [
       { name: 'Black', hex: '#000000' },
       { name: 'White', hex: 'white' },

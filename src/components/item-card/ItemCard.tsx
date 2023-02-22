@@ -1,8 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import clsxm from '../../utils/clsxm';
-import { Dot } from '../dot/Dot';
-import { SvgIcon } from '../icons/SvgIcon';
+import { SizeIndicator } from '../size-indicator/SizeIndicator';
 import { BodyText, Bold, SmallBodyText } from '../typography/Typography';
 import styles from './ItemCard.module.scss';
 
@@ -10,7 +9,10 @@ export type ItemCardProps = {
   className?: string;
   brand: string;
   name: string;
-  sizes: ('XS' | 'S' | 'M' | 'L' | 'XL')[];
+  sizes: {
+    name: 'XS' | 'S' | 'M' | 'L' | 'XL';
+    available: number;
+  }[];
   sex: 'man' | 'woman' | 'unisex';
   colors: {
     name: string;
@@ -20,6 +22,11 @@ export type ItemCardProps = {
   price: number;
   saved: boolean;
   image: string;
+  description?: string;
+  fabrics?: {
+    name: string;
+    percentage: number;
+  }[];
 };
 
 export const ItemCard = ({
@@ -63,21 +70,13 @@ export const ItemCard = ({
       >
         <div className="flex gap-2">
           {sizes.map((size, idx) => (
-            <SmallBodyText
-              key={`size-${idx}`}
-              className={clsxm(
-                'flex aspect-square w-6 items-center justify-center rounded-md bg-primaryBlack p-1 text-primaryWhite',
-                'cursor-pointer'
-              )}
-            >
-              {size}
-            </SmallBodyText>
+            <SizeIndicator key={`size-${idx}`} {...size} variant="outlined" />
           ))}
         </div>
         <div className="flex gap-2">
           {colors.map((color, idx) => (
             <div
-              key={`size-${idx}`}
+              key={`color-${idx}`}
               className={clsxm(
                 'flex aspect-square w-4 items-center justify-center rounded-sm border-[1px] border-primaryBlack p-1',
                 'cursor-pointer'
