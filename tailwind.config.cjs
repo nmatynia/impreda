@@ -25,6 +25,9 @@ module.exports = {
       },
       animation: {
         rotate: 'rotate 2s linear;'
+      },
+      spacing: {
+        screenWithoutHeader: 'calc(100vh - 109px)'
       }
     }
   },
