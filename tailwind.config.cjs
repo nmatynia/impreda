@@ -31,6 +31,9 @@ module.exports = {
       },
       minHeight: {
         screenWithoutHeader: 'calc(100vh - 109px)'
+      },
+      boxShadow: {
+        outline: '0 0 0 1px #000000'
       }
     }
   },

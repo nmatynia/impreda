@@ -52,7 +52,7 @@ items.push(...items);
 
 const shop = () => {
   return (
-    <Container className="max-w-[1600px]">
+    <Container fullSize>
       <FilterPanel sectionName={`Total: ${items.length}`} className="mb-16 mt-0" />
       <ItemContainer>
         {items.map(item => (

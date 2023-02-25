@@ -45,7 +45,7 @@ const Item = () => {
   return (
     <Container fullSize className="overflow-visible">
       <div className="relative flex h-fit w-full flex-col sm:flex-row">
-        <div className="mt-20 flex h-fit w-full flex-col gap-20 bg-primaryWhite sm:w-1/2">
+        <div className="my-20 flex h-fit w-full flex-col gap-20 bg-primaryWhite sm:w-1/2">
           {itemHolder.images.map((image, idx) => (
             <div className="relative h-screenWithoutHeader">
               <Image
@@ -102,6 +102,7 @@ const Item = () => {
           </div>
         </div>
       </div>
+      <div></div>
     </Container>
   );
 };

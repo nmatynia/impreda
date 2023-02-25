@@ -1,5 +1,15 @@
 import React, { ReactNode } from 'react';
+import clsxm from '../../utils/clsxm';
 
 export const ItemContainer = ({ children }: { children: ReactNode }) => {
-  return <div className="flex flex-wrap items-center justify-center gap-8">{children}</div>;
+  return (
+    <div
+      className={clsxm(
+        'grid w-full grid-cols-2 md:grid-cols-3 2xl:grid-cols-4',
+        'gap-x-[1px] border-r-[2px]'
+      )}
+    >
+      {children}
+    </div>
+  );
 };

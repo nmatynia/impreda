@@ -50,8 +50,18 @@ export const ItemCard = ({
   className
 }: ItemCardProps) => {
   return (
-    <div className={clsxm('border-[1px] border-primaryBlack', styles.itemCard, className)}>
-      <div className="relative flex h-96 w-72 select-none flex-col justify-between p-6">
+    <div
+      className={clsxm(
+        'w-full bg-primaryWhite',
+        'box-content border-[1px] border-primaryBlack',
+        'border-t-0',
+        // w-1/2 bg-primaryWhite md:w-1/3 2xl:w-1/4
+        // 'md:[&:nth-child(2n)]:border-x-0 md:[&:nth--last-child(1)]:border-b-[1px]',
+        styles.itemCard,
+        className
+      )}
+    >
+      <div className="relative z-10 flex aspect-[0.75] w-full select-none flex-col justify-between p-6">
         <Image
           src={images[0]!}
           alt={name}
@@ -66,10 +76,10 @@ export const ItemCard = ({
           styles.itemBasicInfo
         )}
       >
-        <BodyText>
+        <BodyText className="text-center">
           <Bold>{brand}</Bold>
         </BodyText>
-        <BodyText>{name}</BodyText>
+        <BodyText className="text-center">{name}</BodyText>
         <BodyText>£{price}</BodyText>
       </div>
       <div

@@ -22,6 +22,7 @@
 - consider making the Navbar transparent (redesign)
 - change the space screenWithoutHeader so it is pixel perfect both on mobile and desktop
 - after rethinking and reimplementing the Navbar have a look at item page at the right section and its spacing
+- item container - if the last item is alone in the row it's alignment is slightly off
 
 ## Pages
 
