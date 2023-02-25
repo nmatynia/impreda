@@ -5,6 +5,7 @@ import { ItemContainer } from '../components/items-container/ItemContainer';
 import DefaultRickTeeImg from '../../public/images/default-rick-tee.webp';
 import DefaultAlyxJacketImg from '../../public/images/default-alyx-jacket.webp';
 import FilterPanel from '../components/filter-panel/FilterPanel';
+import { ShopFilterPanel } from '../components/filter-panel/ShopFilterPanel';
 
 const items: ItemCardProps[] = [
   {
@@ -53,7 +54,7 @@ items.push(...items);
 const shop = () => {
   return (
     <Container fullSize>
-      <FilterPanel sectionName={`Total: ${items.length}`} className="mb-16 mt-0" />
+      <ShopFilterPanel sectionName={`Total: ${items.length}`} />
       <ItemContainer>
         {items.map(item => (
           <ItemCard {...item} />
