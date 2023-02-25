@@ -9,6 +9,7 @@ import { SizeIndicator } from '../components/size-indicator/SizeIndicator';
 import Button from '../components/button/Button';
 import { SvgIcon } from '../components/icons/SvgIcon';
 import Image from 'next/image';
+import { ColorIndicator } from '../components/color-indicator/ColorIndicator';
 
 const itemHolder: ItemCardProps = {
   brand: 'Rick Owens',
@@ -21,8 +22,8 @@ const itemHolder: ItemCardProps = {
     { name: 'XL', available: 1 }
   ],
   colors: [
-    { name: 'Black', hex: '#000000' },
-    { name: 'White', hex: 'white' }
+    { name: 'Black', hex: '#000000', available: 1 },
+    { name: 'White', hex: 'white', available: 3 }
   ],
   price: 30,
   saved: true,
@@ -56,7 +57,7 @@ const Item = () => {
             </div>
           ))}
         </div>
-        <div className="sticky top-0 flex h-screenWithoutHeader w-full items-center justify-center sm:w-1/2">
+        <div className="sticky top-0 flex h-fit min-h-screenWithoutHeader w-full items-center justify-center sm:w-1/2">
           <div className="flex flex-col p-8">
             <LargeBodyText>
               <Bold>{itemHolder.name}</Bold>
@@ -79,6 +80,12 @@ const Item = () => {
                 : '100% Worth It'}
             </div>
             <div className="mt-5" />
+            <div className="flex gap-2">
+              {itemHolder.colors.map(color => (
+                <ColorIndicator {...color} className="w-6" />
+              ))}
+            </div>
+            <div className="mt-5" />
             <div className="flex items-center justify-between">
               <div className="flex gap-2">
                 {itemHolder.sizes.map(size => (
@@ -87,7 +94,7 @@ const Item = () => {
               </div>
               <BodyText className="cursor-pointer underline">Size chart</BodyText>
             </div>
-            <div className="mt-2" />
+            <div className="mt-10" />
             <Button variant="outlined" className="flex items-center gap-2 px-5">
               <BodyText>Add to cart</BodyText>
               <SvgIcon name="Cart" className="h-4 w-4" />

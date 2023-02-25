@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import clsxm from '../../utils/clsxm';
+import { ColorIndicator } from '../color-indicator/ColorIndicator';
 import { SizeIndicator } from '../size-indicator/SizeIndicator';
 import { BodyText, Bold, SmallBodyText } from '../typography/Typography';
 import styles from './ItemCard.module.scss';
@@ -12,12 +13,21 @@ export type ItemCardProps = {
   sizes: {
     name: 'XS' | 'S' | 'M' | 'L' | 'XL';
     available: number;
-  }[];
+    colors?: {
+      name: string;
+      hex: string;
+      available: number;
+    }[];
+  }[]; // Different table for both the size and color so it should be fine having it like that
   sex: 'man' | 'woman' | 'unisex';
   colors: {
     name: string;
     hex: string;
-    available?: boolean;
+    available: number;
+    sizes?: {
+      name: 'XS' | 'S' | 'M' | 'L' | 'XL';
+      available: number;
+    }[];
   }[];
   price: number;
   saved: boolean;
@@ -75,14 +85,7 @@ export const ItemCard = ({
         </div>
         <div className="flex gap-2">
           {colors.map((color, idx) => (
-            <div
-              key={`color-${idx}`}
-              className={clsxm(
-                'flex aspect-square w-4 items-center justify-center rounded-sm border-[1px] border-primaryBlack p-1',
-                'cursor-pointer'
-              )}
-              style={{ backgroundColor: color.hex }}
-            />
+            <ColorIndicator key={`color-${idx}`} {...color} />
           ))}
         </div>
       </div>

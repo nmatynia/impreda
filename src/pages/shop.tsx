@@ -18,8 +18,8 @@ const items: ItemCardProps[] = [
       { name: 'XL', available: 1 }
     ],
     colors: [
-      { name: 'Black', hex: '#000000' },
-      { name: 'White', hex: 'white' }
+      { name: 'Black', hex: '#000000', available: 1 },
+      { name: 'White', hex: 'white', available: 0 }
     ],
     price: 30,
     saved: true,
@@ -36,9 +36,9 @@ const items: ItemCardProps[] = [
       { name: 'XL', available: 1 }
     ],
     colors: [
-      { name: 'Black', hex: '#000000' },
-      { name: 'White', hex: 'white' },
-      { name: 'Red', hex: '#dc2626' } // hex for neutral red -
+      { name: 'Black', hex: '#000000', available: 0 },
+      { name: 'White', hex: 'white', available: 0 },
+      { name: 'Red', hex: '#dc2626', available: 0 } // hex for neutral red -
     ],
     price: 30,
     saved: true,

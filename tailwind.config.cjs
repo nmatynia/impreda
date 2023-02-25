@@ -28,6 +28,9 @@ module.exports = {
       },
       spacing: {
         screenWithoutHeader: 'calc(100vh - 109px)'
+      },
+      minHeight: {
+        screenWithoutHeader: 'calc(100vh - 109px)'
       }
     }
   },

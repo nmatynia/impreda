@@ -10,14 +10,18 @@
 
 ##Components
 
-- create NavBar
+- ~~create NavBar~~
 - transition on Box
-- Box - on clicking outside the Box is closed
+- ~~Box - on clicking outside the Box is closed~~
 
 - searchBar enhancement - maybe fuzzy search?
-- make cart responsive
+- ~~make cart responsive~~
 - Nav underline current category that the user is on
 - make the ItemHeader menus hoverable instead of clickable
+- make the Navbar sticky
+- consider making the Navbar transparent (redesign)
+- change the space screenWithoutHeader so it is pixel perfect both on mobile and desktop
+- after rethinking and reimplementing the Navbar have a look at item page at the right section and its spacing
 
 ## Pages
 
