@@ -52,12 +52,16 @@ export const ItemCard = ({
   return (
     <div
       className={clsxm(
-        'w-full border-[1px] border-primaryBlack sm:w-1/2 md:w-1/3 2xl:w-1/4',
+        'w-1/2 bg-primaryWhite md:w-1/3 2xl:w-1/4',
+        // 'border-[1px] border-b-0 border-primaryBlack',
+        // 'md:[&:nth-child(2n)]:border-x-0 md:[&:nth--last-child(1)]:border-b-[1px]',
+        // 'relative -top-[1px] -left-1 ml-[-1px] mt-[-1px] outline outline-1 outline-primaryBlack',
+        'shadow-outline',
         styles.itemCard,
         className
       )}
     >
-      <div className="relative flex aspect-[0.75] w-full select-none flex-col justify-between p-6">
+      <div className="relative z-10 flex aspect-[0.75] w-full select-none flex-col justify-between p-6">
         <Image
           src={images[0]!}
           alt={name}
@@ -72,10 +76,10 @@ export const ItemCard = ({
           styles.itemBasicInfo
         )}
       >
-        <BodyText>
+        <BodyText className="text-center">
           <Bold>{brand}</Bold>
         </BodyText>
-        <BodyText>{name}</BodyText>
+        <BodyText className="text-center">{name}</BodyText>
         <BodyText>£{price}</BodyText>
       </div>
       <div
