@@ -52,11 +52,10 @@ export const ItemCard = ({
   return (
     <div
       className={clsxm(
-        'w-1/2 bg-primaryWhite md:w-1/3 2xl:w-1/4',
-        // 'border-[1px] border-b-0 border-primaryBlack',
+        'w-full bg-primaryWhite',
+        'border-[1px] border-t-0 border-primaryBlack',
+        'last:border-r-[1px] [&:nth-child(3n+2)]:border-x-0',
         // 'md:[&:nth-child(2n)]:border-x-0 md:[&:nth--last-child(1)]:border-b-[1px]',
-        // 'relative -top-[1px] -left-1 ml-[-1px] mt-[-1px] outline outline-1 outline-primaryBlack',
-        'shadow-outline',
         styles.itemCard,
         className
       )}
