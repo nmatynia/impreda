@@ -42,8 +42,8 @@ const Item = () => {
   //TODO fetch item data based on item id
   //TODO selected size and color should have different variant selected
   return (
-    <Container fullSize>
-      <div className="flex h-fit w-full flex-col sm:flex-row">
+    <Container fullSize className="overflow-visible">
+      <div className="relative flex h-fit w-full flex-col sm:flex-row">
         <div className="mt-20 flex h-fit w-full flex-col gap-20 bg-primaryWhite sm:w-1/2">
           {itemHolder.images.map((image, idx) => (
             <div className="relative h-screenWithoutHeader">
