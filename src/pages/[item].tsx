@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Container } from '../components/container/Container';
-import { ItemCardProps } from '../components/item-card/ItemCard';
-import DefaultRickTeeImg from '../../public/images/default-rick-tee.webp';
+import { ItemCard, ItemCardProps } from '../components/item-card/ItemCard';
 import { BodyText, Bold, LargeBodyText, SmallBodyText } from '../components/typography/Typography';
 import { Dot } from '../components/dot/Dot';
 import { SizeIndicator } from '../components/size-indicator/SizeIndicator';
@@ -10,6 +9,53 @@ import Button from '../components/button/Button';
 import { SvgIcon } from '../components/icons/SvgIcon';
 import Image from 'next/image';
 import { ColorIndicator } from '../components/color-indicator/ColorIndicator';
+import { ItemContainer } from '../components/items-container/ItemContainer';
+import DefaultRickTeeImg from '../../public/images/default-rick-tee.webp';
+import DefaultAlyxJacketImg from '../../public/images/default-alyx-jacket.webp';
+
+const itemsHolder: ItemCardProps[] = [
+  {
+    brand: 'Rick Owens',
+    name: 'DRKSHDW Oversized Graphic T-Shirt',
+    sex: 'man',
+    sizes: [
+      { name: 'S', available: 1 },
+      { name: 'M', available: 1 },
+      { name: 'L', available: 1 },
+      { name: 'XL', available: 1 }
+    ],
+    colors: [
+      { name: 'Black', hex: '#000000', available: 1 },
+      { name: 'White', hex: 'white', available: 0 }
+    ],
+    price: 30,
+    saved: true,
+    images: [DefaultRickTeeImg.src]
+  },
+  {
+    brand: '1017 ALYX 9SM x Moncler',
+    name: 'Almondis Jacket',
+    sex: 'man',
+    sizes: [
+      { name: 'S', available: 1 },
+      { name: 'M', available: 1 },
+      { name: 'L', available: 1 },
+      { name: 'XL', available: 1 }
+    ],
+    colors: [
+      { name: 'Black', hex: '#000000', available: 0 },
+      { name: 'White', hex: 'white', available: 0 },
+      { name: 'Red', hex: '#dc2626', available: 0 } // hex for neutral red -
+    ],
+    price: 30,
+    saved: true,
+    images: [DefaultAlyxJacketImg.src]
+  }
+];
+
+itemsHolder.push(...itemsHolder);
+itemsHolder.push(...itemsHolder);
+itemsHolder.push(...itemsHolder);
 
 const itemHolder: ItemCardProps = {
   brand: 'Rick Owens',
@@ -45,7 +91,7 @@ const Item = () => {
   return (
     <Container fullSize className="overflow-visible">
       <div className="relative flex h-fit w-full flex-col sm:flex-row">
-        <div className="my-20 flex h-fit w-full flex-col gap-20 bg-primaryWhite sm:w-1/2">
+        <div className="flex h-fit w-full flex-col gap-20 border-r-[1px] border-primaryBlack bg-primaryWhite py-20 sm:w-1/2">
           {itemHolder.images.map((image, idx) => (
             <div className="relative h-screenWithoutHeader">
               <Image
@@ -102,7 +148,16 @@ const Item = () => {
           </div>
         </div>
       </div>
-      <div></div>
+      <div className="flex w-full items-center justify-center border-[1px] border-primaryBlack py-5">
+        <LargeBodyText>
+          <Bold>RELATED ITEMS</Bold>
+        </LargeBodyText>
+      </div>
+      <ItemContainer>
+        {itemsHolder.map(item => (
+          <ItemCard {...item} />
+        ))}
+      </ItemContainer>
     </Container>
   );
 };

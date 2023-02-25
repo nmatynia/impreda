@@ -4,7 +4,6 @@ import { ItemCard, ItemCardProps } from '../components/item-card/ItemCard';
 import { ItemContainer } from '../components/items-container/ItemContainer';
 import DefaultRickTeeImg from '../../public/images/default-rick-tee.webp';
 import DefaultAlyxJacketImg from '../../public/images/default-alyx-jacket.webp';
-import FilterPanel from '../components/filter-panel/FilterPanel';
 import { ShopFilterPanel } from '../components/filter-panel/ShopFilterPanel';
 
 const items: ItemCardProps[] = [
