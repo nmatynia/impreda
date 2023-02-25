@@ -4,7 +4,6 @@ import clsxm from '../../utils/clsxm';
 import { ColorIndicator } from '../color-indicator/ColorIndicator';
 import { SizeIndicator } from '../size-indicator/SizeIndicator';
 import { BodyText, Bold, SmallBodyText } from '../typography/Typography';
-import styles from './ItemCard.module.scss';
 
 export type ItemCardProps = {
   className?: string;
@@ -53,11 +52,8 @@ export const ItemCard = ({
     <div
       className={clsxm(
         'w-full bg-primaryWhite',
-        'box-content border-[1px] border-primaryBlack',
-        'border-t-0',
-        // w-1/2 bg-primaryWhite md:w-1/3 2xl:w-1/4
-        // 'md:[&:nth-child(2n)]:border-x-0 md:[&:nth--last-child(1)]:border-b-[1px]',
-        styles.itemCard,
+        'box-content border-[1px] border-t-0 border-primaryBlack',
+        '[&:hover_.item-basic-info]:hidden [&:hover_.item-detail-info]:flex',
         className
       )}
     >
@@ -72,8 +68,7 @@ export const ItemCard = ({
       </div>
       <div
         className={clsxm(
-          'item-basic-info flex h-24 flex-col items-center justify-center bg-primaryWhite p-4',
-          styles.itemBasicInfo
+          'item-basic-info flex h-24 flex-col items-center justify-center bg-primaryWhite p-4'
         )}
       >
         <BodyText className="text-center">
@@ -84,8 +79,7 @@ export const ItemCard = ({
       </div>
       <div
         className={clsxm(
-          'item-detail-info hidden h-24 flex-col items-center justify-center gap-4 bg-primaryWhite p-4',
-          styles.itemDetailInfo
+          'item-detail-info hidden h-24 flex-col items-center justify-center gap-4 bg-primaryWhite p-4'
         )}
       >
         <div className="flex gap-2">
