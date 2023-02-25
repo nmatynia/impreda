@@ -53,8 +53,9 @@ export const ItemCard = ({
     <div
       className={clsxm(
         'w-full bg-primaryWhite',
-        'border-[1px] border-t-0 border-primaryBlack',
-        'last:border-r-[1px] [&:nth-child(3n+2)]:border-x-0',
+        'box-content border-[1px] border-primaryBlack',
+        'border-t-0',
+        // w-1/2 bg-primaryWhite md:w-1/3 2xl:w-1/4
         // 'md:[&:nth-child(2n)]:border-x-0 md:[&:nth--last-child(1)]:border-b-[1px]',
         styles.itemCard,
         className
