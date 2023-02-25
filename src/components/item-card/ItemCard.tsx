@@ -50,8 +50,14 @@ export const ItemCard = ({
   className
 }: ItemCardProps) => {
   return (
-    <div className={clsxm('border-[1px] border-primaryBlack', styles.itemCard, className)}>
-      <div className="relative flex h-96 w-72 select-none flex-col justify-between p-6">
+    <div
+      className={clsxm(
+        'w-full border-[1px] border-primaryBlack sm:w-1/2 md:w-1/3 2xl:w-1/4',
+        styles.itemCard,
+        className
+      )}
+    >
+      <div className="relative flex aspect-[0.75] w-full select-none flex-col justify-between p-6">
         <Image
           src={images[0]!}
           alt={name}
