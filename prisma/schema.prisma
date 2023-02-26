@@ -60,6 +60,8 @@ model User {
   cardNumber    String?
   accounts      Account[]
   sessions      Session[]
+  savedItems    Item[]
+  orders        Order[]
 }
 
 model VerificationToken {
@@ -69,3 +71,52 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+model Item {
+  id        String   @id @default(cuid())
+  name      String
+  brand     String
+  size      Size[]
+  color     Color[]
+  sex       String //TODO: ENUM 'M' | 'F' | 'U'
+  price     Int
+  image     String // TODO: String[]
+  description String?
+  fabrics   String?    
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  savedBy   User[]
+  orders    Order[]
+}
+
+model Size {
+  id        String   @id @default(cuid())
+  name      String  //TODO: ENUM 'XS' | 'S' | 'M' | 'L' | 'XL';
+  available Int
+  items     Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId    String
+  color     Color[] 
+}
+
+model Color {
+  id        String   @id @default(cuid())
+  name      String
+  hex       String
+  available Int
+  items     Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId    String
+  size      Size[]
+}
+
+model Order {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  items     Item[]
+  user      User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  status    String
+  address   String
+  city      String
+  zipCode   String
+}
+
