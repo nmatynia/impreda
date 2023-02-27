@@ -6,12 +6,13 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
   // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
   // Further reading:
   // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
   // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+  provider = "mysql"
   url = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Example {
@@ -27,16 +28,17 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? // @db.Text
-  access_token      String? // @db.Text
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? // @db.Text
+  id_token          String? @db.Text
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -45,6 +47,7 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
 }
 
 model User {
@@ -75,8 +78,6 @@ model Item {
   id        String   @id @default(cuid())
   name      String
   brand     String
-  size      Size[]
-  color     Color[]
   sex       String //TODO: ENUM 'M' | 'F' | 'U'
   price     Int
   image     String // TODO: String[]
@@ -84,6 +85,8 @@ model Item {
   fabrics   String?    
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  size      Size[]
+  color     Color[]
   savedBy   User[]
   orders    Order[]
 }
@@ -92,9 +95,11 @@ model Size {
   id        String   @id @default(cuid())
   name      String  //TODO: ENUM 'XS' | 'S' | 'M' | 'L' | 'XL';
   available Int
-  items     Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
   itemId    String
+  items     Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
   color     Color[] 
+
+  @@index([itemId])
 }
 
 model Color {
@@ -102,21 +107,25 @@ model Color {
   name      String
   hex       String
   available Int
-  items     Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
   itemId    String
+  items     Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
   size      Size[]
+
+  @@index([itemId])
 }
 
 model Order {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  items     Item[]
-  user      User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   status    String
   address   String
   city      String
   zipCode   String
+  items     Item[]
+  user      User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
