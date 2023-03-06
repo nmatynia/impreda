@@ -1,26 +1,53 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { trpc } from '../utils/trpc';
 
 const admin = () => {
-  //TODO change to trpc approach (?)
-  const uploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length <= 0) return;
-    const file = e.target.files[0];
-    const filename = encodeURIComponent(file?.name ?? '');
-    const res = await fetch(`/api/upload-image?file=${filename}`);
-    const data = await res.json();
-    const formData = new FormData();
+  const utils = trpc.useContext();
 
-    Object.entries({ ...data.fields, file }).forEach(([key, value]) => {
-      // @ts-ignore
-      formData.append(key, value);
-    });
-    fetch(data.url, {
+  const { mutateAsync: createPresignedUrl } = trpc.images.createPresignedUrl.useMutation({
+    onSuccess: () => {
+      utils.images.invalidate();
+    }
+  });
+
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const uploadImage = async (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const file = e.currentTarget.files?.[0];
+    if (!file) return;
+
+    const filename = encodeURIComponent(file?.name ?? '');
+    const { url, fields }: { url: string; fields: any } = (await createPresignedUrl()) as any;
+    console.log(url);
+    const data = {
+      ...fields,
+      'Content-Type': file.type,
+      file
+    };
+    const formData = new FormData();
+    for (const name in data) {
+      formData.append(name, data[name]);
+    }
+    await fetch(url, {
       method: 'POST',
-      body: formData
+      body: formData,
+      mode: 'no-cors'
     });
+    if (fileRef.current) {
+      fileRef.current.value = '';
+    }
   };
 
-  return <input onChange={uploadPhoto} type="file" accept="image/png, image/jpeg" name="image" />;
+  return (
+    <input
+      ref={fileRef}
+      onChange={uploadImage}
+      type="file"
+      accept="image/png, image/jpeg"
+      name="image"
+    />
+  );
 };
 
 export default admin;
