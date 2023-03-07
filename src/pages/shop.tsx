@@ -1,13 +1,14 @@
 import React from 'react';
 import { Container } from '../components/container/Container';
-import { ItemCard, ItemCardProps } from '../components/item-card/ItemCard';
+import { ItemCard, ItemProps } from '../components/item-card/ItemCard';
 import { ItemContainer } from '../components/items-container/ItemContainer';
 import DefaultRickTeeImg from '../../public/images/default-rick-tee.webp';
 import DefaultAlyxJacketImg from '../../public/images/default-alyx-jacket.webp';
 import { ShopFilterPanel } from '../components/filter-panel/ShopFilterPanel';
 
-const items: ItemCardProps[] = [
+const items: ItemProps[] = [
   {
+    id: '231',
     brand: 'Rick Owens',
     name: 'DRKSHDW Oversized Graphic T-Shirt',
     sex: 'man',
@@ -22,10 +23,11 @@ const items: ItemCardProps[] = [
       { name: 'White', hex: 'white', available: 0 }
     ],
     price: 30,
-    saved: true,
+    saved: 31,
     images: [DefaultRickTeeImg.src]
   },
   {
+    id: '231',
     brand: '1017 ALYX 9SM x Moncler',
     name: 'Almondis Jacket',
     sex: 'man',
@@ -41,7 +43,7 @@ const items: ItemCardProps[] = [
       { name: 'Red', hex: '#dc2626', available: 0 } // hex for neutral red -
     ],
     price: 30,
-    saved: true,
+    saved: 12,
     images: [DefaultAlyxJacketImg.src]
   }
 ];

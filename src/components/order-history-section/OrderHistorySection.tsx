@@ -1,12 +1,8 @@
 import React from 'react';
 import clsxm from '../../utils/clsxm';
-import RoundedBox from '../box/RoundedBox';
 import FilterPanel from '../filter-panel/FilterPanel';
-import FilterSection from '../filter-panel/FilterPanel';
 import HistoryBundle from '../history-bundle/HistoryBundle';
 import HistoryItem from '../history-item/HistoryItem';
-import { SvgIcon } from '../icons/SvgIcon';
-import { LargeBodyText } from '../typography/Typography';
 
 //TODO: Consider saving total in the database instead of calculating it every time on client
 //TODO: Possibly display itemDesigner as well

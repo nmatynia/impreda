@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Container } from '../components/container/Container';
-import { ItemCard, ItemCardProps } from '../components/item-card/ItemCard';
-import { BodyText, Bold, LargeBodyText, SmallBodyText } from '../components/typography/Typography';
+import { ItemCard, ItemProps } from '../components/item-card/ItemCard';
+import { BodyText, Bold, SmallBodyText, LargeBodyText } from '../components/typography/Typography';
 import { Dot } from '../components/dot/Dot';
 import { SizeIndicator } from '../components/size-indicator/SizeIndicator';
 import Button from '../components/button/Button';
@@ -13,8 +13,9 @@ import { ItemContainer } from '../components/items-container/ItemContainer';
 import DefaultRickTeeImg from '../../public/images/default-rick-tee.webp';
 import DefaultAlyxJacketImg from '../../public/images/default-alyx-jacket.webp';
 
-const itemsHolder: ItemCardProps[] = [
+const itemsHolder: ItemProps[] = [
   {
+    id: '2',
     brand: 'Rick Owens',
     name: 'DRKSHDW Oversized Graphic T-Shirt',
     sex: 'man',
@@ -29,10 +30,11 @@ const itemsHolder: ItemCardProps[] = [
       { name: 'White', hex: 'white', available: 0 }
     ],
     price: 30,
-    saved: true,
+    saved: 21,
     images: [DefaultRickTeeImg.src]
   },
   {
+    id: '4',
     brand: '1017 ALYX 9SM x Moncler',
     name: 'Almondis Jacket',
     sex: 'man',
@@ -48,7 +50,7 @@ const itemsHolder: ItemCardProps[] = [
       { name: 'Red', hex: '#dc2626', available: 0 } // hex for neutral red -
     ],
     price: 30,
-    saved: true,
+    saved: 12,
     images: [DefaultAlyxJacketImg.src]
   }
 ];
@@ -57,7 +59,8 @@ itemsHolder.push(...itemsHolder);
 itemsHolder.push(...itemsHolder);
 itemsHolder.push(...itemsHolder);
 
-const itemHolder: ItemCardProps = {
+const itemHolder: ItemProps = {
+  id: '2312',
   brand: 'Rick Owens',
   name: 'DRKSHDW Oversized Graphic T-Shirt',
   sex: 'man',
@@ -72,7 +75,7 @@ const itemHolder: ItemCardProps = {
     { name: 'White', hex: 'white', available: 3 }
   ],
   price: 30,
-  saved: true,
+  saved: 321,
   images: [DefaultRickTeeImg.src, DefaultRickTeeImg.src],
   description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vulputate, dui ornare pellentesque sodales, nulla est 
   semper metus, vel porttitor libero metus sed magna. Mauris vitae sapien nibh. Mauris lobortis, neque non tincidunt tincidunt, velit orci commodo neque, eu volutpat 

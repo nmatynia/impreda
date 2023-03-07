@@ -5,8 +5,9 @@ import { ColorIndicator } from '../color-indicator/ColorIndicator';
 import { SizeIndicator } from '../size-indicator/SizeIndicator';
 import { BodyText, Bold, SmallBodyText } from '../typography/Typography';
 
-export type ItemCardProps = {
+export type ItemProps = {
   className?: string;
+  id: string;
   brand: string;
   name: string;
   sizes: {
@@ -29,13 +30,14 @@ export type ItemCardProps = {
     }[];
   }[];
   price: number;
-  saved: boolean;
+  saved: number;
   images: string[];
   description?: string;
   fabrics?: {
     name: string;
     percentage: number;
   }[];
+  views?: number;
 };
 
 export const ItemCard = ({
@@ -47,7 +49,7 @@ export const ItemCard = ({
   colors,
   images,
   className
-}: ItemCardProps) => {
+}: ItemProps) => {
   return (
     <div
       className={clsxm(

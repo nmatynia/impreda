@@ -12,6 +12,16 @@ const config = {
   i18n: {
     locales: ['en'],
     defaultLocale: 'en'
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'impreda-bucket.s3.eu-west-2.amazonaws.com',
+        port: '',
+        pathname: '/**'
+      }
+    ]
   }
 };
 export default config;

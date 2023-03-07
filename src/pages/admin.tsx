@@ -1,4 +1,7 @@
 import React, { useRef } from 'react';
+import { Container } from '../components/container/Container';
+import ItemListSection from '../components/item-list-section/ItemListSection';
+import OrderHistorySection from '../components/order-history-section/OrderHistorySection';
 import { trpc } from '../utils/trpc';
 
 const admin = () => {
@@ -40,13 +43,21 @@ const admin = () => {
   };
 
   return (
-    <input
-      ref={fileRef}
-      onChange={uploadImage}
-      type="file"
-      accept="image/png, image/jpeg"
-      name="image"
-    />
+    <Container className="w-full">
+      {/* Hidden for now */}
+      <div className="item-center flex w-full flex-col justify-center gap-8 md:max-w-xl lg:max-w-full lg:flex-row">
+        <OrderHistorySection />
+        <ItemListSection />
+      </div>
+      <input
+        className="hidden"
+        ref={fileRef}
+        onChange={uploadImage}
+        type="file"
+        accept="image/png, image/jpeg"
+        name="image"
+      />
+    </Container>
   );
 };
 
