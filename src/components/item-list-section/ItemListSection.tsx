@@ -24,6 +24,26 @@ const itemList: ItemProps[] = [
     saved: 23,
     views: 41,
     images: ['https://impreda-bucket.s3.eu-west-2.amazonaws.com/default-rick-tee.webp']
+  },
+  {
+    id: '1232',
+    brand: 'Rick Owens',
+    name: 'DRKSHDW Oversized Graphic T-Shirt',
+    sex: 'man',
+    sizes: [
+      { name: 'S', available: 1 },
+      { name: 'M', available: 1 },
+      { name: 'L', available: 1 },
+      { name: 'XL', available: 1 }
+    ],
+    colors: [
+      { name: 'Black', hex: '#000000', available: 1 },
+      { name: 'White', hex: 'white', available: 0 }
+    ],
+    price: 30,
+    saved: 23,
+    views: 41,
+    images: ['https://impreda-bucket.s3.eu-west-2.amazonaws.com/default-rick-tee.webp']
   }
 ];
 

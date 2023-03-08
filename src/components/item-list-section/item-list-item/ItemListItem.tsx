@@ -18,15 +18,15 @@ export const ItemListItem = ({ className, item }: ItemListItemProps) => {
         className
       )}
     >
-      <div className="flex gap-4">
+      <div className="flex w-full max-w-[50%] gap-4 sm:max-w-max">
         <div className="relative aspect-square h-[52px] bg-primaryWhite">
           <Image src={item.images[0]} fill className="object-contain" />
         </div>
         <div className="flex w-full flex-col gap-3">
-          <BodyText className="overflow-hidden overflow-ellipsis whitespace-nowrap">
+          <BodyText className="w-full overflow-hidden overflow-ellipsis whitespace-nowrap ">
             {item.brand} {item.name}
           </BodyText>
-          <div className="flex gap-4 whitespace-pre sm:gap-24">
+          <div className="flex w-fit gap-4 whitespace-pre sm:gap-24">
             <BodyText>Price: {item.price}£</BodyText>
             <BodyText>Views: {item.views}</BodyText>
             <BodyText className="hidden sm:block">Favorites: {item.saved}</BodyText>
