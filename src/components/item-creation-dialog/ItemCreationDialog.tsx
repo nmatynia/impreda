@@ -3,8 +3,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React, { Fragment } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import Button from '../button/Button';
 import Form from '../forms/Form';
 import InputField from '../forms/InputField';
+import SelectField from '../forms/SelectField';
 import { Select } from '../select/Select';
 import { BodyText } from '../typography/Typography';
 type ItemCreationDialogProps = {
@@ -12,27 +14,31 @@ type ItemCreationDialogProps = {
   handleCloseDialog: () => void;
 };
 export const ItemDetailsSchema = z.object({
-  name: z.string().min(1).max(50).nullish()
-  // address: z.string().min(3).max(50).nullish(),
-  // city: z.string().min(3).max(50).nullish(),
-  // zipCode: z.string().min(1).max(50).nullish(),
-  // cardNumber: z.string().min(16).max(19).nullish(),
-  // phoneNumber: z.string().min(9).max(10).nullish()
+  name: z.string(),
+  brand: z.string(),
+  size: z.any()
+  // object({ id: z.string(), name: z.string() })
 });
 
 type ItemDetailsType = z.infer<typeof ItemDetailsSchema>;
 
+const sizeOptions = [
+  { name: 'XS', id: 'XS' },
+  { name: 'S', id: 'S' },
+  { name: 'M', id: 'M' },
+  { name: 'L', id: 'L' },
+  { name: 'XL', id: 'XL' },
+  { name: 'XXL', id: 'XXL' }
+];
+
 export const ItemCreationDialog = ({ isOpen, handleCloseDialog }: ItemCreationDialogProps) => {
   const methods = useForm<ItemDetailsType>({
-    resolver: zodResolver(ItemDetailsSchema)
-    // defaultValues: {
-    //   name: data?.name,
-    //   address: data?.address,
-    //   city: data?.city,
-    //   zipCode: data?.zipCode,
-    //   cardNumber: data?.cardNumber,
-    //   phoneNumber: data?.phoneNumber
-    // }
+    resolver: zodResolver(ItemDetailsSchema),
+    defaultValues: {
+      size: sizeOptions[0],
+      name: undefined,
+      brand: undefined
+    }
   });
 
   const {
@@ -44,22 +50,16 @@ export const ItemCreationDialog = ({ isOpen, handleCloseDialog }: ItemCreationDi
   } = methods;
 
   const onSubmit: SubmitHandler<ItemDetailsType> = async (data, e) => {
+    handleCloseDialog();
     e?.preventDefault();
+    console.log(data);
     // await updateUser(data);
     // handleDisableEditing();
   };
 
-  const sizeOptions = [
-    { name: 'XS', id: 'XS' },
-    { name: 'S', id: 'S' },
-    { name: 'M', id: 'M' },
-    { name: 'L', id: 'L' },
-    { name: 'XL', id: 'XL' },
-    { name: 'XXL', id: 'XXL' }
-  ];
   return (
     //isOpen
-    <Transition appear show={true} as={Fragment}>
+    <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={handleCloseDialog}>
         <Transition.Child
           as={Fragment}
@@ -109,20 +109,21 @@ export const ItemCreationDialog = ({ isOpen, handleCloseDialog }: ItemCreationDi
                       </div>
                     </div>
                     <div className="flex w-full flex-col gap-6 md:flex-row">
-                      <Select label="Size" className="w-full" options={sizeOptions} />
+                      <SelectField
+                        name="size"
+                        label="Size"
+                        className="w-full"
+                        options={sizeOptions}
+                      />
                     </div>
                   </div>
+                  <div className="mt-4 flex flex-row-reverse justify-start gap-3">
+                    <Button type="submit">Add item</Button>
+                    <Button variant="outlined" onClick={handleCloseDialog}>
+                      Cancel
+                    </Button>
+                  </div>
                 </Form>
-
-                <div className="mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    onClick={handleCloseDialog}
-                  >
-                    Got it, thanks!
-                  </button>
-                </div>
               </Dialog.Panel>
             </Transition.Child>
           </div>

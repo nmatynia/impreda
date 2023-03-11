@@ -1,19 +1,21 @@
 import { Listbox, Transition } from '@headlessui/react';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
+import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 import clsxm from '../../utils/clsxm';
 import { SvgIcon } from '../icons/SvgIcon';
 import { BodyText } from '../typography/Typography';
 
-type SelectProps = {
+export type SelectProps = {
   className?: string;
   label: string;
   options: { name: string; id: string }[];
-};
+  name: string;
+  defaultValue?: { name: string; id: string };
+} & Partial<ControllerRenderProps<FieldValues, string>>;
 
-export const Select = ({ className, label, options }: SelectProps) => {
-  const [selected, setSelected] = useState(options[0]);
+export const Select = ({ className, label, options, name, defaultValue, ...rest }: SelectProps) => {
   return (
-    <Listbox value={selected} onChange={setSelected}>
+    <Listbox name={name} defaultValue={defaultValue} {...rest}>
       <div className={clsxm('relative', className)}>
         {label && <BodyText>{label}</BodyText>}
         <Listbox.Button
@@ -26,10 +28,14 @@ export const Select = ({ className, label, options }: SelectProps) => {
             'text-xs sm:text-sm'
           )}
         >
-          <span className="block truncate">{selected?.name}</span>
-          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-            <SvgIcon name="ChevronDown" className="h-4 w-4 text-gray-400" aria-hidden="true" />
-          </span>
+          {({ value }) => (
+            <>
+              <span className="block truncate">{value.name}</span>
+              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                <SvgIcon name="ChevronDown" className="h-4 w-4 text-gray-400" aria-hidden="true" />
+              </span>
+            </>
+          )}
         </Listbox.Button>
         <Transition
           as={Fragment}
@@ -44,20 +50,20 @@ export const Select = ({ className, label, options }: SelectProps) => {
               'text-xs sm:text-sm'
             )}
           >
-            {options.map((person, personIdx) => (
+            {options.map((option, optionIdx) => (
               <Listbox.Option
-                key={personIdx}
+                key={optionIdx}
                 className={({ active }) =>
                   `relative cursor-default select-none py-2 pl-10 pr-4 ${
                     active ? 'bg-gray-100' : 'text-primaryBlack'
                   }`
                 }
-                value={person}
+                value={option}
               >
                 {({ selected }) => (
                   <>
                     <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>
-                      {person.name}
+                      {option.name}
                     </span>
                     {selected ? (
                       <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-primaryBlack">
