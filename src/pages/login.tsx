@@ -58,6 +58,7 @@ const login = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
           alt="register-thumbnail"
           height={1200}
           width={969}
+          priority
         />
       </RoundedBox>
     </Container>

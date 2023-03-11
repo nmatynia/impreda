@@ -22,6 +22,7 @@ const register = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) =>
           alt="register-thumbnail"
           height={1200}
           width={969}
+          priority
         />
         <div className="flex h-full w-full flex-col gap-10 p-8 text-primaryWhite md:w-1/2 md:p-12">
           <BigHeading className="mb-10 text-center md:text-left">
