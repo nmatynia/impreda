@@ -14,9 +14,12 @@ export const AccountMenu = ({ className, ...props }: AccountMenuProps) => {
   return (
     <Box className={clsxm('absolute', className)} {...props}>
       <ItemWrappper>
-        <Link href={'/account'} className="flex items-center justify-center gap-4">
+        <Link
+          href={!session ? '/account' : '/login'}
+          className="flex items-center justify-center gap-4"
+        >
           <SvgIcon name="OutlinedPerson" />
-          <BodyText>Account</BodyText>
+          <BodyText>{!session ? 'Login' : 'Account'}</BodyText>
         </Link>
       </ItemWrappper>
       <ItemWrappper>
