@@ -6,7 +6,7 @@ import { ItemListItem } from './item-list-item/ItemListItem';
 
 const itemList: ItemProps[] = [
   {
-    id: '1232',
+    id: '12324',
     brand: 'Rick Owens',
     name: 'DRKSHDW Oversized Graphic T-Shirt',
     sex: 'man',
@@ -26,7 +26,7 @@ const itemList: ItemProps[] = [
     images: ['https://impreda-bucket.s3.eu-west-2.amazonaws.com/default-rick-tee.webp']
   },
   {
-    id: '1232',
+    id: '12321',
     brand: 'Rick Owens',
     name: 'DRKSHDW Oversized Graphic T-Shirt',
     sex: 'man',

@@ -20,7 +20,7 @@ export const ItemListItem = ({ className, item }: ItemListItemProps) => {
     >
       <div className="flex w-full max-w-[50%] gap-4 sm:max-w-max">
         <div className="relative aspect-square h-[52px] bg-primaryWhite">
-          <Image src={item.images[0]} fill className="object-contain" />
+          <Image src={item.images[0] ?? ''} fill className="object-contain" alt="Item Image" />
         </div>
         <div className="flex w-full flex-col gap-3">
           <BodyText className="w-full overflow-hidden overflow-ellipsis whitespace-nowrap ">

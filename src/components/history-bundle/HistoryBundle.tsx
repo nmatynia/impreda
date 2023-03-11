@@ -72,12 +72,14 @@ const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProps) => {
         leaveTo="opacity-0 max-h-0"
       >
         <div className="flex flex-col gap-6" style={{ direction: 'ltr' }}>
-          {order.items.map(item => {
+          {order.items.map((item, idx) => {
             const itemOrder = {
               ...order,
               items: [item]
             };
-            return <HistoryItem order={itemOrder} className="ml-auto w-[90%]" />;
+            return (
+              <HistoryItem key={`item-${idx}`} order={itemOrder} className="ml-auto w-[90%]" />
+            );
           })}
         </div>
       </Transition>
