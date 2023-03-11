@@ -1,12 +1,17 @@
 import React, { ReactNode } from 'react';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
-type FormProps = {
+type FormProps<Values extends object> = {
   children: ReactNode;
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
   className?: string;
-} & UseFormReturn;
+} & UseFormReturn<Values>;
 
-const Form = ({ children, className, onSubmit, ...rest }: FormProps) => {
+export const Form = <Values extends object>({
+  children,
+  className,
+  onSubmit,
+  ...rest
+}: FormProps<Values>) => {
   return (
     <FormProvider {...rest}>
       <form onSubmit={onSubmit} className={className}>
@@ -15,5 +20,3 @@ const Form = ({ children, className, onSubmit, ...rest }: FormProps) => {
     </FormProvider>
   );
 };
-
-export default Form;

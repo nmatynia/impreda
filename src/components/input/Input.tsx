@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from 'react';
+import React, { ForwardedRef, InputHTMLAttributes } from 'react';
 import { useFormContext } from 'react-hook-form';
 import clsxm from '../../utils/clsxm';
 
@@ -19,28 +19,27 @@ const colorVariant = {
     'text-primaryBlack placeholder:text-gray-400 focus-within:border-primaryBlack border-gray-400'
 };
 
-export const Input = ({
-  placeholder,
-  className,
-  password,
-  color = 'black',
-  isValid = true,
-  ...rest
-}: InputProps) => {
-  return (
-    <input
-      placeholder={placeholder}
-      type={password ? 'password' : 'text'}
-      className={clsxm(
-        'text-xs sm:text-sm',
-        'flex-1 bg-transparent focus-within:outline-none',
-        'border-b-[1px] pb-2',
-        !isValid && 'border-b-red-400 text-red-400 placeholder:text-red-400',
-        '',
-        colorVariant[color],
-        className
-      )}
-      {...rest}
-    />
-  );
-};
+export const Input = React.forwardRef(
+  (
+    { placeholder, className, password, color = 'black', isValid = true, ...rest }: InputProps,
+    ref: ForwardedRef<HTMLInputElement>
+  ) => {
+    return (
+      <input
+        placeholder={placeholder}
+        type={password ? 'password' : 'text'}
+        className={clsxm(
+          'text-xs sm:text-sm',
+          'flex-1 bg-transparent focus-within:outline-none',
+          'border-b-[1px] pb-2',
+          !isValid && 'border-b-red-400 text-red-400 placeholder:text-red-400',
+          '',
+          colorVariant[color],
+          className
+        )}
+        ref={ref}
+        {...rest}
+      />
+    );
+  }
+);
