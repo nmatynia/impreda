@@ -17,9 +17,7 @@ type FieldProps = {
 };
 
 //TODO - add error message
-const Field = ({ name, children }: FieldProps) => {
+export const Field = ({ name, children }: FieldProps) => {
   const { field, fieldState, formState } = useController({ name });
   return <>{children(field, fieldState, formState)}</>;
 };
-
-export default Field;

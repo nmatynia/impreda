@@ -12,7 +12,7 @@ const buttonVariant = {
   outlined: 'border-[1px] border-primaryBlack text-primaryBlack'
 };
 
-const Button = ({ children, variant = 'primary', className, ...rest }: ButtonProps) => {
+export const Button = ({ children, variant = 'primary', className, ...rest }: ButtonProps) => {
   return (
     <button
       className={clsxm('w-fit rounded-md px-8 py-2', buttonVariant[variant], className)}
@@ -22,5 +22,3 @@ const Button = ({ children, variant = 'primary', className, ...rest }: ButtonPro
     </button>
   );
 };
-
-export default Button;

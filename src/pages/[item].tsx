@@ -5,7 +5,7 @@ import { ItemCard, ItemProps } from '../components/item-card/ItemCard';
 import { BodyText, Bold, SmallBodyText, LargeBodyText } from '../components/typography/Typography';
 import { Dot } from '../components/dot/Dot';
 import { SizeIndicator } from '../components/size-indicator/SizeIndicator';
-import Button from '../components/button/Button';
+import { Button } from '../components/button/Button';
 import { SvgIcon } from '../components/icons/SvgIcon';
 import Image from 'next/image';
 import { ColorIndicator } from '../components/color-indicator/ColorIndicator';

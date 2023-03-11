@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import clsxm from '../../../../utils/clsxm';
-import Box, { BoxProps } from '../../../box/Box';
+import { Box, BoxProps } from '../../../box/Box';
 import { BodyText } from '../../../typography/Typography';
 
 const collections = [
@@ -12,7 +12,7 @@ const collections = [
 ];
 interface CollectionsMenuProps extends BoxProps {}
 
-const CollectionsMenu = ({ className, ...props }: CollectionsMenuProps) => {
+export const CollectionsMenu = ({ className, ...props }: CollectionsMenuProps) => {
   return (
     <Box className={clsxm('absolute flex flex-col', className)} {...props}>
       <ul className="flex flex-col gap-1">
@@ -27,5 +27,3 @@ const CollectionsMenu = ({ className, ...props }: CollectionsMenuProps) => {
     </Box>
   );
 };
-
-export default CollectionsMenu;

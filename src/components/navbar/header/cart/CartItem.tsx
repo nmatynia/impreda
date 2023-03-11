@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import clsxm from '../../../../utils/clsxm';
-import { BodyText, Bold, LargeBodyText } from '../../../typography/Typography';
+import { BodyText, Bold } from '../../../typography/Typography';
 
 export type CartItemProps = {
   src: string;
@@ -11,7 +11,7 @@ export type CartItemProps = {
   quantity: number;
 };
 
-const CartItem = ({
+export const CartItem = ({
   src,
   designer,
   name,
@@ -38,5 +38,3 @@ const CartItem = ({
     </div>
   );
 };
-
-export default CartItem;

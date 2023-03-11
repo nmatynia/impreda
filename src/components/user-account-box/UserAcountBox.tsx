@@ -1,15 +1,14 @@
 import React from 'react';
 import { trpc } from '../../utils/trpc';
-import RoundedBox from '../box/RoundedBox';
+import { RoundedBox } from '../box/RoundedBox';
 import { SvgIcon } from '../icons/SvgIcon';
 import { BodyText, Bold, LargeBodyText } from '../typography/Typography';
 import { z } from 'zod';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Button from '../button/Button';
-import { Input } from '../input/Input';
-import InputField from '../forms/InputField';
-import Form from '../forms/Form';
+import { Button } from '../button/Button';
+import { InputField } from '../forms/InputField';
+import { Form } from '../forms/Form';
 
 export const UserDetailsSchema = z.object({
   name: z.string().min(1).max(50).nullish(),
@@ -22,7 +21,7 @@ export const UserDetailsSchema = z.object({
 
 type UserDetailsType = z.infer<typeof UserDetailsSchema>;
 
-const UserAccountBox = () => {
+export const UserAccountBox = () => {
   const [isEditing, setIsEditing] = React.useState(false);
   const handleEnableEditing = () => setIsEditing(true);
   const handleDisableEditing = () => {
@@ -157,5 +156,3 @@ const UserAccountBox = () => {
     </RoundedBox>
   );
 };
-
-export default UserAccountBox;

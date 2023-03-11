@@ -1,6 +1,6 @@
 import React from 'react';
 import clsxm from '../../utils/clsxm';
-import RoundedBox from '../box/RoundedBox';
+import { RoundedBox } from '../box/RoundedBox';
 import { SvgIcon } from '../icons/SvgIcon';
 import { OrderType } from '../order-history-section/OrderHistorySection';
 import { BodyText } from '../typography/Typography';
@@ -11,7 +11,7 @@ type HistoryItemProps = {
   className?: string;
 };
 
-const HistoryItem = ({ order, showBuyer = false, className }: HistoryItemProps) => {
+export const HistoryItem = ({ order, showBuyer = false, className }: HistoryItemProps) => {
   return (
     <RoundedBox
       className={clsxm(
@@ -34,5 +34,3 @@ const HistoryItem = ({ order, showBuyer = false, className }: HistoryItemProps) 
     </RoundedBox>
   );
 };
-
-export default HistoryItem;

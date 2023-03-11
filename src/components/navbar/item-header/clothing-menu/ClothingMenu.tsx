@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import clsxm from '../../../../utils/clsxm';
-import Box, { BoxProps } from '../../../box/Box';
+import { Box, BoxProps } from '../../../box/Box';
 import { BodyText } from '../../../typography/Typography';
 type ClothingMenuProps = {
   className?: string;
@@ -30,7 +30,7 @@ const categories = [
 
 //TODO: Underline current category that the user is on
 
-const ClothingMenu = ({ ...props }) => {
+export const ClothingMenu = ({ ...props }: ClothingMenuProps) => {
   const [gender, setGender] = useState<'men' | 'women'>('men');
 
   return (
@@ -67,5 +67,3 @@ const ClothingMenu = ({ ...props }) => {
     </Box>
   );
 };
-
-export default ClothingMenu;

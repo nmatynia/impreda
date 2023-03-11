@@ -7,7 +7,7 @@ type FilterButtonProps = {
   filterName: string;
   className?: string;
 };
-const FilterButton = ({ filterName, className }: FilterButtonProps) => {
+export const FilterButton = ({ filterName, className }: FilterButtonProps) => {
   return (
     <div
       className={clsxm(
@@ -21,5 +21,3 @@ const FilterButton = ({ filterName, className }: FilterButtonProps) => {
     </div>
   );
 };
-
-export default FilterButton;

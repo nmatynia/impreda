@@ -1,18 +1,15 @@
-import { GetServerSideProps } from 'next';
-import { getSession, signOut, useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
-import { getServerAuthSession } from '../../../../server/common/get-server-auth-session';
 import clsxm from '../../../../utils/clsxm';
-import Box, { BoxProps } from '../../../box/Box';
-import { IconName, SvgIcon } from '../../../icons/SvgIcon';
+import { Box, BoxProps } from '../../../box/Box';
+import { SvgIcon } from '../../../icons/SvgIcon';
 import { BodyText } from '../../../typography/Typography';
 type AccountMenuProps = {
   className?: string;
-  session: boolean;
 } & BoxProps;
 
-const AccountMenu = ({ className, ...props }: AccountMenuProps) => {
+export const AccountMenu = ({ className, ...props }: AccountMenuProps) => {
   const { data: session } = useSession();
   return (
     <Box className={clsxm('absolute', className)} {...props}>
@@ -40,7 +37,7 @@ const AccountMenu = ({ className, ...props }: AccountMenuProps) => {
   );
 };
 
-export const ItemWrappper = ({ children }: { children: ReactNode }) => {
+const ItemWrappper = ({ children }: { children: ReactNode }) => {
   return (
     <div
       className={clsxm(
@@ -52,5 +49,3 @@ export const ItemWrappper = ({ children }: { children: ReactNode }) => {
     </div>
   );
 };
-
-export default AccountMenu;

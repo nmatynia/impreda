@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import React from 'react';
-import RoundedBox from '../components/box/RoundedBox';
+import { RoundedBox } from '../components/box/RoundedBox';
 import { BigHeading, BodyText, LogoText } from '../components/typography/Typography';
 import RegisterThumbnail from '../../public/images/register-thumbnail.webp';
 import { Container } from '../components/container/Container';
-import Button from '../components/button/Button';
+import { Button } from '../components/button/Button';
 import { Input } from '../components/input/Input';
 import { Checkbox } from '../components/checkbox/Checkbox';
 import { signIn } from 'next-auth/react';

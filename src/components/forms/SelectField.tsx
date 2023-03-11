@@ -1,8 +1,11 @@
 import React from 'react';
 import { Select, SelectProps } from '../select/Select';
-import Field from './Field';
+import { Field } from './Field';
 
-const SelectField = ({ name, ...props }: Omit<SelectProps, 'defaultValue'> & { name: string }) => {
+export const SelectField = ({
+  name,
+  ...props
+}: Omit<SelectProps, 'defaultValue'> & { name: string }) => {
   return (
     <Field name={name}>
       {(field, fieldState, formState) => (
@@ -11,5 +14,3 @@ const SelectField = ({ name, ...props }: Omit<SelectProps, 'defaultValue'> & { n
     </Field>
   );
 };
-
-export default SelectField;

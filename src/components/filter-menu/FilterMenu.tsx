@@ -1,16 +1,16 @@
 import { Transition } from '@headlessui/react';
 import React from 'react';
 import clsxm from '../../utils/clsxm';
-import Box from '../box/Box';
-import Button from '../button/Button';
-import FilterButton from '../filter-button/FilterButton';
+import { Box } from '../box/Box';
+import { Button } from '../button/Button';
+import { FilterButton } from '../filter-button/FilterButton';
 import { BodyText } from '../typography/Typography';
 type FilterMenuProps = {
   className?: string;
   isOpen: boolean;
 };
 
-const FilterMenu = ({ className, isOpen }: FilterMenuProps) => {
+export const FilterMenu = ({ className, isOpen }: FilterMenuProps) => {
   return (
     <Transition
       show={isOpen}
@@ -40,5 +40,3 @@ const FilterMenu = ({ className, isOpen }: FilterMenuProps) => {
     </Transition>
   );
 };
-
-export default FilterMenu;

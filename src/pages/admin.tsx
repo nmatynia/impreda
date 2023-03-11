@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 import { Container } from '../components/container/Container';
 import { SvgIcon } from '../components/icons/SvgIcon';
 import { ItemCreationDialog } from '../components/item-creation-dialog/ItemCreationDialog';
-import ItemListSection from '../components/item-list-section/ItemListSection';
-import OrderHistorySection from '../components/order-history-section/OrderHistorySection';
+import { ItemListSection } from '../components/item-list-section/ItemListSection';
+import { OrderHistorySection } from '../components/order-history-section/OrderHistorySection';
 import { trpc } from '../utils/trpc';
 
 const admin = () => {

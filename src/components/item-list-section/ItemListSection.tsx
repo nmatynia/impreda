@@ -1,6 +1,6 @@
 import React from 'react';
 import clsxm from '../../utils/clsxm';
-import FilterPanel from '../filter-panel/FilterPanel';
+import { FilterPanel } from '../filter-panel/FilterPanel';
 import { ItemProps } from '../item-card/ItemCard';
 import { ItemListItem } from './item-list-item/ItemListItem';
 
@@ -50,7 +50,7 @@ const itemList: ItemProps[] = [
 type ItemListSectionProps = {
   className?: string;
 };
-const ItemListSection = ({ className }: ItemListSectionProps) => {
+export const ItemListSection = ({ className }: ItemListSectionProps) => {
   return (
     <section className={clsxm('flex flex-col', className)}>
       <FilterPanel sectionName="Item List" />
@@ -62,5 +62,3 @@ const ItemListSection = ({ className }: ItemListSectionProps) => {
     </section>
   );
 };
-
-export default ItemListSection;

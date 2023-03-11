@@ -1,8 +1,8 @@
 import { Transition } from '@headlessui/react';
 import React, { useMemo } from 'react';
 import clsxm from '../../utils/clsxm';
-import RoundedBox from '../box/RoundedBox';
-import HistoryItem from '../history-item/HistoryItem';
+import { RoundedBox } from '../box/RoundedBox';
+import { HistoryItem } from '../history-item/HistoryItem';
 import { SvgIcon } from '../icons/SvgIcon';
 import { OrderType } from '../order-history-section/OrderHistorySection';
 import { BodyText } from '../typography/Typography';
@@ -12,7 +12,7 @@ type HistoryBundleProps = {
   showBuyer?: boolean;
   className?: string;
 };
-const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProps) => {
+export const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProps) => {
   const [open, setOpen] = React.useState(false);
   const handleExpandBundle = () => {
     setOpen(!open);
@@ -86,5 +86,3 @@ const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProps) => {
     </div>
   );
 };
-
-export default HistoryBundle;

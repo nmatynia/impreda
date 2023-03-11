@@ -5,7 +5,7 @@ type OpenButtonProps = {
   children: JSX.Element;
   elementToOpen: (open: boolean) => JSX.Element;
 };
-const ButtonSwitch = ({ elementToOpen, children, className }: OpenButtonProps) => {
+export const ButtonSwitch = ({ elementToOpen, children, className }: OpenButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const clickOutsideRef = useRef<HTMLDivElement>(null);
@@ -28,5 +28,3 @@ const ButtonSwitch = ({ elementToOpen, children, className }: OpenButtonProps) =
     </div>
   );
 };
-
-export default ButtonSwitch;

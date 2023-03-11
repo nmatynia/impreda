@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import React from 'react';
-import ButtonSwitch from '../../button-switch/ButtonSwitch';
+import { ButtonSwitch } from '../../button-switch/ButtonSwitch';
 import { BodyText } from '../../typography/Typography';
-import ClothingMenu from './clothing-menu/ClothingMenu';
-import CollectionsMenu from './collections-menu/CollectionsMenu';
+import { ClothingMenu } from './clothing-menu/ClothingMenu';
+import { CollectionsMenu } from './collections-menu/CollectionsMenu';
 
 export const ItemHeader = () => {
   return (

@@ -3,11 +3,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React, { Fragment } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import Button from '../button/Button';
+import { Button } from '../button/Button';
 import { Form } from '../forms/Form';
-import InputField from '../forms/InputField';
-import SelectField from '../forms/SelectField';
-import { Select } from '../select/Select';
+import { InputField } from '../forms/InputField';
+import { SelectField } from '../forms/SelectField';
 import { BodyText } from '../typography/Typography';
 type ItemCreationDialogProps = {
   isOpen: boolean;

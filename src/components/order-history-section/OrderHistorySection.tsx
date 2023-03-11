@@ -1,8 +1,8 @@
 import React from 'react';
 import clsxm from '../../utils/clsxm';
-import FilterPanel from '../filter-panel/FilterPanel';
-import HistoryBundle from '../history-bundle/HistoryBundle';
-import HistoryItem from '../history-item/HistoryItem';
+import { FilterPanel } from '../filter-panel/FilterPanel';
+import { HistoryBundle } from '../history-bundle/HistoryBundle';
+import { HistoryItem } from '../history-item/HistoryItem';
 
 //TODO: Consider saving total in the database instead of calculating it every time on client
 //TODO: Possibly display itemDesigner as well
@@ -47,7 +47,7 @@ const orderHistory: OrderType[] = [
 type OrderHistorySectionProps = {
   className?: string;
 };
-const OrderHistorySection = ({ className }: OrderHistorySectionProps) => {
+export const OrderHistorySection = ({ className }: OrderHistorySectionProps) => {
   return (
     <section className={clsxm('flex flex-col', className)}>
       <FilterPanel sectionName="Order History" />
@@ -63,5 +63,3 @@ const OrderHistorySection = ({ className }: OrderHistorySectionProps) => {
     </section>
   );
 };
-
-export default OrderHistorySection;

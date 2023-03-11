@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import clsxm from '../../../utils/clsxm';
-import RoundedBox from '../../box/RoundedBox';
+import { RoundedBox } from '../../box/RoundedBox';
 import { SvgIcon } from '../../icons/SvgIcon';
 import { ItemProps } from '../../item-card/ItemCard';
 import { BodyText } from '../../typography/Typography';
