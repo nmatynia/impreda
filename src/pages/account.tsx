@@ -18,7 +18,7 @@ export default account;
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const session = await getServerAuthSession(ctx);
   if (!session) {
-    return { redirect: { destination: '/register' }, props: {} };
+    return { redirect: { destination: '/login' }, props: {} };
   }
 
   return {
