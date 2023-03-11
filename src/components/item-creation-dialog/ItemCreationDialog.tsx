@@ -48,6 +48,15 @@ export const ItemCreationDialog = ({ isOpen, handleCloseDialog }: ItemCreationDi
     // await updateUser(data);
     // handleDisableEditing();
   };
+
+  const sizeOptions = [
+    { name: 'XS', id: 'XS' },
+    { name: 'S', id: 'S' },
+    { name: 'M', id: 'M' },
+    { name: 'L', id: 'L' },
+    { name: 'XL', id: 'XL' },
+    { name: 'XXL', id: 'XXL' }
+  ];
   return (
     //isOpen
     <Transition appear show={true} as={Fragment}>
@@ -80,7 +89,7 @@ export const ItemCreationDialog = ({ isOpen, handleCloseDialog }: ItemCreationDi
                   Add a new item
                 </Dialog.Title>
                 <Form onSubmit={handleSubmit(onSubmit)} {...methods}>
-                  <div className="mt-7 flex flex-col">
+                  <div className="mt-7 flex flex-col gap-8">
                     <div className="flex w-full flex-col gap-6 md:flex-row">
                       <div className="w-1/2">
                         <BodyText>Brand:</BodyText>
@@ -100,16 +109,10 @@ export const ItemCreationDialog = ({ isOpen, handleCloseDialog }: ItemCreationDi
                       </div>
                     </div>
                     <div className="flex w-full flex-col gap-6 md:flex-row">
-                      <Select className="w-full" />
+                      <Select label="Size" className="w-full" options={sizeOptions} />
                     </div>
                   </div>
                 </Form>
-                {/* <div className="mt-2">
-                  <p className="text-sm text-gray-500">
-                    Your payment has been successfully submitted. We’ve sent you an email with all
-                    of the details of your order.
-                  </p>
-                </div> */}
 
                 <div className="mt-4">
                   <button
