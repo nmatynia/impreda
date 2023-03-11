@@ -21,7 +21,7 @@ export const Select = React.forwardRef(
     return (
       <Listbox name={name} defaultValue={defaultValue} ref={ref} by="id" {...rest}>
         <div className={clsxm('relative', className)}>
-          {label && <BodyText>{label}</BodyText>}
+          {label && <BodyText as="label">{label}</BodyText>}
           <Listbox.Button
             className={clsxm(
               'relative w-full cursor-pointer',

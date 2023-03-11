@@ -1,10 +1,13 @@
 import React, { ForwardedRef, InputHTMLAttributes } from 'react';
 import { useFormContext } from 'react-hook-form';
 import clsxm from '../../utils/clsxm';
+import { BodyText } from '../typography/Typography';
 
 export type InputProps = {
+  label?: string;
   placeholder: string;
   className?: string;
+  innerClassName?: string;
   password?: boolean;
   color?: InputColorVariant;
   isValid?: boolean;
@@ -21,25 +24,38 @@ const colorVariant = {
 
 export const Input = React.forwardRef(
   (
-    { placeholder, className, password, color = 'black', isValid = true, ...rest }: InputProps,
+    {
+      label,
+      placeholder,
+      className,
+      innerClassName,
+      password,
+      color = 'black',
+      isValid = true,
+      ...rest
+    }: InputProps,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     return (
-      <input
-        placeholder={placeholder}
-        type={password ? 'password' : 'text'}
-        className={clsxm(
-          'text-xs sm:text-sm',
-          'flex-1 bg-transparent focus-within:outline-none',
-          'border-b-[1px] pb-2',
-          !isValid && 'border-b-red-400 text-red-400 placeholder:text-red-400',
-          '',
-          colorVariant[color],
-          className
-        )}
-        ref={ref}
-        {...rest}
-      />
+      <div className={clsxm('flex w-80 flex-col', className)}>
+        {label && <BodyText as="label">{label}</BodyText>}
+        <input
+          placeholder={placeholder}
+          type={password ? 'password' : 'text'}
+          className={clsxm(
+            'w-full',
+            'text-xs sm:text-sm',
+            'flex-1 bg-transparent focus-within:outline-none',
+            'border-b-[1px] pb-2',
+            !isValid && 'border-b-red-400 text-red-400 placeholder:text-red-400',
+            '',
+            colorVariant[color],
+            innerClassName
+          )}
+          ref={ref}
+          {...rest}
+        />
+      </div>
     );
   }
 );

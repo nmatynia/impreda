@@ -11,9 +11,8 @@ import { BodyText } from '../../typography/Typography';
 export const ItemDetailsSchema = z.object({
   name: z.string(),
   brand: z.string(),
-  size: z.any(),
-  sex: z.any()
-  // object({ id: z.string(), name: z.string() })
+  size: z.object({ id: z.string(), name: z.string() }),
+  sex: z.object({ id: z.string(), name: z.string() })
 });
 
 type ItemDetailsType = z.infer<typeof ItemDetailsSchema>;
@@ -64,17 +63,27 @@ export const ItemInfoForm = ({ handleCloseDialog }: { handleCloseDialog: () => v
     <Form onSubmit={handleSubmit(onSubmit)} {...methods}>
       <div className="mt-7 flex flex-col gap-8">
         <div className="flex w-full flex-col gap-6 md:flex-row">
-          <div className="w-1/2">
-            <BodyText>Brand:</BodyText>
-            <InputField placeholder={"Enter item's brand"} name="brand" className="w-full" />
-          </div>
-          <div className="w-1/2">
-            <BodyText>Name:</BodyText>
-            <InputField placeholder={"Enter item's name"} name="name" className="w-full" />
-          </div>
+          <InputField
+            label="Brand:"
+            placeholder={"Enter item's brand"}
+            name="brand"
+            className="w-1/2"
+          />
+          <InputField
+            label="Name:"
+            placeholder={"Enter item's name"}
+            name="name"
+            className="w-1/2"
+          />
         </div>
         <div className="flex w-full flex-col gap-6 md:flex-row">
           <SelectField name="sex" label="Sex" className="z-10 w-1/2" options={sexOptions} />
+          <InputField
+            label="Price"
+            placeholder={"Enter item's brand"}
+            name="brand"
+            className="w-1/2"
+          />
         </div>
         <div className="flex w-full flex-col gap-6 md:flex-row">
           <SelectField name="size" label="Size" className="w-full" options={sizeOptions} />
