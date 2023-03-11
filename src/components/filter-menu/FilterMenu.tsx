@@ -1,5 +1,4 @@
 import { Transition } from '@headlessui/react';
-import { Filter } from '@trpc/server';
 import React from 'react';
 import clsxm from '../../utils/clsxm';
 import Box from '../box/Box';
