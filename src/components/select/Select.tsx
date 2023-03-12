@@ -5,45 +5,60 @@ import clsxm from '../../utils/clsxm';
 import { SvgIcon } from '../icons/SvgIcon';
 import { BodyText } from '../typography/Typography';
 
+type Option = { name: string; id: string };
+
 export type SelectProps = {
+  placeholder: string;
   className?: string;
-  label: string;
-  options: { name: string; id: string }[];
   name: string;
-  defaultValue?: { name: string; id: string };
+  label: string;
+  options: Option[];
+  defaultValue?: Option | Option[];
+  multiple?: boolean;
 } & Partial<ControllerRenderProps<FieldValues, string>>;
 
+/**
+ * @param placeholder - The placeholder for the select.
+ * @param name - The name of the select. Need for react-hook-form.
+ * @param label - The label for the select.
+ * @param options - The options to display in the select.
+ * @param defaultValue - The default value of the select. If multiple is true, this must be an array of values.
+ * @param multiple - If true, the user can select multiple options.
+ */
 export const Select = React.forwardRef(
   (
-    { className, label, options, name, defaultValue, ...rest }: SelectProps,
+    { className, label, options, name, defaultValue, multiple, placeholder, ...rest }: SelectProps,
     ref: React.ForwardedRef<HTMLSelectElement>
   ) => {
     return (
-      <Listbox name={name} defaultValue={defaultValue} ref={ref} by="id" {...rest}>
+      <Listbox
+        name={name}
+        defaultValue={defaultValue}
+        multiple={multiple}
+        ref={ref}
+        by="id"
+        {...rest}
+      >
         <div className={clsxm('relative', className)}>
           {label && <BodyText as="label">{label}</BodyText>}
           <Listbox.Button
             className={clsxm(
               'relative w-full cursor-pointer',
-              'border-b-[1px] pb-2 pr-10 text-left ',
+              'border-b-[1px] pr-16 pb-2 text-left ',
               'border-gray-400 text-primaryBlack placeholder:text-gray-400',
               'focus-visible:border-b-primaryBlack focus-visible:outline-0',
               '[&:focus-visible>*>*]:text-primaryBlack',
               'text-xs sm:text-sm'
             )}
           >
-            {({ value }) => (
-              <>
-                <span className="block truncate">{value.name}</span>
-                <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                  <SvgIcon
-                    name="ChevronDown"
-                    className="h-4 w-4 text-gray-400"
-                    aria-hidden="true"
-                  />
-                </span>
-              </>
-            )}
+            {({ value, open }) => {
+              if (multiple) {
+                return (
+                  <ButtonMultipleContent placeholder={placeholder} value={value} isOpen={open} />
+                );
+              }
+              return <ButtonSingleContent placeholder={placeholder} value={value} isOpen={open} />;
+            }}
           </Listbox.Button>
           <Transition
             as={Fragment}
@@ -90,4 +105,56 @@ export const Select = React.forwardRef(
       </Listbox>
     );
   }
+);
+
+const ButtonMultipleContent = ({
+  value,
+  isOpen,
+  placeholder
+}: {
+  value: Option[];
+  isOpen: boolean;
+  placeholder: string;
+}) => {
+  const displayedValue = value.length > 0 ? value.map(v => v.name).join(', ') : placeholder;
+  return (
+    <>
+      <span className="block truncate">{displayedValue}</span>
+      <span className="pointer-events-none absolute inset-y-0 right-0 bottom-2 flex items-center gap-2 pr-2">
+        <div className="flex h-5 w-5 items-center justify-center rounded-md bg-primaryBlack text-xs text-primaryWhite sm:text-sm">
+          {value.length}
+        </div>
+        <ChevronIcon isOpen={isOpen} />
+      </span>
+    </>
+  );
+};
+
+const ButtonSingleContent = ({
+  value,
+  isOpen,
+  placeholder
+}: {
+  value: Option;
+  isOpen: boolean;
+  placeholder: string;
+}) => (
+  <>
+    <span className="block truncate">{value?.name ?? placeholder}</span>
+    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+      <ChevronIcon isOpen={isOpen} />
+    </span>
+  </>
+);
+
+const ChevronIcon = ({ isOpen }: { isOpen: boolean }) => (
+  <SvgIcon
+    name="ChevronDown"
+    className={clsxm(
+      'h-4 w-4 text-gray-400',
+      'transition-all duration-300 ease-in-out',
+      isOpen && 'rotate-180 transform'
+    )}
+    aria-hidden="true"
+  />
 );

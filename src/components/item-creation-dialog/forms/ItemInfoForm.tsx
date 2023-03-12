@@ -6,12 +6,12 @@ import { Button } from '../../button/Button';
 import { Form } from '../../forms/Form';
 import { InputField } from '../../forms/InputField';
 import { SelectField } from '../../forms/SelectField';
-import { BodyText } from '../../typography/Typography';
+import { Select } from '../../select/Select';
 
 export const ItemDetailsSchema = z.object({
   name: z.string(),
   brand: z.string(),
-  size: z.object({ id: z.string(), name: z.string() }),
+  size: z.array(z.object({ id: z.string(), name: z.string() })),
   sex: z.object({ id: z.string(), name: z.string() })
 });
 
@@ -36,10 +36,8 @@ export const ItemInfoForm = ({ handleCloseDialog }: { handleCloseDialog: () => v
   const methods = useForm<ItemDetailsType>({
     resolver: zodResolver(ItemDetailsSchema),
     defaultValues: {
-      size: sizeOptions[0],
-      sex: sexOptions[0],
-      name: undefined,
-      brand: undefined
+      // size: [sizeOptions[0]],
+      // sex: sexOptions[0]
     }
   });
 
@@ -77,16 +75,29 @@ export const ItemInfoForm = ({ handleCloseDialog }: { handleCloseDialog: () => v
           />
         </div>
         <div className="flex w-full flex-col gap-6 md:flex-row">
-          <SelectField name="sex" label="Sex" className="z-10 w-1/2" options={sexOptions} />
+          <SelectField
+            placeholder="Choose sex"
+            name="sex"
+            label="Sex"
+            className="z-10 w-1/2"
+            options={sexOptions}
+          />
           <InputField
             label="Price"
             placeholder={"Enter item's brand"}
-            name="brand"
+            name="price"
             className="w-1/2"
           />
         </div>
         <div className="flex w-full flex-col gap-6 md:flex-row">
-          <SelectField name="size" label="Size" className="w-full" options={sizeOptions} />
+          <SelectField
+            placeholder="Choose sizes"
+            name="size"
+            label="Sizes:"
+            className="w-full"
+            options={sizeOptions}
+            multiple
+          />
         </div>
       </div>
       <div className="mt-4 flex flex-row-reverse justify-start gap-3">

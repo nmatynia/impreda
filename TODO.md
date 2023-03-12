@@ -34,3 +34,7 @@
 - custom scroll (e.g. cart)
 - custom cursor (e.g. when hovering on out of stock items)
 - give size chart functionality
+
+## Low Priority
+
+- Color picker and adding new colors to DB.
