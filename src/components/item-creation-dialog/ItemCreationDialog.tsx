@@ -4,12 +4,19 @@ import { SubmitHandler } from 'react-hook-form';
 import { ItemDetailsType, ItemInfoForm } from './forms/ItemInfoForm';
 import { OptionType } from '../select/Select';
 import { DialogModal } from '../dialog/DialogModal';
+import { FormTransitionWrapper } from '../forms/FormTransitionWrapper';
+import { Input } from '../input/Input';
 type ItemCreationDialogProps = {
   isOpen: boolean;
   handleCloseDialog: () => void;
 };
 
 export const ItemCreationDialog = ({ isOpen, handleCloseDialog }: ItemCreationDialogProps) => {
+  const [showItemInfoForm, setShowItemInfoForm] = React.useState<boolean>(true);
+  const handleHideItemInfoForm = () => setShowItemInfoForm(false);
+  const [showItemAvailabilityForm, setShowItemAvailabilityForm] = React.useState<boolean>(false);
+  const handleHideItemAvailabilityForm = () => setShowItemAvailabilityForm(false);
+  const handleShowItemAvailabilityForm = () => setShowItemAvailabilityForm(true);
   const brand = React.useRef<string>();
   const name = React.useRef<string>();
   const price = React.useRef<number>();
@@ -19,7 +26,6 @@ export const ItemCreationDialog = ({ isOpen, handleCloseDialog }: ItemCreationDi
   const fabrics = React.useRef<OptionType[]>();
 
   const handleSubmitItemInfoForm: SubmitHandler<ItemDetailsType> = async (data, e) => {
-    handleCloseDialog();
     e?.preventDefault();
     brand.current = data.brand;
     name.current = data.name;
@@ -28,12 +34,19 @@ export const ItemCreationDialog = ({ isOpen, handleCloseDialog }: ItemCreationDi
     sizes.current = data.sizes;
     colors.current = data.colors;
     fabrics.current = data.fabrics;
-    console.log(brand.current);
+    handleHideItemInfoForm();
+    handleShowItemAvailabilityForm();
   };
 
   return (
     <DialogModal title="Add a new item" isOpen={isOpen} handleCloseDialog={handleCloseDialog}>
-      <ItemInfoForm handleCloseDialog={handleCloseDialog} onSubmit={handleSubmitItemInfoForm} />
+      <FormTransitionWrapper show={showItemInfoForm}>
+        <ItemInfoForm handleCloseDialog={handleCloseDialog} onSubmit={handleSubmitItemInfoForm} />
+      </FormTransitionWrapper>
+      <FormTransitionWrapper show={showItemAvailabilityForm}>
+        <Input label="Brand:" placeholder={"Enter item's brand"} name="brand" className="w-1/2" />
+        <Input label="Name:" placeholder={"Enter item's name"} name="name" className="w-1/2" />
+      </FormTransitionWrapper>
     </DialogModal>
   );
 };
