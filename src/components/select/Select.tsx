@@ -5,15 +5,15 @@ import clsxm from '../../utils/clsxm';
 import { SvgIcon } from '../icons/SvgIcon';
 import { BodyText } from '../typography/Typography';
 
-type Option = { name: string; id: string };
+export type OptionType = { name: string; key: string };
 
 export type SelectProps = {
   placeholder: string;
   className?: string;
   name: string;
   label: string;
-  options: Option[];
-  defaultValue?: Option | Option[];
+  options: OptionType[];
+  defaultValue?: OptionType | OptionType[];
   multiple?: boolean;
 } & Partial<ControllerRenderProps<FieldValues, string>>;
 
@@ -36,7 +36,7 @@ export const Select = React.forwardRef(
         defaultValue={defaultValue}
         multiple={multiple}
         ref={ref}
-        by="id"
+        by="key"
         {...rest}
       >
         <div className={clsxm('relative', className)}>
@@ -112,7 +112,7 @@ const ButtonMultipleContent = ({
   isOpen,
   placeholder
 }: {
-  value: Option[];
+  value: OptionType[];
   isOpen: boolean;
   placeholder: string;
 }) => {
@@ -135,7 +135,7 @@ const ButtonSingleContent = ({
   isOpen,
   placeholder
 }: {
-  value: Option;
+  value: OptionType;
   isOpen: boolean;
   placeholder: string;
 }) => (

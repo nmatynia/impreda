@@ -1,56 +1,39 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { zodResolver } from '@hookform/resolvers/zod';
 import React, { Fragment } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { Button } from '../button/Button';
-import { Form } from '../forms/Form';
-import { InputField } from '../forms/InputField';
-import { SelectField } from '../forms/SelectField';
-import { BodyText } from '../typography/Typography';
-import { ItemInfoForm } from './forms/ItemInfoForm';
+import { SubmitHandler } from 'react-hook-form';
+import { ItemDetailsType, ItemInfoForm } from './forms/ItemInfoForm';
+import { OptionType } from '../select/Select';
+import { DialogModal } from '../dialog/DialogModal';
 type ItemCreationDialogProps = {
   isOpen: boolean;
   handleCloseDialog: () => void;
 };
 
 export const ItemCreationDialog = ({ isOpen, handleCloseDialog }: ItemCreationDialogProps) => {
-  return (
-    <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={handleCloseDialog}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
-        </Transition.Child>
+  const brand = React.useRef<string>();
+  const name = React.useRef<string>();
+  const price = React.useRef<number>();
+  const sex = React.useRef<string>();
+  const sizes = React.useRef<OptionType[]>();
+  const colors = React.useRef<OptionType[]>();
+  const fabrics = React.useRef<OptionType[]>();
 
-        <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <Dialog.Panel className="w-full max-w-md transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                  Add a new item
-                </Dialog.Title>
-                <ItemInfoForm handleCloseDialog={handleCloseDialog} />
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
-        </div>
-      </Dialog>
-    </Transition>
+  const handleSubmitItemInfoForm: SubmitHandler<ItemDetailsType> = async (data, e) => {
+    handleCloseDialog();
+    e?.preventDefault();
+    brand.current = data.brand;
+    name.current = data.name;
+    price.current = Number(data.price);
+    sex.current = data.sex.key;
+    sizes.current = data.sizes;
+    colors.current = data.colors;
+    fabrics.current = data.fabrics;
+    console.log(brand.current);
+  };
+
+  return (
+    <DialogModal title="Add a new item" isOpen={isOpen} handleCloseDialog={handleCloseDialog}>
+      <ItemInfoForm handleCloseDialog={handleCloseDialog} onSubmit={handleSubmitItemInfoForm} />
+    </DialogModal>
   );
 };
