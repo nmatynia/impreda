@@ -24,6 +24,7 @@
 - item container - if the last item is alone in the row it's alignment is slightly off
 - account menu - make the logout invisible when not logged in
 - create Number Input and add it to Item Creation
+- somehow animate the height of ItemCreationDialog
 
 ## Pages
 
