@@ -13,7 +13,7 @@ export const ItemDetailsSchema = z.object({
   price: z.string(), // TODO - make this a number
   sex: z.object({ key: z.string(), name: z.string() }),
   sizes: z.array(z.object({ key: z.string(), name: z.string() })),
-  colors: z.array(z.object({ key: z.string(), name: z.string() })),
+  colors: z.array(z.object({ key: z.string(), name: z.string(), hex: z.string().optional() })),
   fabrics: z.array(z.object({ key: z.string(), name: z.string() }))
 });
 
@@ -35,17 +35,17 @@ const sexOptions = [
 ];
 
 const colorOptions = [
-  { name: 'Red', key: 'red' },
-  { name: 'Blue', key: 'blue' },
-  { name: 'Green', key: 'green' },
-  { name: 'Yellow', key: 'yellow' },
-  { name: 'Black', key: 'black' },
-  { name: 'White', key: 'white' },
-  { name: 'Pink', key: 'pink' },
-  { name: 'Purple', key: 'purple' },
-  { name: 'Orange', key: 'orange' },
-  { name: 'Brown', key: 'brown' },
-  { name: 'Grey', key: 'grey' }
+  { name: 'Red', key: 'red', hex: '#FF0000' },
+  { name: 'Blue', key: 'blue', hex: '#323ea8' },
+  { name: 'Green', key: 'green', hex: '#00c469' },
+  { name: 'Yellow', key: 'yellow', hex: '#d9e000' },
+  { name: 'Black', key: 'black', hex: '#141414' },
+  { name: 'White', key: 'white', hex: '#f7f7f7' },
+  { name: 'Pink', key: 'pink', hex: '#ff38e4' },
+  { name: 'Purple', key: 'purple', hex: '#bb00ff' },
+  { name: 'Orange', key: 'orange', hex: '#ffc117' },
+  { name: 'Brown', key: 'brown', hex: '#52482e' },
+  { name: 'Grey', key: 'grey', hex: '#919191' }
 ];
 
 const fabricOptions = [

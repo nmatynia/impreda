@@ -6,7 +6,7 @@ import { OptionType } from '../select/Select';
 import { DialogModal } from '../dialog/DialogModal';
 import { FormTransitionWrapper } from '../forms/FormTransitionWrapper';
 import { Input } from '../input/Input';
-import { ItemAvailabilityForm } from './forms/ItemAvailabilityForm';
+import { ItemAvailabilityForm, ItemAvailabilityType } from './forms/ItemAvailabilityForm';
 type ItemCreationDialogProps = {
   isOpen: boolean;
   handleCloseDialog: () => void;
@@ -39,10 +39,11 @@ export const ItemCreationDialog = ({ isOpen, handleCloseDialog }: ItemCreationDi
     handleShowItemAvailabilityForm();
   };
 
-  const handleSubmitItemAvailabilityForm: SubmitHandler<any> = async (data, e) => {
+  const handleSubmitItemAvailabilityForm: SubmitHandler<ItemAvailabilityType> = async (data, e) => {
     e?.preventDefault();
+    console.log(data);
   };
-  console.log(sizes.current);
+  console.log(colors.current);
   return (
     <DialogModal title="Add a new item" isOpen={isOpen} handleCloseDialog={handleCloseDialog}>
       <FormTransitionWrapper show={showItemInfoForm}>
