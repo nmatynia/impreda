@@ -24,7 +24,8 @@ const items: ItemProps[] = [
     ],
     price: 30,
     saved: 31,
-    images: [DefaultRickTeeImg.src]
+    images: [DefaultRickTeeImg.src],
+    category: 't-shirt'
   },
   {
     id: '231',
@@ -44,7 +45,8 @@ const items: ItemProps[] = [
     ],
     price: 30,
     saved: 12,
-    images: [DefaultAlyxJacketImg.src]
+    images: [DefaultAlyxJacketImg.src],
+    category: 't-shirt'
   }
 ];
 

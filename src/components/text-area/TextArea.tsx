@@ -36,17 +36,17 @@ export const TextArea = React.forwardRef(
     ref: ForwardedRef<HTMLTextAreaElement>
   ) => {
     return (
-      <div className={clsxm('relative flex w-80 flex-col', className)}>
+      <div className={clsxm('relative flex w-80 flex-col gap-1  ', className)}>
         {label && <BodyText as="label">{label}</BodyText>}
         <textarea
           placeholder={placeholder}
           maxLength={250}
-          rows={1}
+          rows={3}
           className={clsxm(
             'w-full resize-none',
             'text-xs sm:text-sm',
             'flex-1 bg-transparent focus-within:outline-none',
-            'border-b-[1px] pb-2',
+            'border-[1px] p-2',
             !isValid && 'border-b-red-400 text-red-400 placeholder:text-red-400',
             colorVariant[color],
             innerClassName

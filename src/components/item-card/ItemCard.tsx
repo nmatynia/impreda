@@ -38,6 +38,7 @@ export type ItemProps = {
     percentage: number;
   }[];
   views?: number;
+  category: string; //TODO change to enum
 };
 
 export const ItemCard = ({

@@ -25,6 +25,7 @@
 - account menu - make the logout invisible when not logged in
 - create Number Input and add it to Item Creation
 - somehow animate the height of ItemCreationDialog
+- multiselect count is broken after clicking "ESC" on opened menu
 
 ## Pages
 

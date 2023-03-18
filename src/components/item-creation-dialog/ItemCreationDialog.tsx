@@ -1,5 +1,4 @@
-import { Dialog, Transition } from '@headlessui/react';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { ItemDetailsType, ItemInfoForm } from './forms/ItemInfoForm';
 import { OptionType } from '../select/Select';
