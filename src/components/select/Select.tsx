@@ -5,7 +5,7 @@ import clsxm from '../../utils/clsxm';
 import { SvgIcon } from '../icons/SvgIcon';
 import { BodyText } from '../typography/Typography';
 
-export type OptionType = { name: string; key: string };
+export type OptionType<T = {}> = { name: string; key: string } & T;
 
 export type SelectProps = {
   placeholder: string;

@@ -18,10 +18,10 @@ const config = {
       {
         protocol: 'https',
         hostname: 'impreda-bucket.s3.eu-west-2.amazonaws.com',
-        port: '',
         pathname: '/**'
       }
     ]
   }
 };
+// TODO: Add port property to remotePatterns (?)
 export default config;

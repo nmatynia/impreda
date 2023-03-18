@@ -5,19 +5,18 @@ import { ItemDetailsType, ItemInfoForm } from './forms/ItemInfoForm';
 import { OptionType } from '../select/Select';
 import { DialogModal } from '../dialog/DialogModal';
 import { FormTransitionWrapper } from '../forms/FormTransitionWrapper';
-import { Input } from '../input/Input';
 import { ItemAvailabilityForm, ItemAvailabilityType } from './forms/ItemAvailabilityForm';
+
 type ItemCreationDialogProps = {
   isOpen: boolean;
   handleCloseDialog: () => void;
 };
 
 export const ItemCreationDialog = ({ isOpen, handleCloseDialog }: ItemCreationDialogProps) => {
-  const [showItemInfoForm, setShowItemInfoForm] = React.useState<boolean>(true);
-  const handleHideItemInfoForm = () => setShowItemInfoForm(false);
-  const [showItemAvailabilityForm, setShowItemAvailabilityForm] = React.useState<boolean>(false);
-  const handleHideItemAvailabilityForm = () => setShowItemAvailabilityForm(false);
-  const handleShowItemAvailabilityForm = () => setShowItemAvailabilityForm(true);
+  const [step, setStep] = React.useState<number>(1);
+  const handleNextStep = () => setStep(step + 1);
+  const handlePreviousStep = () => setStep(step - 1);
+
   const brand = React.useRef<string>();
   const name = React.useRef<string>();
   const price = React.useRef<number>();
@@ -35,8 +34,7 @@ export const ItemCreationDialog = ({ isOpen, handleCloseDialog }: ItemCreationDi
     sizes.current = data.sizes;
     colors.current = data.colors;
     fabrics.current = data.fabrics;
-    handleHideItemInfoForm();
-    handleShowItemAvailabilityForm();
+    handleNextStep();
   };
 
   const handleSubmitItemAvailabilityForm: SubmitHandler<ItemAvailabilityType> = async (data, e) => {
@@ -46,15 +44,16 @@ export const ItemCreationDialog = ({ isOpen, handleCloseDialog }: ItemCreationDi
   console.log(colors.current);
   return (
     <DialogModal title="Add a new item" isOpen={isOpen} handleCloseDialog={handleCloseDialog}>
-      <FormTransitionWrapper show={showItemInfoForm}>
+      <FormTransitionWrapper show={step === 1}>
         <ItemInfoForm handleCloseDialog={handleCloseDialog} onSubmit={handleSubmitItemInfoForm} />
       </FormTransitionWrapper>
-      <FormTransitionWrapper show={showItemAvailabilityForm}>
+      <FormTransitionWrapper show={step === 2}>
         {sizes.current && colors.current && (
           <ItemAvailabilityForm
-            sizes={sizes.current}
-            colors={colors.current}
+            sizes={sizes.current as OptionType<ItemAvailabilityType['colors'][0]['sizes']>}
+            colors={colors.current as OptionType<ItemAvailabilityType['colors']>}
             handleCloseDialog={handleCloseDialog}
+            handlePreviousStep={handlePreviousStep}
             onSubmit={handleSubmitItemAvailabilityForm}
           />
         )}

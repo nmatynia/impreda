@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect } from 'react';
-import { Control, Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import { Control, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import clsxm from '../../../utils/clsxm';
 import { isDark } from '../../../utils/helpers/isDark';
@@ -10,60 +10,32 @@ import { InputField } from '../../forms/InputField';
 import { OptionType } from '../../select/Select';
 import { BodyText, Bold } from '../../typography/Typography';
 
-export const ItemAvailabilitySchema = z
-  .any
-  //   {
-  //   sizes: z.array(z.object({ key: z.string(), name: z.string() })),
-  //   colors: z.array(z.object({ key: z.string(), name: z.string() }))
-  // }
-  ();
+export const ItemAvailabilitySchema = z.object({
+  colors: z.array(
+    z.object({
+      hex: z.string(),
+      key: z.string(),
+      name: z.string(),
+      sizes: z
+        .array(z.object({ key: z.string(), name: z.string(), available: z.string() }))
+        .default([])
+    })
+  )
+});
 
 export type ItemAvailabilityType = z.infer<typeof ItemAvailabilitySchema>;
 
 type ItemAvailabilityProps = {
   handleCloseDialog: () => void;
+  handlePreviousStep: () => void;
   onSubmit: SubmitHandler<ItemAvailabilityType>;
-  sizes: OptionType[];
-  colors: OptionType[];
+  sizes: OptionType<ItemAvailabilityType['colors'][0]['sizes']>;
+  colors: OptionType<ItemAvailabilityType['colors']>;
 };
-// {
-//   "colors": [
-//     {
-//         "key": "red",
-//         "name": "Red",
-//         "sizes": [
-//             {
-//                 "key": "XS",
-//                 "name": "XS",
-//                 "available": "123"
-//             },
-//             {
-//                 "key": "S",
-//                 "name": "S",
-//                 "available": "321313"
-//             }
-//         ]
-//     },
-//     {
-//         "key": "blue",
-//         "name": "Blue",
-//         "sizes": [
-//             {
-//                 "key": "XS",
-//                 "name": "XS",
-//                 "available": "12"
-//             },
-//             {
-//                 "key": "S",
-//                 "name": "S",
-//                 "available": "131"
-//             }
-//         ]
-//     }
-// ]
-// }
+
 export const ItemAvailabilityForm = ({
   handleCloseDialog,
+  handlePreviousStep,
   onSubmit,
   sizes,
   colors
@@ -73,38 +45,23 @@ export const ItemAvailabilityForm = ({
     defaultValues: {}
   });
   const {
-    register,
-    watch,
     handleSubmit,
-    reset,
     control,
     formState: { errors, isSubmitting }
   } = methods;
-  // Field Array - 1
-  const {
-    fields: colorFields,
-    append,
-    remove,
-    replace
-  } = useFieldArray({
+
+  const { fields: colorFields, replace } = useFieldArray({
     control,
     name: 'colors'
   });
 
   useEffect(() => {
-    replace(colors);
+    replace(colors.map(color => ({ ...color, sizes: [] })));
   }, []);
-  // Field Array - 2
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} {...methods}>
       <div className="mt-7 flex flex-col gap-8">
-        {/* <InputField
-          label="Price"
-          placeholder={"Enter item's brand"}
-          name="price"
-          className="w-full"
-        /> */}
         {colorFields.map((color, index) => {
           return (
             <div key={color.id} className="flex flex-col gap-8">
@@ -122,8 +79,8 @@ export const ItemAvailabilityForm = ({
         })}
         <div className="mt-4 flex flex-row-reverse justify-start gap-3">
           <Button type="submit">Advance</Button>
-          <Button variant="outlined" onClick={handleCloseDialog}>
-            Cancel
+          <Button variant="outlined" onClick={handlePreviousStep}>
+            Back
           </Button>
         </div>
       </div>
@@ -136,18 +93,13 @@ const SizeField = ({
   sizeIndex,
   sizes
 }: {
-  control: Control<any>;
+  control: Control<ItemAvailabilityType>;
   sizeIndex: number;
-  sizes: OptionType[];
+  sizes: OptionType<ItemAvailabilityType['colors'][0]['sizes']>;
 }) => {
-  const {
-    fields: sizeFields,
-    append,
-    remove,
-    replace
-  } = useFieldArray({
+  const { fields: sizeFields, replace } = useFieldArray({
     control,
-    name: `colors[${sizeIndex}].sizes`
+    name: `colors.${sizeIndex}.sizes`
   });
 
   useEffect(() => {
@@ -158,15 +110,17 @@ const SizeField = ({
     <ul className="flex flex-col gap-4">
       {sizeFields.map((size, index) => {
         return (
-          <li className="flex gap-5 ">
-            <BodyText>
+          <li className="grid grid-cols-6 px-5">
+            <BodyText className="col-span-1">
               <Bold>{size.name}</Bold>
             </BodyText>
-            <InputField
-              name={`colors[${sizeIndex}].sizes[${index}].available`}
-              placeholder="Quantity"
-              className="w-full"
-            />
+            <div className="col-span-5">
+              <InputField
+                name={`colors[${sizeIndex}].sizes[${index}].available`}
+                placeholder="Quantity"
+                className="w-full"
+              />
+            </div>
           </li>
         );
       })}

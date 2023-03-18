@@ -1,5 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import React, { Fragment, ReactNode } from 'react';
+import { SvgIcon } from '../icons/SvgIcon';
 
 type DialogModalProps = {
   title: string;
@@ -35,9 +36,17 @@ export const DialogModal = ({ title, children, isOpen, handleCloseDialog }: Dial
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-x-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+              <Dialog.Panel className="w-full max-w-md transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Title
+                  as="h3"
+                  className="flex justify-between text-lg font-medium leading-6 text-gray-900"
+                >
                   {title}
+                  <SvgIcon
+                    name="Cross"
+                    className="h-4 w-4 cursor-pointer text-primaryBlack"
+                    onClick={handleCloseDialog}
+                  />
                 </Dialog.Title>
                 {children}
               </Dialog.Panel>

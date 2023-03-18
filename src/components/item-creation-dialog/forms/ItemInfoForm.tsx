@@ -6,6 +6,7 @@ import { Button } from '../../button/Button';
 import { Form } from '../../forms/Form';
 import { InputField } from '../../forms/InputField';
 import { SelectField } from '../../forms/SelectField';
+import { TextAreaField } from '../../forms/TextAreaField';
 
 export const ItemDetailsSchema = z.object({
   name: z.string(),
@@ -105,6 +106,7 @@ export const ItemInfoForm = ({ handleCloseDialog, onSubmit }: ItemInfoFormProps)
             label="Price"
             placeholder={"Enter item's brand"}
             name="price"
+            type="number"
             className="w-1/2"
           />
           <SelectField
@@ -115,6 +117,12 @@ export const ItemInfoForm = ({ handleCloseDialog, onSubmit }: ItemInfoFormProps)
             options={sexOptions}
           />
         </div>
+        <TextAreaField
+          label="Description"
+          placeholder={"Enter item's or brand's description"}
+          name="description"
+          className="w-full"
+        />
         <SelectField
           placeholder="Choose sizes"
           name="sizes"

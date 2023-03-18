@@ -12,7 +12,8 @@ import {
   BsBookmark,
   BsBookmarkFill,
   BsPlusSquare,
-  BsCheck2
+  BsCheck2,
+  BsXLg
 } from 'react-icons/bs';
 import { FaShoppingBag } from 'react-icons/fa';
 import { HiOutlineSearch } from 'react-icons/hi';
@@ -35,7 +36,8 @@ const iconMap = {
   Bookmark: BsBookmark,
   BookmarkFill: BsBookmarkFill,
   Add: BsPlusSquare,
-  Check: BsCheck2
+  Check: BsCheck2,
+  Cross: BsXLg
 };
 
 export type IconName = keyof typeof iconMap;
