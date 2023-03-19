@@ -14,27 +14,35 @@ const s3 = new aws.S3({
 })
 
 export const imagesRouter = router({
-  createPresignedUrl: publicProcedure.mutation(async ({ ctx, input }) => {
-    //TODO: make this only available for admin
-    // const { session } = ctx;
-    // const userId = session?.user?.id;
-    // if (!userId) {
-    //   return;
-    // }
+  createPresignedUrl: publicProcedure
+    .input(z.object({ itemId: z.string(), filename: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      //TODO: make this only available for admin
+      // const { session } = ctx;
+      // const userId = session?.user?.id;
+      // if (!userId) {
+      //   return;
+      // }
+      const itemId = input.itemId;
+      const image = await ctx.prisma.image.create({
+        data: {
+          itemId,
+          filename: input.filename
+        }
+      })
+      //TODO: change randomUUID on the left to item name
+      const key = `${itemId}/${image.id}`;
 
-    //TODO: change randomUUID on the left to item name
-    const key = `${randomUUID()}/${randomUUID()}`;
-
-    return await s3.createPresignedPost({
-      Fields: {
-        key
-      },
-      Expires: 60,
-      Bucket: process.env.AWS_S3_BUCKET_NAME,
-      Conditions: [
-        ['starts-with', "$Content-Type", "image/"],
-        ['content-length-range', 0, 5048576], // up to 1 MB
-      ],
-    })
-  }),
+      return await s3.createPresignedPost({
+        Fields: {
+          key
+        },
+        Expires: 60,
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Conditions: [
+          ['starts-with', "$Content-Type", "image/"],
+          ['content-length-range', 0, 5048576], // up to 1 MB
+        ],
+      })
+    }),
 });

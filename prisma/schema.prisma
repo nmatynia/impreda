@@ -94,7 +94,7 @@ model Item {
 
 model Image {
   id        String   @id @default(cuid())
-  url       String
+  filename       String
   itemId    String
   items     Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
 

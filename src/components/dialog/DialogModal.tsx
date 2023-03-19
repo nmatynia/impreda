@@ -1,5 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import React, { Fragment, ReactNode } from 'react';
+import clsxm from '../../utils/clsxm';
 import { SvgIcon } from '../icons/SvgIcon';
 
 type DialogModalProps = {
@@ -7,12 +8,19 @@ type DialogModalProps = {
   children: ReactNode;
   isOpen: boolean;
   handleCloseDialog: () => void;
+  className?: string;
 };
 
-export const DialogModal = ({ title, children, isOpen, handleCloseDialog }: DialogModalProps) => {
+export const DialogModal = ({
+  title,
+  children,
+  isOpen,
+  handleCloseDialog,
+  className
+}: DialogModalProps) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={handleCloseDialog}>
+      <Dialog as="div" className={clsxm('relative z-10', className)} onClose={handleCloseDialog}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -39,7 +47,7 @@ export const DialogModal = ({ title, children, isOpen, handleCloseDialog }: Dial
               <Dialog.Panel className="w-full max-w-md transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
-                  className="flex justify-between text-lg font-medium leading-6 text-gray-900"
+                  className="flex justify-between pb-6 text-lg font-medium leading-6 text-gray-900"
                 >
                   {title}
                   <SvgIcon
