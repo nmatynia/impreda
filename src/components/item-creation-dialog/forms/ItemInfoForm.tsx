@@ -170,7 +170,6 @@ export const ItemInfoForm = ({ handleCloseDialog, onSubmit }: ItemInfoFormProps)
     const newImages = images.filter(image => image.src !== src);
     setImages(newImages);
   };
-  console.log('redner');
   return (
     <>
       <Form onSubmit={handleSubmit(onSubmit)} {...methods}>

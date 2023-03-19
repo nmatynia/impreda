@@ -90,9 +90,10 @@ const categoryOptions = [
 type ItemInfoFormProps = {
   handleCloseDialog?: () => void;
   onSubmit: SubmitHandler<ItemDetailsType>;
+  className?: string;
 };
 
-export const ItemInfoForm = ({ handleCloseDialog, onSubmit }: ItemInfoFormProps) => {
+export const ItemInfoForm = ({ handleCloseDialog, onSubmit, className }: ItemInfoFormProps) => {
   const methods = useForm<ItemDetailsType>({
     resolver: zodResolver(ItemDetailsSchema),
     defaultValues: {
@@ -170,11 +171,10 @@ export const ItemInfoForm = ({ handleCloseDialog, onSubmit }: ItemInfoFormProps)
     const newImages = images.filter(image => image.src !== src);
     setImages(newImages);
   };
-  console.log('redner');
   return (
     <>
-      <Form onSubmit={handleSubmit(onSubmit)} {...methods}>
-        <div className="mx-7 my-7 flex flex-col gap-8 md:mx-14">
+      <Form className={className} onSubmit={handleSubmit(onSubmit)} {...methods}>
+        <div className="m-7 flex flex-col gap-8 md:mx-14">
           <div
             className={clsxm(
               'relative flex h-32 w-full flex-col items-center justify-center border-[1px] border-dashed border-primaryBlack',
