@@ -3,23 +3,29 @@ import { z } from 'zod';
 import { router, publicProcedure } from '../trpc';
 
 export const itemsRouter = router({
-  createDummyItem: publicProcedure
+  createItem: publicProcedure.input(
+    z.object({
+      name: z.string(),
+      brand: z.string(),
+      price: z.number(),
+      sex: z.enum(['MALE', 'FEMALE', 'UNISEX']),
+      description: z.string(),
+      fabrics: z.string()
+    }))
     .mutation(async ({ ctx, input }) => {
-      // const dummyItem = ctx.prisma.item.create({
-      //   data: {
-      //     name: 'dummy',
-      //     brand: 'dummy',
-      //     description: 'dummy',
-      //     sex: 'MALE',
-      //     price: 0,
-      //     image: 
-      //     quantity: 0,
-      //     category: 'dummy',
-      //   }
-      // });
-      // return {
-      //   greeting: `Hello ${input?.text ?? 'world'}`
-      // };
+      const item = await ctx.prisma.item.create({
+        data: {
+          name: input.name,
+          brand: input.brand,
+          sex: input.sex,
+          price: input.price,
+          description: input.description,
+          fabrics: input.fabrics
+        }
+      });
+      return {
+        itemId: item.id,
+      }
     }),
   // getAll: publicProcedure.query(({ ctx }) => {
   //   return ctx.prisma.example.findMany();

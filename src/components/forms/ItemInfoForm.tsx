@@ -1,16 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { String } from 'aws-sdk/clients/apigateway';
-import { randomUUID } from 'crypto';
 import Image from 'next/image';
 import React, { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import clsxm from '../../utils/clsxm';
 import { trpc } from '../../utils/trpc';
 import { Button } from '../button/Button';
 import { DialogModal } from '../dialog/DialogModal';
-import { SvgIcon } from '../icons/SvgIcon';
-import { BodyText } from '../typography/Typography';
+import { ImageUploader } from '../image-uploader/ImageUploader';
+import { ImageType } from '../image-uploader/ImageUploader';
 import { Form } from './Form';
 import { InputField } from './InputField';
 import { SelectField } from './SelectField';
@@ -20,7 +17,7 @@ export const ItemDetailsSchema = z.object({
   name: z.string(),
   brand: z.string(),
   price: z.string(), // TODO - make this a number
-  sex: z.object({ key: z.string(), name: z.string() }),
+  sex: z.object({ key: z.enum(['MALE', 'FEMALE', 'UNISEX']), name: z.string() }),
   description: z.string(),
   category: z.object({ key: z.string(), name: z.string() }),
   sizes: z.array(z.object({ key: z.string(), name: z.string() })),
@@ -91,9 +88,17 @@ type ItemInfoFormProps = {
   handleCloseDialog?: () => void;
   onSubmit: SubmitHandler<ItemDetailsType>;
   className?: string;
+  images: ImageType[];
+  setImages: React.Dispatch<React.SetStateAction<ImageType[]>>;
 };
 
-export const ItemInfoForm = ({ handleCloseDialog, onSubmit, className }: ItemInfoFormProps) => {
+export const ItemInfoForm = ({
+  handleCloseDialog,
+  onSubmit,
+  className,
+  images,
+  setImages
+}: ItemInfoFormProps) => {
   const methods = useForm<ItemDetailsType>({
     resolver: zodResolver(ItemDetailsSchema),
     defaultValues: {
@@ -110,119 +115,17 @@ export const ItemInfoForm = ({ handleCloseDialog, onSubmit, className }: ItemInf
     formState: { errors, isSubmitting }
   } = methods;
 
-  const utils = trpc.useContext();
-
-  const { mutateAsync: createPresignedUrl } = trpc.images.createPresignedUrl.useMutation({
-    onSuccess: () => {
-      utils.images.invalidate();
-    }
-  });
-
-  const fileRef = useRef<HTMLInputElement>(null);
-
-  const uploadToDB = async (e: React.FormEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const file = e.currentTarget.files?.[0];
-    if (!file) return;
-
-    const filename = encodeURIComponent(file?.name ?? '');
-    const { url, fields }: { url: string; fields: any } = (await createPresignedUrl({
-      filename: filename,
-      itemId: '-1'
-    })) as any;
-    console.log(url);
-    const data = {
-      ...fields,
-      'Content-Type': file.type,
-      file
-    };
-    const formData = new FormData();
-    for (const name in data) {
-      formData.append(name, data[name]);
-    }
-    await fetch(url, {
-      method: 'POST',
-      body: formData,
-      mode: 'no-cors'
-    });
-    if (fileRef.current) {
-      fileRef.current.value = '';
-    }
-  };
-
   type Image = {
     src: string;
     filename: string;
   };
-  const [images, setImages] = useState<Image[]>([]);
   const [previewedImage, setPreviewedImage] = useState<Image>();
 
-  const handleImageChange = (e: any) => {
-    const files: Blob[] = Array.from(e.target.files);
-    console.log(files);
-    const imagesObj = files.map(file => ({
-      src: URL.createObjectURL(file),
-      filename: file.name
-    }));
-    setImages([...images, ...imagesObj]);
-  };
-
-  const handleDeleteImage = (src: string) => {
-    const newImages = images.filter(image => image.src !== src);
-    setImages(newImages);
-  };
   return (
     <>
       <Form className={className} onSubmit={handleSubmit(onSubmit)} {...methods}>
         <div className="m-7 flex flex-col gap-8 md:mx-14">
-          <div
-            className={clsxm(
-              'relative flex h-32 w-full flex-col items-center justify-center border-[1px] border-dashed border-primaryBlack',
-              'cursor-pointer gap-2 focus-within:border-[2px]'
-            )}
-          >
-            <SvgIcon name="Upload" />
-            <BodyText>Upload item's photos</BodyText>
-            <input
-              id="file-uploader"
-              className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0"
-              ref={fileRef}
-              onChange={handleImageChange}
-              type="file"
-              accept="image/png, image/jpeg"
-              name="images"
-              multiple
-            />
-          </div>
-          {images.length > 0 && (
-            <div className="flex w-full gap-4 overflow-x-auto">
-              {images.map((image, idx) => (
-                <div className="relative mt-2 h-32 w-32 flex-shrink-0 border-[1px] border-primaryBlack">
-                  <button
-                    className={clsxm(
-                      'flex items-center justify-center',
-                      'absolute top-0 right-0 z-10 h-4 w-4 translate-x-1/2 -translate-y-1/2',
-                      'cursor-pointer rounded-full bg-primaryBlack'
-                    )}
-                    onClick={() => handleDeleteImage(image.src)}
-                  >
-                    <SvgIcon name="Cross" className="h-2 w-2 fill-primaryWhite" />
-                  </button>
-                  <Image
-                    key={`image-${idx}`}
-                    src={image.src}
-                    alt="item"
-                    className="z-0 object-cover"
-                    fill
-                    onClick={() => {
-                      console.log(image);
-                      setPreviewedImage(image);
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
+          <ImageUploader name="images" images={images} setImages={setImages} />
           <div className="flex w-full flex-col gap-6 md:flex-row">
             <InputField
               label="Brand:"
