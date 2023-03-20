@@ -8,6 +8,7 @@ import { Button } from '../button/Button';
 import { DialogModal } from '../dialog/DialogModal';
 import { ImageUploader } from '../image-uploader/ImageUploader';
 import { ImageType } from '../image-uploader/ImageUploader';
+import { OptionType } from '../select/Select';
 import { Form } from './Form';
 import { InputField } from './InputField';
 import { SelectField } from './SelectField';
@@ -106,6 +107,15 @@ export const ItemInfoForm = ({
       // sex: sexOptions[0]
     }
   });
+
+  const utils = trpc.useContext();
+  const [categoryOptions, setCategoryOptions] = useState<OptionType[]>([]);
+  trpc.categories.getAllCategories.useQuery(undefined, {
+    onSuccess: val => {
+      utils.images.invalidate();
+      setCategoryOptions(val.categories);
+    }
+  }).data ?? [];
 
   const {
     register,

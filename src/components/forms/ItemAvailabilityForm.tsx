@@ -17,7 +17,13 @@ export const ItemAvailabilitySchema = z.object({
       key: z.string(),
       name: z.string(),
       sizes: z
-        .array(z.object({ key: z.string(), name: z.string(), available: z.string() }))
+        .array(
+          z.object({
+            key: z.string(),
+            name: z.enum(['XS', 'S', 'M', 'L', 'XL']),
+            available: z.string()
+          })
+        )
         .default([])
     })
   )

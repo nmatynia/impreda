@@ -25,6 +25,7 @@ const index = () => {
   const sizes = React.useRef<OptionType[]>();
   const colors = React.useRef<OptionType[]>();
   const fabrics = React.useRef<OptionType[]>();
+  const category = React.useRef<string>();
 
   const utils = trpc.useContext();
 
@@ -77,23 +78,33 @@ const index = () => {
     colors.current = data.colors;
     fabrics.current = data.fabrics;
     description.current = data.description;
+    category.current = data.category.key;
     handleNextStep();
     console.log(data);
   };
 
   const handleSubmitItemAvailabilityForm: SubmitHandler<ItemAvailabilityType> = async (data, e) => {
     e?.preventDefault();
-    if (brand.current && name.current && price.current && sex.current && description.current) {
+    if (
+      brand.current &&
+      name.current &&
+      price.current &&
+      sex.current &&
+      description.current &&
+      fabrics.current &&
+      category.current
+    ) {
       createItem({
         brand: brand.current,
         name: name.current,
         price: price.current,
         sex: sex.current,
         description: description.current,
-        fabrics: (fabrics.current as any)[0].key //TODO temporary
+        fabrics: (fabrics.current as any)[0].key, //TODO temporary
+        category: category.current,
+        colors: data.colors
       });
     }
-    console.log(data);
   };
 
   return (
