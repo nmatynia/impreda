@@ -82,8 +82,10 @@ export const ItemAvailabilityForm = ({
           );
         })}
         <div className="mt-4 flex flex-row-reverse justify-start gap-3">
-          <Button type="submit">Advance</Button>
-          <Button variant="outlined" onClick={handlePreviousStep}>
+          <Button type="submit" isLoading={isSubmitting}>
+            Add the item
+          </Button>
+          <Button variant="outlined" disabled={isSubmitting} onClick={handlePreviousStep}>
             Back
           </Button>
         </div>

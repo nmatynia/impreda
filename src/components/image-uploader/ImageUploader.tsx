@@ -64,7 +64,10 @@ export const ImageUploader = ({ images, setImages }: ImageUploaderProps) => {
         {images.length > 0 && (
           <div className="flex w-full gap-4 overflow-x-auto">
             {images.map((image, idx) => (
-              <div className="relative mt-2 h-32 w-32 flex-shrink-0 border-[1px] border-primaryBlack">
+              <div
+                className="relative mt-2 h-32 w-32 flex-shrink-0 border-[1px] border-primaryBlack"
+                key={`image-${idx}`}
+              >
                 <button
                   className={clsxm(
                     'flex items-center justify-center',

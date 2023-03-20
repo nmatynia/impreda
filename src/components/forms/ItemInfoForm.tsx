@@ -102,10 +102,7 @@ export const ItemInfoForm = ({
 }: ItemInfoFormProps) => {
   const methods = useForm<ItemDetailsType>({
     resolver: zodResolver(ItemDetailsSchema),
-    defaultValues: {
-      // size: [sizeOptions[0]],
-      // sex: sexOptions[0]
-    }
+    defaultValues: {}
   });
 
   const utils = trpc.useContext();
@@ -162,7 +159,7 @@ export const ItemInfoForm = ({
               placeholder="Choose sex"
               name="sex"
               label="Sex"
-              className="z-40 w-full md:w-1/2"
+              className="z-50 w-full md:w-1/2"
               options={sexOptions}
             />
           </div>
@@ -176,14 +173,14 @@ export const ItemInfoForm = ({
             placeholder="Choose category"
             name="category"
             label="Category:"
-            className="z-30 w-full"
+            className="z-40 w-full"
             options={categoryOptions}
           />
           <SelectField
             placeholder="Choose sizes"
             name="sizes"
             label="Sizes:"
-            className="z-20 w-full"
+            className="z-30 w-full"
             options={sizeOptions}
             multiple
           />
@@ -191,7 +188,7 @@ export const ItemInfoForm = ({
             placeholder="Choose colors"
             name="colors"
             label="Colors:"
-            className="z-10 w-full"
+            className="z-20 w-full"
             options={colorOptions}
             multiple
           />
@@ -199,7 +196,7 @@ export const ItemInfoForm = ({
             placeholder="Choose fabrics"
             name="fabrics"
             label="Fabrics:"
-            className="z-0 w-full"
+            className="z-10 w-full"
             options={fabricOptions}
             multiple
           />

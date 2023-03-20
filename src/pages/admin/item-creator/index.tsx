@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { RoundedBox } from '../../../components/box/RoundedBox';
-import { BodyText, LargeBodyText } from '../../../components/typography/Typography';
+import { LargeBodyText } from '../../../components/typography/Typography';
 import { ItemDetailsType, ItemInfoForm } from '../../../components/forms/ItemInfoForm';
 import { OptionType } from '../../../components/select/Select';
 import { SubmitHandler } from 'react-hook-form';
@@ -12,7 +12,6 @@ import { ImageType } from '../../../components/image-uploader/ImageUploader';
 import { trpc } from '../../../utils/trpc';
 import { SvgIcon } from '../../../components/icons/SvgIcon';
 import { Button } from '../../../components/button/Button';
-import Link from 'next/link';
 import { LinkButton } from '../../../components/link/LinkButton';
 
 const index = () => {

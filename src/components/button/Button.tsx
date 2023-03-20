@@ -1,9 +1,11 @@
 import React, { ButtonHTMLAttributes, ReactNode } from 'react';
 import clsxm from '../../utils/clsxm';
+import { Loader } from '../loader/Loader';
 type ButtonProps = {
   children: ReactNode;
   variant?: ButtonVariant;
   className?: string;
+  isLoading?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 type ButtonVariant = 'primary' | 'outlined';
 
@@ -12,13 +14,31 @@ const buttonVariant = {
   outlined: 'border-[1px] border-primaryBlack text-primaryBlack'
 };
 
-export const Button = ({ children, variant = 'primary', className, ...rest }: ButtonProps) => {
+const loaderVariant = {
+  primary: 'text-primaryWhite',
+  outlined: 'text-primaryBlack'
+};
+
+export const Button = ({
+  children,
+  variant = 'primary',
+  isLoading,
+  className,
+  ...rest
+}: ButtonProps) => {
   return (
     <button
-      className={clsxm('w-fit rounded-md px-8 py-2', buttonVariant[variant], className)}
+      className={clsxm(
+        'relative w-fit rounded-md px-8 py-2',
+        buttonVariant[variant],
+        isLoading && 'cursor-progress',
+        className
+      )}
+      disabled={isLoading}
       {...rest}
     >
-      {children}
+      {isLoading && <Loader className={clsxm('h-[14px] w-[14px]', loaderVariant[variant])} />}
+      <div className={isLoading ? 'opacity-0' : ''}>{children}</div>
     </button>
   );
 };
