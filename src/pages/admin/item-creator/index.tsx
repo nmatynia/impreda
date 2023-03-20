@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { RoundedBox } from '../../../components/box/RoundedBox';
-import { LargeBodyText } from '../../../components/typography/Typography';
+import { BodyText, LargeBodyText } from '../../../components/typography/Typography';
 import { ItemDetailsType, ItemInfoForm } from '../../../components/forms/ItemInfoForm';
 import { OptionType } from '../../../components/select/Select';
 import { SubmitHandler } from 'react-hook-form';
@@ -10,6 +10,10 @@ import {
 } from '../../../components/forms/ItemAvailabilityForm';
 import { ImageType } from '../../../components/image-uploader/ImageUploader';
 import { trpc } from '../../../utils/trpc';
+import { SvgIcon } from '../../../components/icons/SvgIcon';
+import { Button } from '../../../components/button/Button';
+import Link from 'next/link';
+import { LinkButton } from '../../../components/link/LinkButton';
 
 const index = () => {
   const [step, setStep] = React.useState<number>(1);
@@ -37,15 +41,14 @@ const index = () => {
 
   const { mutateAsync: createItem } = trpc.items.createItem.useMutation();
 
-  const uploadToDB = async (e: React.FormEvent<HTMLInputElement>) => {
-    e.preventDefault();
+  const uploadToDB = async (itemId: string) => {
     const requests: Promise<Response>[] = [];
     for (let image of images) {
       if (!image.file) return;
       const filename = encodeURIComponent(image.file.name ?? '');
       const { url, fields }: { url: string; fields: any } = (await createPresignedUrl({
         filename: filename,
-        itemId: '-1'
+        itemId
       })) as any;
 
       const data = {
@@ -65,7 +68,7 @@ const index = () => {
         })
       );
     }
-    Promise.all(requests).then(() => console.log('done'));
+    await Promise.all(requests);
   };
 
   const handleSubmitItemInfoForm: SubmitHandler<ItemDetailsType> = async (data, e) => {
@@ -80,7 +83,6 @@ const index = () => {
     description.current = data.description;
     category.current = data.category.key;
     handleNextStep();
-    console.log(data);
   };
 
   const handleSubmitItemAvailabilityForm: SubmitHandler<ItemAvailabilityType> = async (data, e) => {
@@ -94,7 +96,7 @@ const index = () => {
       fabrics.current &&
       category.current
     ) {
-      createItem({
+      const item = await createItem({
         brand: brand.current,
         name: name.current,
         price: price.current,
@@ -104,6 +106,8 @@ const index = () => {
         category: category.current,
         colors: data.colors
       });
+      await uploadToDB(item.itemId);
+      handleNextStep();
     }
   };
 
@@ -123,6 +127,18 @@ const index = () => {
             handlePreviousStep={handlePreviousStep}
             onSubmit={handleSubmitItemAvailabilityForm}
           />
+        )}
+        {step === 3 && (
+          <div className="m-7 flex flex-col gap-5 md:mx-14">
+            <div className="my-12 flex flex-col items-center justify-center">
+              <SvgIcon name="Check" className="h-8 w-8" />
+              <LargeBodyText>Item created successfully!</LargeBodyText>
+            </div>
+            <div className="mt-4 flex justify-start gap-3 self-end">
+              <Button onClick={() => window.location.reload()}>Add another item</Button>
+              <LinkButton href={'/admin'}>Back to Admin Panel</LinkButton>
+            </div>
+          </div>
         )}
       </RoundedBox>
     </div>

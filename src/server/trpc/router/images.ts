@@ -17,12 +17,25 @@ export const imagesRouter = router({
   createPresignedUrl: publicProcedure
     .input(z.object({ itemId: z.string(), filename: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      //TODO: make this only available for admin
-      // const { session } = ctx;
-      // const userId = session?.user?.id;
-      // if (!userId) {
-      //   return;
-      // }
+      const { session } = ctx;
+      const userId = session?.user?.id;
+      if (!userId) {
+        throw new Error('Unauthanticated');
+      }
+
+      const userInfo = await ctx.prisma.user.findUnique({
+        where: {
+          id: userId
+        },
+        select: {
+          admin: true
+        }
+      })
+
+      if (userInfo && !userInfo.admin) {
+        throw new Error('Unauthorized');
+      }
+
       const itemId = input.itemId;
       const image = await ctx.prisma.image.create({
         data: {
@@ -30,10 +43,8 @@ export const imagesRouter = router({
           filename: input.filename
         }
       })
-      //TODO: change randomUUID on the left to item name
       const key = `${itemId}/${image.id}`;
-
-      return await s3.createPresignedPost({
+      const presignedPost = await s3.createPresignedPost({
         Fields: {
           key
         },
@@ -44,5 +55,16 @@ export const imagesRouter = router({
           ['content-length-range', 0, 5048576], // up to 1 MB
         ],
       })
+
+      await ctx.prisma.image.update({
+        where: {
+          id: image.id
+        },
+        data: {
+          url: presignedPost.url + '/' + key
+        }
+      })
+
+      return presignedPost
     }),
 });
