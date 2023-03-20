@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Container } from '../components/container/Container';
-import { ItemCard, ItemProps } from '../components/item-card/ItemCard';
-import { BodyText, Bold, SmallBodyText, LargeBodyText } from '../components/typography/Typography';
+import type { ItemProps } from '../components/item-card/ItemCard';
+import { ItemCard } from '../components/item-card/ItemCard';
+import { BodyText, Bold, LargeBodyText } from '../components/typography/Typography';
 import { Dot } from '../components/dot/Dot';
 import { SizeIndicator } from '../components/size-indicator/SizeIndicator';
 import { Button } from '../components/button/Button';
@@ -31,7 +32,8 @@ const itemsHolder: ItemProps[] = [
     ],
     price: 30,
     saved: 21,
-    images: [DefaultRickTeeImg.src]
+    images: [DefaultRickTeeImg.src],
+    category: 't-shirt'
   },
   {
     id: '4',
@@ -51,7 +53,8 @@ const itemsHolder: ItemProps[] = [
     ],
     price: 30,
     saved: 12,
-    images: [DefaultAlyxJacketImg.src]
+    images: [DefaultAlyxJacketImg.src],
+    category: 'jacket'
   }
 ];
 
@@ -83,7 +86,8 @@ const itemHolder: ItemProps = {
   fabrics: [
     { name: 'Cotton', percentage: 80 },
     { name: 'Nylon', percentage: 20 }
-  ]
+  ],
+  category: 't-shirt'
 };
 
 const Item = () => {
@@ -96,7 +100,7 @@ const Item = () => {
       <div className="relative flex h-fit w-full flex-col sm:flex-row">
         <div className="flex h-fit w-full flex-col gap-20 border-r-[1px] border-primaryBlack bg-primaryWhite py-20 sm:w-1/2">
           {itemHolder.images.map((image, idx) => (
-            <div className="relative h-screenWithoutHeader">
+            <div className="relative h-screenWithoutHeader" key={`image-${idx}`}>
               <Image
                 src={image}
                 alt={`${itemHolder.name} Photo ${idx}`}
@@ -121,8 +125,8 @@ const Item = () => {
             <div className="mt-10" />
             <div className="flex flex-wrap gap-4">
               {itemHolder.fabrics
-                ? itemHolder.fabrics.map(fabric => (
-                    <BodyText>
+                ? itemHolder.fabrics.map((fabric, idx) => (
+                    <BodyText key={`fabric-${idx}`}>
                       {fabric.percentage}% {fabric.name}
                     </BodyText>
                   ))
@@ -131,14 +135,14 @@ const Item = () => {
             <div className="mt-5" />
             <div className="flex gap-2">
               {itemHolder.colors.map(color => (
-                <ColorIndicator {...color} className="w-6" />
+                <ColorIndicator {...color} className="w-6" key={color.name} />
               ))}
             </div>
             <div className="mt-5" />
             <div className="flex items-center justify-between">
               <div className="flex gap-2">
                 {itemHolder.sizes.map(size => (
-                  <SizeIndicator variant="outlined" {...size} />
+                  <SizeIndicator variant="outlined" {...size} key={size.name} />
                 ))}
               </div>
               <BodyText className="cursor-pointer underline">Size chart</BodyText>
@@ -158,7 +162,7 @@ const Item = () => {
       </div>
       <ItemContainer>
         {itemsHolder.map(item => (
-          <ItemCard {...item} />
+          <ItemCard {...item} key={item.id} />
         ))}
       </ItemContainer>
     </Container>

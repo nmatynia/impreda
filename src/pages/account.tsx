@@ -1,4 +1,4 @@
-import { GetServerSideProps } from 'next';
+import type { GetServerSideProps } from 'next';
 import React from 'react';
 import { OrderHistorySection } from '../components/order-history-section/OrderHistorySection';
 import { UserAccountBox } from '../components/user-account-box/UserAcountBox';

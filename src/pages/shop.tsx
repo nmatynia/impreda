@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container } from '../components/container/Container';
-import { ItemCard, ItemProps } from '../components/item-card/ItemCard';
+import type { ItemProps } from '../components/item-card/ItemCard';
+import { ItemCard } from '../components/item-card/ItemCard';
 import { ItemContainer } from '../components/items-container/ItemContainer';
 import DefaultRickTeeImg from '../../public/images/default-rick-tee.webp';
 import DefaultAlyxJacketImg from '../../public/images/default-alyx-jacket.webp';
@@ -60,7 +61,7 @@ const shop = () => {
       <ShopFilterPanel sectionName={`Total: ${items.length}`} />
       <ItemContainer>
         {items.map(item => (
-          <ItemCard {...item} />
+          <ItemCard {...item} key={item.id} />
         ))}
       </ItemContainer>
     </Container>

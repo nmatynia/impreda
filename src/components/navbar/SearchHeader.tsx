@@ -1,7 +1,7 @@
-import React, { RefObject, useEffect, useRef } from 'react';
+import type { RefObject } from 'react';
+import React, { useEffect } from 'react';
 import clsxm from '../../utils/clsxm';
 import { SvgIcon } from '../icons/SvgIcon';
-import { BodyText } from '../typography/Typography';
 //* https://github.com/jeancroy/FuzzySearch
 //TODO Enhance it
 type SearchHeaderProps = {
@@ -11,8 +11,8 @@ type SearchHeaderProps = {
 };
 export const SearchHeader = ({ isOpen, setIsOpen, navRef }: SearchHeaderProps) => {
   useEffect(() => {
-    const closeDropdown = (e: any) => {
-      if (!navRef?.current?.contains(e.target)) {
+    const closeDropdown = (e: MouseEvent) => {
+      if (!navRef?.current?.contains(e.target as Node)) {
         setIsOpen(false);
       }
     };

@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import { RoundedBox } from '../../../components/box/RoundedBox';
 import { LargeBodyText } from '../../../components/typography/Typography';
-import { ItemDetailsType, ItemInfoForm } from '../../../components/forms/ItemInfoForm';
-import { OptionType } from '../../../components/select/Select';
-import { SubmitHandler } from 'react-hook-form';
-import {
-  ItemAvailabilityForm,
-  ItemAvailabilityType
-} from '../../../components/forms/ItemAvailabilityForm';
-import { ImageType } from '../../../components/image-uploader/ImageUploader';
+import type { ItemDetailsType } from '../../../components/forms/ItemInfoForm';
+import { ItemInfoForm } from '../../../components/forms/ItemInfoForm';
+import type { OptionType } from '../../../components/select/Select';
+import type { SubmitHandler } from 'react-hook-form';
+import type { ItemAvailabilityType } from '../../../components/forms/ItemAvailabilityForm';
+import { ItemAvailabilityForm } from '../../../components/forms/ItemAvailabilityForm';
+import type { ImageType } from '../../../components/image-uploader/ImageUploader';
 import { trpc } from '../../../utils/trpc';
 import { SvgIcon } from '../../../components/icons/SvgIcon';
 import { Button } from '../../../components/button/Button';
 import { LinkButton } from '../../../components/link/LinkButton';
 
-const index = () => {
+const ItemCreator = () => {
   const [step, setStep] = React.useState<number>(1);
   const handleNextStep = () => setStep(step + 1);
   const handlePreviousStep = () => setStep(step - 1);
@@ -42,13 +41,13 @@ const index = () => {
 
   const uploadToDB = async (itemId: string) => {
     const requests: Promise<Response>[] = [];
-    for (let image of images) {
+    for (const image of images) {
       if (!image.file) return;
       const filename = encodeURIComponent(image.file.name ?? '');
-      const { url, fields }: { url: string; fields: any } = (await createPresignedUrl({
+      const { url, fields }: { url: string; fields: any } = await createPresignedUrl({
         filename: filename,
         itemId
-      })) as any;
+      });
 
       const data = {
         ...fields,
@@ -144,4 +143,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default ItemCreator;

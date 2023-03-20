@@ -3,7 +3,7 @@ import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { ColorIndicator } from '../color-indicator/ColorIndicator';
 import { SizeIndicator } from '../size-indicator/SizeIndicator';
-import { BodyText, Bold, SmallBodyText } from '../typography/Typography';
+import { BodyText, Bold } from '../typography/Typography';
 
 export type ItemProps = {
   className?: string;
@@ -41,16 +41,7 @@ export type ItemProps = {
   category: string; //TODO change to enum
 };
 
-export const ItemCard = ({
-  name,
-  price,
-  saved,
-  brand,
-  sizes,
-  colors,
-  images,
-  className
-}: ItemProps) => {
+export const ItemCard = ({ name, price, brand, sizes, colors, images, className }: ItemProps) => {
   return (
     <div
       className={clsxm(
@@ -62,7 +53,7 @@ export const ItemCard = ({
     >
       <div className="relative z-10 flex aspect-[0.75] w-full select-none flex-col justify-between p-6">
         <Image
-          src={images[0]!}
+          src={images[0] ?? ''} //TODO: Add holder img
           alt={name}
           fill
           className="absolute -z-10 object-cover p-3"

@@ -1,11 +1,11 @@
 import { Listbox, Transition } from '@headlessui/react';
 import React, { Fragment } from 'react';
-import { ControllerRenderProps, FieldValues } from 'react-hook-form';
+import type { ControllerRenderProps, FieldValues } from 'react-hook-form';
 import clsxm from '../../utils/clsxm';
 import { SvgIcon } from '../icons/SvgIcon';
 import { BodyText } from '../typography/Typography';
 
-export type OptionType<T = {}> = { name: string; key: string } & T;
+export type OptionType<T = object> = { name: string; key: string } & T;
 
 export type SelectProps = {
   placeholder: string;
@@ -25,6 +25,7 @@ export type SelectProps = {
  * @param defaultValue - The default value of the select. If multiple is true, this must be an array of values.
  * @param multiple - If true, the user can select multiple options.
  */
+// eslint-disable-next-line react/display-name
 export const Select = React.forwardRef(
   (
     { className, label, options, name, defaultValue, multiple, placeholder, ...rest }: SelectProps,

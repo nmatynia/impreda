@@ -1,5 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
-import React, { Fragment, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React, { Fragment } from 'react';
 import clsxm from '../../utils/clsxm';
 import { SvgIcon } from '../icons/SvgIcon';
 

@@ -1,5 +1,6 @@
 import { Transition } from '@headlessui/react';
-import React, { Fragment, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React, { Fragment } from 'react';
 
 export const FormTransitionWrapper = ({
   children,

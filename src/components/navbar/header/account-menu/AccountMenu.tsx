@@ -1,8 +1,10 @@
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import React, { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React from 'react';
 import clsxm from '../../../../utils/clsxm';
-import { Box, BoxProps } from '../../../box/Box';
+import type { BoxProps } from '../../../box/Box';
+import { Box } from '../../../box/Box';
 import { SvgIcon } from '../../../icons/SvgIcon';
 import { BodyText } from '../../../typography/Typography';
 type AccountMenuProps = {

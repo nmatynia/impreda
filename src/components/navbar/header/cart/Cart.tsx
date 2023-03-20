@@ -1,8 +1,10 @@
 import React from 'react';
 import clsxm from '../../../../utils/clsxm';
-import { Box, BoxProps } from '../../../box/Box';
+import type { BoxProps } from '../../../box/Box';
+import { Box } from '../../../box/Box';
 import { Bold, LargeBodyText } from '../../../typography/Typography';
-import { CartItem, CartItemProps } from './CartItem';
+import type { CartItemProps } from './CartItem';
+import { CartItem } from './CartItem';
 import DefaultTee from '../../../../../public/images/default-tee.webp';
 import { Button } from '../../../button/Button';
 type CartProps = {

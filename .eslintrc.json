@@ -7,6 +7,5 @@
   "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
   "rules": {
     "@typescript-eslint/consistent-type-imports": "warn"
-  },
-  "exclude": ["commitlint.config.js"]
+  }
 }

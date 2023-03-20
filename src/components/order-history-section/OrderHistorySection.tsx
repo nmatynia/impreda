@@ -52,7 +52,7 @@ export const OrderHistorySection = ({ className }: OrderHistorySectionProps) => 
     <section className={clsxm('flex flex-col', className)}>
       <FilterPanel sectionName="Order History" />
       <div className="z-10 my-6 flex flex-col gap-6">
-        {orderHistory.map((order, idx) => {
+        {orderHistory.map(order => {
           if (order.items.length === 1) {
             return <HistoryItem key={`order-${order.id}`} order={order} />;
           } else {

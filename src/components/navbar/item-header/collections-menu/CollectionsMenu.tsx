@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import React from 'react';
 import clsxm from '../../../../utils/clsxm';
-import { Box, BoxProps } from '../../../box/Box';
+import type { BoxProps } from '../../../box/Box';
+import { Box } from '../../../box/Box';
 import { BodyText } from '../../../typography/Typography';
 
 const collections = [
@@ -10,7 +11,7 @@ const collections = [
   { name: 'SPRING 2023 / MESSAGE' },
   { name: 'SUMMER 2023 / SPIRIT' }
 ];
-interface CollectionsMenuProps extends BoxProps {}
+type CollectionsMenuProps = BoxProps
 
 export const CollectionsMenu = ({ className, ...props }: CollectionsMenuProps) => {
   return (

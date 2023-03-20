@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import clsxm from '../../../../utils/clsxm';
-import { Box, BoxProps } from '../../../box/Box';
+import type { BoxProps } from '../../../box/Box';
+import { Box } from '../../../box/Box';
 import { BodyText } from '../../../typography/Typography';
 type ClothingMenuProps = {
   className?: string;

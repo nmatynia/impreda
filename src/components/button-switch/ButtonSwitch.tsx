@@ -11,8 +11,8 @@ export const ButtonSwitch = ({ elementToOpen, children, className }: OpenButtonP
   const clickOutsideRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const closeDropdown = (e: any) => {
-      if (!clickOutsideRef.current?.contains(e.target)) {
+    const closeDropdown = (e: MouseEvent) => {
+      if (!clickOutsideRef.current?.contains(e.target as Node)) {
         setIsOpen(false);
       }
     };

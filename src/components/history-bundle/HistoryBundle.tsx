@@ -4,7 +4,7 @@ import clsxm from '../../utils/clsxm';
 import { RoundedBox } from '../box/RoundedBox';
 import { HistoryItem } from '../history-item/HistoryItem';
 import { SvgIcon } from '../icons/SvgIcon';
-import { OrderType } from '../order-history-section/OrderHistorySection';
+import type { OrderType } from '../order-history-section/OrderHistorySection';
 import { BodyText } from '../typography/Typography';
 
 type HistoryBundleProps = {

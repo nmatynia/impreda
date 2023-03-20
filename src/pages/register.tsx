@@ -8,7 +8,7 @@ import { Button } from '../components/button/Button';
 import { Input } from '../components/input/Input';
 import { Checkbox } from '../components/checkbox/Checkbox';
 import { signIn } from 'next-auth/react';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getServerAuthSession } from '../server/common/get-server-auth-session';
 
 //TODO - use form library

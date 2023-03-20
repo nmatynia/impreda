@@ -1,7 +1,5 @@
 import aws from 'aws-sdk'
-import { randomUUID } from 'crypto';
 import { z } from 'zod';
-import { UserDetailsSchema } from '../../../components/user-account-box/UserAcountBox';
 
 import { router, publicProcedure } from '../trpc';
 

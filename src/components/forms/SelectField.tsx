@@ -1,5 +1,6 @@
 import React from 'react';
-import { Select, SelectProps } from '../select/Select';
+import type { SelectProps } from '../select/Select';
+import { Select } from '../select/Select';
 import { Field } from './Field';
 
 export const SelectField = ({

@@ -1,4 +1,5 @@
-import React, { ForwardedRef, InputHTMLAttributes } from 'react';
+import type { ForwardedRef, InputHTMLAttributes } from 'react';
+import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { BodyText } from '../typography/Typography';
 
@@ -20,6 +21,7 @@ const colorVariant = {
     'text-primaryBlack placeholder:text-gray-400 focus-within:border-primaryBlack border-gray-400'
 };
 
+// eslint-disable-next-line react/display-name
 export const TextArea = React.forwardRef(
   (
     {
@@ -27,10 +29,8 @@ export const TextArea = React.forwardRef(
       placeholder,
       className,
       innerClassName,
-      password,
       color = 'black',
       isValid = true,
-      type,
       ...rest
     }: TextAreaProps,
     ref: ForwardedRef<HTMLTextAreaElement>

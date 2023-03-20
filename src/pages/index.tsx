@@ -5,7 +5,7 @@ import ShopWomenImg from '../../public/images/shop-women.webp';
 import NewArravialsImg from '../../public/images/new-arrivals.webp';
 // import { trpc } from '../utils/trpc';
 import Image from 'next/image';
-import { BodyText, LargeBodyText } from '../components/typography/Typography';
+import { LargeBodyText } from '../components/typography/Typography';
 
 const Home: NextPage = () => {
   // const hello = trpc.example.hello.useQuery({ text: 'from tRPC' });

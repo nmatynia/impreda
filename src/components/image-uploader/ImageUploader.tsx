@@ -18,8 +18,8 @@ type ImageUploaderProps = {
 
 export const ImageUploader = ({ images, setImages }: ImageUploaderProps) => {
   const [previewedImage, setPreviewedImage] = useState<ImageType>();
-  const handleImageChange = (e: any) => {
-    const files: Blob[] = Array.from(e.target.files);
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files: Blob[] = Array.from(e.target.files as FileList);
     const imagesObj = files.map(file => ({
       src: URL.createObjectURL(file),
       filename: file.name,
@@ -51,7 +51,7 @@ export const ImageUploader = ({ images, setImages }: ImageUploaderProps) => {
           )}
         >
           <SvgIcon name="Upload" />
-          <BodyText>Upload item's photos</BodyText>
+          <BodyText>Upload item&apos;s photos</BodyText>
           <input
             id="file-uploader"
             className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0"

@@ -42,10 +42,10 @@ export const itemsRouter = router({
         }
       });
 
-      for (let color of input.colors) {
+      for (const color of input.colors) {
         let colorAvailibility = 0;
         const sizesIds = [];
-        for (let size of color.sizes) {
+        for (const size of color.sizes) {
           const _size = await ctx.prisma.size.create({
             data: {
               name: size.name,

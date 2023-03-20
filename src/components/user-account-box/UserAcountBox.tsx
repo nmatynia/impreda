@@ -4,7 +4,8 @@ import { RoundedBox } from '../box/RoundedBox';
 import { SvgIcon } from '../icons/SvgIcon';
 import { BodyText, Bold, LargeBodyText } from '../typography/Typography';
 import { z } from 'zod';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '../button/Button';
 import { InputField } from '../forms/InputField';
@@ -54,13 +55,7 @@ export const UserAccountBox = () => {
     }
   });
 
-  const {
-    register,
-    watch,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting }
-  } = methods;
+  const { handleSubmit, reset } = methods;
 
   const onSubmit: SubmitHandler<UserDetailsType> = async (data, e) => {
     e?.preventDefault();

@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import React, { AnchorHTMLAttributes, ReactNode } from 'react';
+import type { AnchorHTMLAttributes, ReactNode } from 'react';
+import React from 'react';
 import clsxm from '../../utils/clsxm';
 
 type LinkButtonProps = {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { RoundedBox } from '../box/RoundedBox';
 import { ButtonSwitch } from '../button-switch/ButtonSwitch';
@@ -10,11 +10,6 @@ type FilterSectionProps = {
   className?: string;
 };
 export const FilterPanel = ({ sectionName = 'Filters', className }: FilterSectionProps) => {
-  const [openMenu, setOpenMenu] = useState(false);
-  const handleOpenMenu = () => {
-    setOpenMenu(!openMenu);
-  };
-
   return (
     <RoundedBox
       className={clsxm(
@@ -29,7 +24,6 @@ export const FilterPanel = ({ sectionName = 'Filters', className }: FilterSectio
         >
           <SvgIcon name="Filter" className="fill-primaryBlack" />
         </ButtonSwitch>
-        {<FilterMenu className="absolute top-9 right-1/2" isOpen={openMenu} />}
       </div>
     </RoundedBox>
   );

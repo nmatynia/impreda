@@ -1,7 +1,7 @@
 import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { FilterPanel } from '../filter-panel/FilterPanel';
-import { ItemProps } from '../item-card/ItemCard';
+import type { ItemProps } from '../item-card/ItemCard';
 import { ItemListItem } from './item-list-item/ItemListItem';
 
 const itemList: ItemProps[] = [
@@ -23,7 +23,8 @@ const itemList: ItemProps[] = [
     price: 30,
     saved: 23,
     views: 41,
-    images: ['https://impreda-bucket.s3.eu-west-2.amazonaws.com/default-rick-tee.webp']
+    images: ['https://impreda-bucket.s3.eu-west-2.amazonaws.com/default-rick-tee.webp'],
+    category: 't-shirt'
   },
   {
     id: '12321',
@@ -43,7 +44,8 @@ const itemList: ItemProps[] = [
     price: 30,
     saved: 23,
     views: 41,
-    images: ['https://impreda-bucket.s3.eu-west-2.amazonaws.com/default-rick-tee.webp']
+    images: ['https://impreda-bucket.s3.eu-west-2.amazonaws.com/default-rick-tee.webp'],
+    category: 't-shirt'
   }
 ];
 

@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { Typography } from '../typography/Typography';
 type CheckboxProps = {
@@ -14,7 +15,8 @@ export const Checkbox = ({ className, label }: CheckboxProps) => {
         className={clsxm(
           'h-4 w-4 flex-shrink-0 rounded',
           'border-neutral-500 bg-primaryWhite accent-neutral-800 ring-1 ring-inset  ring-primaryWhite',
-          'mr-2'
+          'mr-2',
+          className
         )}
       />
       <Typography as="label" className="ml-2 text-sm font-medium text-primaryWhite">

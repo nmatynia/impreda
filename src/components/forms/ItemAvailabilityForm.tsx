@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect } from 'react';
-import { Control, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
+import type { Control, SubmitHandler } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import clsxm from '../../utils/clsxm';
 import { isDark } from '../../utils/helpers/isDark';
 import { Button } from '../button/Button';
-import { OptionType } from '../select/Select';
+import type { OptionType } from '../select/Select';
 import { BodyText, Bold } from '../typography/Typography';
 import { Form } from './Form';
 import { InputField } from './InputField';
@@ -51,7 +52,7 @@ export const ItemAvailabilityForm = ({
   const {
     handleSubmit,
     control,
-    formState: { errors, isSubmitting }
+    formState: { isSubmitting }
   } = methods;
 
   const { fields: colorFields, replace } = useFieldArray({
@@ -61,7 +62,7 @@ export const ItemAvailabilityForm = ({
 
   useEffect(() => {
     replace(colors.map(color => ({ ...color, sizes: [] })));
-  }, []);
+  }, [replace, colors]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} {...methods}>
@@ -110,13 +111,13 @@ const SizeField = ({
 
   useEffect(() => {
     replace(sizes);
-  }, []);
+  }, [replace, sizes]);
 
   return (
     <ul className="flex flex-col gap-4">
       {sizeFields.map((size, index) => {
         return (
-          <li className="grid grid-cols-6 px-5">
+          <li className="grid grid-cols-6 px-5" key={size.id}>
             <BodyText className="col-span-1">
               <Bold>{size.name}</Bold>
             </BodyText>

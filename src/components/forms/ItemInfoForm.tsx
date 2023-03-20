@@ -1,18 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
-import React, { useRef, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import type { SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { trpc } from '../../utils/trpc';
 import { Button } from '../button/Button';
 import { DialogModal } from '../dialog/DialogModal';
 import { ImageUploader } from '../image-uploader/ImageUploader';
-import { ImageType } from '../image-uploader/ImageUploader';
-import { OptionType } from '../select/Select';
+import type { ImageType } from '../image-uploader/ImageUploader';
+import type { OptionType } from '../select/Select';
 import { Form } from './Form';
 import { InputField } from './InputField';
 import { SelectField } from './SelectField';
 import { TextAreaField } from './TextAreaField';
+import { LinkButton } from '../link/LinkButton';
 
 export const ItemDetailsSchema = z.object({
   name: z.string(),
@@ -70,21 +72,6 @@ const fabricOptions = [
   { name: 'Velvet', key: 'velvet' }
 ];
 
-const categoryOptions = [
-  { name: 'Tops', key: 'tops' },
-  { name: 'Bottoms', key: 'bottoms' },
-  { name: 'Dresses', key: 'dresses' },
-  { name: 'Sweaters', key: 'sweaters' },
-  { name: 'Coats', key: 'coats' },
-  { name: 'Suits', key: 'suits' },
-  { name: 'Shoes', key: 'shoes' },
-  { name: 'Accessories', key: 'accessories' },
-  { name: 'Jacket', key: 'jacket' },
-  { name: 'Jewelry', key: 'jewelry' },
-  { name: 'Bags', key: 'bags' },
-  { name: 'Beauty', key: 'beauty' }
-];
-
 type ItemInfoFormProps = {
   handleCloseDialog?: () => void;
   onSubmit: SubmitHandler<ItemDetailsType>;
@@ -114,13 +101,7 @@ export const ItemInfoForm = ({
     }
   }).data ?? [];
 
-  const {
-    register,
-    watch,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting }
-  } = methods;
+  const { handleSubmit } = methods;
 
   type Image = {
     src: string;
@@ -202,9 +183,9 @@ export const ItemInfoForm = ({
           />
           <div className="mt-4 flex flex-row-reverse justify-start gap-3">
             <Button type="submit">Advance</Button>
-            <Button variant="outlined" onClick={handleCloseDialog}>
-              Cancel
-            </Button>
+            <LinkButton variant="outlined" href='/admin'>
+              Back to Admin Panel
+            </LinkButton>
           </div>
         </div>
       </Form>

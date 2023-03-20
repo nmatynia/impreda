@@ -1,9 +1,7 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import clsxm from '../../utils/clsxm';
-import {
-  TypographyVariant,
-  variantToClasses as typographyVariants
-} from '../typography/Typography';
+import type { TypographyVariant } from '../typography/Typography';
+import { variantToClasses as typographyVariants } from '../typography/Typography';
 type SizeIndicatorProps = {
   name: string;
   variant?: 'primary' | 'outlined';

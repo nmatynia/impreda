@@ -1,4 +1,5 @@
-import React, { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { Loader } from '../loader/Loader';
 type ButtonProps = {

@@ -7,7 +7,7 @@ import { Container } from '../components/container/Container';
 import { Button } from '../components/button/Button';
 import { Input } from '../components/input/Input';
 import { signIn } from 'next-auth/react';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getServerAuthSession } from '../server/common/get-server-auth-session';
 import Link from 'next/link';
 
@@ -45,7 +45,7 @@ const login = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
             </Button>
           </div>
           <LargeBodyText className="text-primaryWhite">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link href="/register" className="underline hover:cursor-pointer">
               Register
             </Link>{' '}

@@ -1,10 +1,13 @@
-import React, { ReactNode } from 'react';
-import {
+import type { ReactNode } from 'react';
+import React from 'react';
+import type {
   ControllerFieldState,
   ControllerRenderProps,
   FieldValues,
-  useController,
   UseFormStateReturn
+} from 'react-hook-form';
+import {
+  useController
 } from 'react-hook-form';
 
 type FieldProps = {
