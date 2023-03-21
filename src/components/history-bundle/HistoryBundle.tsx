@@ -22,7 +22,7 @@ export const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProp
     [order]
   );
 
-  //TODO: Consider making this logic on backend
+  // TODO: Consider making this logic on backend
   const total = useMemo(() => order.items.reduce((acc, item) => acc + item.itemPrice, 0), [order]);
 
   return (
@@ -46,10 +46,11 @@ export const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProp
           </div>
         </div>
         <div className="ml-2 flex gap-2">
-          <button className="cursor-pointer">
+          <button type="button" className="cursor-pointer">
             <SvgIcon name="Eye" className="fill-primaryWhite" />
           </button>
           <button
+            type="button"
             className={clsxm(
               'transform cursor-pointer transition-transform duration-500 ease-in-out',
               open && 'rotate-180'
@@ -66,19 +67,19 @@ export const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProp
         show={open}
         enter="transition-all duration-1000"
         enterFrom="opacity-0 max-h-0"
-        enterTo={`opacity-100 translate-y-0 max-h-[600px]`}
+        enterTo="opacity-100 translate-y-0 max-h-[600px]"
         leave="transition-all duration-1000"
         leaveFrom="opacity-100 translate-y-0 max-h-[600px]"
         leaveTo="opacity-0 max-h-0"
       >
         <div className="flex flex-col gap-6" style={{ direction: 'ltr' }}>
-          {order.items.map((item, idx) => {
+          {order.items.map(item => {
             const itemOrder = {
               ...order,
               items: [item]
             };
             return (
-              <HistoryItem key={`item-${idx}`} order={itemOrder} className="ml-auto w-[90%]" />
+              <HistoryItem key={item.itemName} order={itemOrder} className="ml-auto w-[90%]" />
             );
           })}
         </div>

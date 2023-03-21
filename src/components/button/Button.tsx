@@ -2,13 +2,14 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { Loader } from '../loader/Loader';
+
+type ButtonVariant = 'primary' | 'outlined';
 type ButtonProps = {
   children: ReactNode;
   variant?: ButtonVariant;
   className?: string;
   isLoading?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
-type ButtonVariant = 'primary' | 'outlined';
 
 const buttonVariant = {
   primary: 'bg-primaryBlack text-primaryWhite',
@@ -29,6 +30,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button
+      type="button"
       className={clsxm(
         'relative w-fit rounded-md px-8 py-2',
         buttonVariant[variant],

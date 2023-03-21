@@ -28,7 +28,7 @@ export const HistoryItem = ({ order, showBuyer = false, className }: HistoryItem
           {showBuyer && <BodyText>Buyer: {order.buyer}</BodyText>}
         </div>
       </div>
-      <button className="cursor-pointer">
+      <button type="button" className="cursor-pointer">
         <SvgIcon name="Eye" className="ml-2 fill-primaryWhite" />
       </button>
     </RoundedBox>

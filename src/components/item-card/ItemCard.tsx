@@ -38,7 +38,7 @@ export type ItemProps = {
     percentage: number;
   }[];
   views?: number;
-  category: string; //TODO change to enum
+  category: string; // TODO change to enum
 };
 
 export const ItemCard = ({ name, price, brand, sizes, colors, images, className }: ItemProps) => {
@@ -53,7 +53,7 @@ export const ItemCard = ({ name, price, brand, sizes, colors, images, className 
     >
       <div className="relative z-10 flex aspect-[0.75] w-full select-none flex-col justify-between p-6">
         <Image
-          src={images[0] ?? ''} //TODO: Add holder img
+          src={images[0] ?? ''} // TODO: Add holder img
           alt={name}
           fill
           className="absolute -z-10 object-cover p-3"
@@ -77,13 +77,13 @@ export const ItemCard = ({ name, price, brand, sizes, colors, images, className 
         )}
       >
         <div className="flex gap-2">
-          {sizes.map((size, idx) => (
-            <SizeIndicator key={`size-${idx}`} {...size} variant="outlined" />
+          {sizes.map(size => (
+            <SizeIndicator key={size.name} {...size} variant="outlined" />
           ))}
         </div>
         <div className="flex gap-2">
-          {colors.map((color, idx) => (
-            <ColorIndicator key={`color-${idx}`} {...color} />
+          {colors.map(color => (
+            <ColorIndicator key={color.name} {...color} />
           ))}
         </div>
       </div>

@@ -36,7 +36,7 @@ export interface TypographyProps {
   style?: CSSProperties | undefined;
 }
 
-//old largeBody ['text-2xl', 'text-current', 'tracking-paragraph'],
+// old largeBody ['text-2xl', 'text-current', 'tracking-paragraph'],
 export const variantToClasses: { [key in TypographyVariant]: string[] } = {
   smallBody: ['text-[10px]', 'md:text-xs', 'leading-4', 'text-current', 'tracking-paragraph'],
   body: ['text-xs sm:text-sm', 'leading-5', 'text-current', 'tracking-paragraph'],
@@ -57,13 +57,13 @@ export const variantToClasses: { [key in TypographyVariant]: string[] } = {
 /**
  * Simple typography component
  */
-export function Typography({
+export const Typography = ({
   variant = 'body',
   as = 'p',
   className,
   children,
   ...rest
-}: TypographyProps) {
+}: TypographyProps) => {
   return React.createElement(
     as,
     {
@@ -74,13 +74,13 @@ export function Typography({
   );
 }
 
-export function Bold({
+export const Bold = ({
   as = 'b',
   variant = 'bold',
   className,
   children,
   ...rest
-}: TypographyProps) {
+}: TypographyProps) => {
   return React.createElement(
     as,
     { className: clsxm(variantToClasses[variant], className), ...rest },

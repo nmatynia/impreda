@@ -1,4 +1,4 @@
-import aws from 'aws-sdk'
+import aws from 'aws-sdk';
 import { z } from 'zod';
 
 import { router, publicProcedure } from '../trpc';
@@ -8,8 +8,8 @@ const s3 = new aws.S3({
   accessKeyId: process.env.APP_AWS_ACCESS_KEY,
   secretAccessKey: process.env.APP_AWS_SECRET_KEY,
   region: process.env.APP_AWS_REGION,
-  signatureVersion: 'v4',
-})
+  signatureVersion: 'v4'
+});
 
 export const imagesRouter = router({
   createPresignedUrl: publicProcedure
@@ -28,19 +28,19 @@ export const imagesRouter = router({
         select: {
           admin: true
         }
-      })
+      });
 
       if (userInfo && !userInfo.admin) {
         throw new Error('Unauthorized');
       }
 
-      const itemId = input.itemId;
+      const { itemId } = input;
       const image = await ctx.prisma.image.create({
         data: {
           itemId,
           filename: input.filename
         }
-      })
+      });
       const key = `${itemId}/${image.id}`;
       const presignedPost = await s3.createPresignedPost({
         Fields: {
@@ -49,20 +49,20 @@ export const imagesRouter = router({
         Expires: 60,
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Conditions: [
-          ['starts-with', "$Content-Type", "image/"],
-          ['content-length-range', 0, 5048576], // up to 1 MB
-        ],
-      })
+          ['starts-with', '$Content-Type', 'image/'],
+          ['content-length-range', 0, 5048576] // up to 1 MB
+        ]
+      });
 
       await ctx.prisma.image.update({
         where: {
           id: image.id
         },
         data: {
-          url: presignedPost.url + '/' + key
+          url: `${presignedPost.url}/${key}`
         }
-      })
+      });
 
-      return presignedPost
-    }),
+      return presignedPost;
+    })
 });

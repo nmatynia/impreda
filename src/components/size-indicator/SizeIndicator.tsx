@@ -2,6 +2,7 @@ import React from 'react';
 import clsxm from '../../utils/clsxm';
 import type { TypographyVariant } from '../typography/Typography';
 import { variantToClasses as typographyVariants } from '../typography/Typography';
+
 type SizeIndicatorProps = {
   name: string;
   variant?: 'primary' | 'outlined';
@@ -31,6 +32,7 @@ export const SizeIndicator = ({
   const outOfStock = available === 0;
   return (
     <button
+      type="button"
       disabled={outOfStock}
       className={clsxm(
         'relative flex aspect-square w-7 items-center justify-center  rounded-md p-1',

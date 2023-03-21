@@ -4,8 +4,8 @@ import { FilterPanel } from '../filter-panel/FilterPanel';
 import { HistoryBundle } from '../history-bundle/HistoryBundle';
 import { HistoryItem } from '../history-item/HistoryItem';
 
-//TODO: Consider saving total in the database instead of calculating it every time on client
-//TODO: Possibly display itemDesigner as well
+// TODO: Consider saving total in the database instead of calculating it every time on client
+// TODO: Possibly display itemDesigner as well
 export type OrderType = {
   id: string;
   items: {
@@ -55,9 +55,9 @@ export const OrderHistorySection = ({ className }: OrderHistorySectionProps) => 
         {orderHistory.map(order => {
           if (order.items.length === 1) {
             return <HistoryItem key={`order-${order.id}`} order={order} />;
-          } else {
+          } 
             return <HistoryBundle key={`order-${order.id}`} order={order} />;
-          }
+          
         })}
       </div>
     </section>

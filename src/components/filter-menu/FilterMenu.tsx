@@ -5,6 +5,7 @@ import { Box } from '../box/Box';
 import { Button } from '../button/Button';
 import { FilterButton } from '../filter-button/FilterButton';
 import { BodyText } from '../typography/Typography';
+
 type FilterMenuProps = {
   className?: string;
   isOpen: boolean;

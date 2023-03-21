@@ -5,6 +5,7 @@ import { RoundedBox } from '../../box/RoundedBox';
 import { SvgIcon } from '../../icons/SvgIcon';
 import type { ItemProps } from '../../item-card/ItemCard';
 import { BodyText } from '../../typography/Typography';
+
 type ItemListItemProps = {
   className?: string;
   item: ItemProps;
@@ -33,7 +34,7 @@ export const ItemListItem = ({ className, item }: ItemListItemProps) => {
           </div>
         </div>
       </div>
-      <button className="cursor-pointer">
+      <button type="button" className="cursor-pointer">
         <SvgIcon name="Edit" className="ml-5 fill-primaryWhite" />
       </button>
     </RoundedBox>

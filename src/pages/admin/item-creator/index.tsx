@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import type { SubmitHandler } from 'react-hook-form';
 import { RoundedBox } from '../../../components/box/RoundedBox';
 import { LargeBodyText } from '../../../components/typography/Typography';
 import type { ItemDetailsType } from '../../../components/forms/ItemInfoForm';
 import { ItemInfoForm } from '../../../components/forms/ItemInfoForm';
 import type { OptionType } from '../../../components/select/Select';
-import type { SubmitHandler } from 'react-hook-form';
 import type { ItemAvailabilityType } from '../../../components/forms/ItemAvailabilityForm';
 import { ItemAvailabilityForm } from '../../../components/forms/ItemAvailabilityForm';
 import type { ImageType } from '../../../components/image-uploader/ImageUploader';
@@ -41,11 +41,13 @@ const ItemCreator = () => {
 
   const uploadToDB = async (itemId: string) => {
     const requests: Promise<Response>[] = [];
+    // eslint-disable-next-line no-restricted-syntax
     for (const image of images) {
       if (!image.file) return;
       const filename = encodeURIComponent(image.file.name ?? '');
+      // eslint-disable-next-line no-await-in-loop
       const { url, fields }: { url: string; fields: any } = await createPresignedUrl({
-        filename: filename,
+        filename,
         itemId
       });
 
@@ -55,6 +57,7 @@ const ItemCreator = () => {
         file: image.file
       };
       const formData = new FormData();
+      // eslint-disable-next-line no-restricted-syntax
       for (const name in data) {
         formData.append(name, data[name]);
       }
@@ -100,7 +103,7 @@ const ItemCreator = () => {
         price: price.current,
         sex: sex.current,
         description: description.current,
-        fabrics: (fabrics.current as any)[0].key, //TODO temporary
+        fabrics: (fabrics.current as any)[0].key, // TODO temporary
         category: category.current,
         colors: data.colors
       });
@@ -134,7 +137,7 @@ const ItemCreator = () => {
             </div>
             <div className="mt-4 flex justify-start gap-3 self-end">
               <Button onClick={() => window.location.reload()}>Add another item</Button>
-              <LinkButton href={'/admin'}>Back to Admin Panel</LinkButton>
+              <LinkButton href="/admin">Back to Admin Panel</LinkButton>
             </div>
           </div>
         )}

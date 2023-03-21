@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
+import Image from 'next/image';
 import { Container } from '../components/container/Container';
 import type { ItemProps } from '../components/item-card/ItemCard';
 import { ItemCard } from '../components/item-card/ItemCard';
@@ -8,7 +9,6 @@ import { Dot } from '../components/dot/Dot';
 import { SizeIndicator } from '../components/size-indicator/SizeIndicator';
 import { Button } from '../components/button/Button';
 import { SvgIcon } from '../components/icons/SvgIcon';
-import Image from 'next/image';
 import { ColorIndicator } from '../components/color-indicator/ColorIndicator';
 import { ItemContainer } from '../components/items-container/ItemContainer';
 import DefaultRickTeeImg from '../../public/images/default-rick-tee.webp';
@@ -93,8 +93,8 @@ const itemHolder: ItemProps = {
 const Item = () => {
   const router = useRouter();
   const { item } = router.query;
-  //TODO fetch item data based on item id
-  //TODO selected size and color should have different variant selected
+  // TODO fetch item data based on item id
+  // TODO selected size and color should have different variant selected
   return (
     <Container fullSize className="overflow-visible">
       <div className="relative flex h-fit w-full flex-col sm:flex-row">
@@ -161,8 +161,8 @@ const Item = () => {
         </LargeBodyText>
       </div>
       <ItemContainer>
-        {itemsHolder.map(item => (
-          <ItemCard {...item} key={item.id} />
+        {itemsHolder.map(i => (
+          <ItemCard {...i} key={i.id} />
         ))}
       </ItemContainer>
     </Container>

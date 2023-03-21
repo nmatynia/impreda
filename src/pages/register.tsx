@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
+import { signIn } from 'next-auth/react';
+import type { GetServerSideProps } from 'next';
 import { RoundedBox } from '../components/box/RoundedBox';
 import { BigHeading, BodyText, LogoText } from '../components/typography/Typography';
 import RegisterThumbnail from '../../public/images/register-thumbnail.webp';
@@ -7,12 +9,10 @@ import { Container } from '../components/container/Container';
 import { Button } from '../components/button/Button';
 import { Input } from '../components/input/Input';
 import { Checkbox } from '../components/checkbox/Checkbox';
-import { signIn } from 'next-auth/react';
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getServerAuthSession } from '../server/common/get-server-auth-session';
 
-//TODO - use form library
-const register = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+// TODO - use form library
+const register = () => {
   return (
     <Container className="h-full bg-primaryBlack px-0 md:h-fit md:bg-primaryWhite md:px-4">
       <RoundedBox className="flex w-full max-w-[1200px] bg-primaryBlack p-0 text-primaryWhite">
@@ -41,14 +41,14 @@ const register = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) =>
           </div>
           <div className="flex w-fit flex-col flex-wrap items-center  gap-4 sm:flex-row">
             <Button
-              variant={'outlined'}
+              variant="outlined"
               className="w-full border-primaryWhite text-primaryWhite sm:w-fit"
             >
               Register
             </Button>
             <BodyText>or</BodyText>
             <Button
-              variant={'outlined'}
+              variant="outlined"
               className="w-full whitespace-nowrap border-primaryWhite text-primaryWhite sm:w-fit"
               onClick={() =>
                 signIn('google', {

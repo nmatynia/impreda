@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import clsxm from '../../utils/clsxm';
 import { SvgIcon } from '../icons/SvgIcon';
 //* https://github.com/jeancroy/FuzzySearch
-//TODO Enhance it
+// TODO Enhance it
 type SearchHeaderProps = {
   isOpen?: boolean;
   setIsOpen: (open: boolean) => void;
