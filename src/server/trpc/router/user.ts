@@ -7,19 +7,20 @@ export const userRouter = router({
     const { session } = ctx;
     const userId = session?.user?.id;
     if (!userId) {
-      return;
+      return undefined;
     }
     return ctx.prisma.user.findUnique({
       where: {
         id: userId
       }
-    })
+    });
   }),
+
   update: publicProcedure.input(UserDetailsSchema).mutation(async ({ ctx, input }) => {
     const { session } = ctx;
     const userId = session?.user?.id;
     if (!userId) {
-      return;
+      return undefined;
     }
     const user = await ctx.prisma.user.findUnique({
       where: {
@@ -27,7 +28,7 @@ export const userRouter = router({
       }
     });
     if (!user) {
-      return;
+      return undefined;
     }
     return ctx.prisma.user.update({
       where: {
@@ -36,6 +37,6 @@ export const userRouter = router({
       data: {
         ...input
       }
-    })
+    });
   })
 });

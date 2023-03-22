@@ -13,7 +13,7 @@ export type BoxProps = {
   className?: string;
   children?: ReactNode;
   isOpen?: boolean;
-  position?: PositionVariant; //If needed add more options
+  position?: PositionVariant; // If needed add more options
 };
 export const Box = ({ className, children, isOpen = true, position = 'left' }: BoxProps) => {
   return (

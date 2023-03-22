@@ -1,12 +1,12 @@
 import React from 'react';
-import { trpc } from '../../utils/trpc';
-import { RoundedBox } from '../box/RoundedBox';
-import { SvgIcon } from '../icons/SvgIcon';
-import { BodyText, Bold, LargeBodyText } from '../typography/Typography';
 import { z } from 'zod';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { trpc } from '../../utils/trpc';
+import { RoundedBox } from '../box/RoundedBox';
+import { SvgIcon } from '../icons/SvgIcon';
+import { BodyText, Bold, LargeBodyText } from '../typography/Typography';
 import { Button } from '../button/Button';
 import { InputField } from '../forms/InputField';
 import { Form } from '../forms/Form';
@@ -67,7 +67,7 @@ export const UserAccountBox = () => {
     <RoundedBox className="mt-16 w-full p-0">
       <div className="flex w-full items-center justify-between border-b-[1px] border-primaryBlack p-8">
         <LargeBodyText>User Account</LargeBodyText>
-        <button className="cursor-pointer" onClick={handleEnableEditing}>
+        <button type="button" className="cursor-pointer" onClick={handleEnableEditing}>
           <SvgIcon name="Edit" className="fill-primaryBlack" />
         </button>
       </div>
@@ -77,7 +77,7 @@ export const UserAccountBox = () => {
             <div>
               <BodyText>Name:</BodyText>
               {isEditing ? (
-                <InputField placeholder={'Enter name'} name="name" />
+                <InputField placeholder="Enter name" name="name" />
               ) : (
                 <BodyText>
                   <Bold>{data?.name ?? '----'}</Bold>
@@ -87,7 +87,7 @@ export const UserAccountBox = () => {
             <div>
               <BodyText>Address:</BodyText>
               {isEditing ? (
-                <InputField placeholder={'Enter address'} name="address" />
+                <InputField placeholder="Enter address" name="address" />
               ) : (
                 <BodyText>
                   <Bold>{data?.address ?? '----'}</Bold>
@@ -97,7 +97,7 @@ export const UserAccountBox = () => {
             <div>
               <BodyText>City:</BodyText>
               {isEditing ? (
-                <InputField placeholder={'Enter city'} name="city" />
+                <InputField placeholder="Enter city" name="city" />
               ) : (
                 <BodyText>
                   <Bold>{data?.city ?? '----'}</Bold>
@@ -107,7 +107,7 @@ export const UserAccountBox = () => {
             <div>
               <BodyText>Zip code:</BodyText>
               {isEditing ? (
-                <InputField placeholder={'Enter zip code'} name="zipCode" />
+                <InputField placeholder="Enter zip code" name="zipCode" />
               ) : (
                 <BodyText>
                   <Bold>{data?.zipCode ?? '----'}</Bold>
@@ -119,7 +119,7 @@ export const UserAccountBox = () => {
             <div>
               <BodyText>Card Details:</BodyText>
               {isEditing ? (
-                <InputField placeholder={'Enter card details'} name="cardDetails" />
+                <InputField placeholder="Enter card details" name="cardDetails" />
               ) : (
                 <BodyText>
                   <Bold>{data?.cardNumber ?? '----'}</Bold>
@@ -129,7 +129,7 @@ export const UserAccountBox = () => {
             <div>
               <BodyText>Phone Number:</BodyText>
               {isEditing ? (
-                <InputField placeholder={'Enter phone number'} name="phoneNumber" />
+                <InputField placeholder="Enter phone number" name="phoneNumber" />
               ) : (
                 <BodyText>
                   <Bold>{data?.phoneNumber ?? '----'}</Bold>

@@ -11,7 +11,6 @@ export type ImageType = {
   file: Blob;
 };
 type ImageUploaderProps = {
-  name: string;
   images: ImageType[];
   setImages: React.Dispatch<React.SetStateAction<ImageType[]>>;
 };
@@ -23,7 +22,7 @@ export const ImageUploader = ({ images, setImages }: ImageUploaderProps) => {
     const imagesObj = files.map(file => ({
       src: URL.createObjectURL(file),
       filename: file.name,
-      file: file
+      file
     }));
     setImages([...images, ...imagesObj]);
   };
@@ -63,12 +62,13 @@ export const ImageUploader = ({ images, setImages }: ImageUploaderProps) => {
         </div>
         {images.length > 0 && (
           <div className="flex w-full gap-4 overflow-x-auto">
-            {images.map((image, idx) => (
+            {images.map(image => (
               <div
                 className="relative mt-2 h-32 w-32 flex-shrink-0 border-[1px] border-primaryBlack"
-                key={`image-${idx}`}
+                key={image.src}
               >
                 <button
+                  type="button"
                   className={clsxm(
                     'flex items-center justify-center',
                     'absolute top-0 right-0 z-10 h-4 w-4 translate-x-1/2 -translate-y-1/2',
@@ -79,7 +79,7 @@ export const ImageUploader = ({ images, setImages }: ImageUploaderProps) => {
                   <SvgIcon name="Cross" className="h-2 w-2 fill-primaryWhite" />
                 </button>
                 <Image
-                  key={`image-${idx}`}
+                  key={image.src}
                   src={image.src}
                   alt="item"
                   className="z-0 object-cover"

@@ -1,6 +1,7 @@
 import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { isDark } from '../../utils/helpers/isDark';
+
 type ColorIndicatorProps = {
   className?: string;
   hex: string;
@@ -12,6 +13,7 @@ export const ColorIndicator = ({ hex, available, name, className }: ColorIndicat
   const outOfStock = available === 0;
   return (
     <button
+      type="button"
       disabled={outOfStock}
       className={clsxm(
         'relative flex aspect-square w-5 items-center justify-center rounded-sm border-[1px] border-primaryBlack',

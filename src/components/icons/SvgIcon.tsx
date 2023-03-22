@@ -19,9 +19,10 @@ import {
 import { FaShoppingBag } from 'react-icons/fa';
 import { HiOutlineSearch } from 'react-icons/hi';
 import clsxm from '../../utils/clsxm';
+
 export type SvgIconComponent = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
-//TODO: Optimize fonts
+// TODO: Optimize fonts
 const iconMap = {
   Search: HiOutlineSearch,
   Cart: FaShoppingBag,
@@ -46,7 +47,7 @@ export type IconName = keyof typeof iconMap;
 
 type Props = SVGProps<SVGSVGElement> & { name: IconName };
 
-export function SvgIcon({ name, className, ...props }: Props) {
+export const SvgIcon = ({ name, className, ...props }: Props) => {
   const IconComponent = iconMap[name];
   return <IconComponent className={clsxm('h-5 w-5', className)} {...props} />;
 }

@@ -5,6 +5,7 @@ import { ButtonSwitch } from '../button-switch/ButtonSwitch';
 import { FilterMenu } from '../filter-menu/FilterMenu';
 import { SvgIcon } from '../icons/SvgIcon';
 import { LargeBodyText } from '../typography/Typography';
+
 type FilterSectionProps = {
   sectionName: string;
   className?: string;

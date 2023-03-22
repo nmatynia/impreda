@@ -80,13 +80,7 @@ type ItemInfoFormProps = {
   setImages: React.Dispatch<React.SetStateAction<ImageType[]>>;
 };
 
-export const ItemInfoForm = ({
-  handleCloseDialog,
-  onSubmit,
-  className,
-  images,
-  setImages
-}: ItemInfoFormProps) => {
+export const ItemInfoForm = ({ onSubmit, className, images, setImages }: ItemInfoFormProps) => {
   const methods = useForm<ItemDetailsType>({
     resolver: zodResolver(ItemDetailsSchema),
     defaultValues: {}
@@ -94,6 +88,8 @@ export const ItemInfoForm = ({
 
   const utils = trpc.useContext();
   const [categoryOptions, setCategoryOptions] = useState<OptionType[]>([]);
+  // TODO: Look into this eslint rule
+  // eslint-disable-next-line no-unused-expressions
   trpc.categories.getAllCategories.useQuery(undefined, {
     onSuccess: val => {
       utils.images.invalidate();
@@ -113,7 +109,7 @@ export const ItemInfoForm = ({
     <>
       <Form className={className} onSubmit={handleSubmit(onSubmit)} {...methods}>
         <div className="m-7 flex flex-col gap-8 md:mx-14">
-          <ImageUploader name="images" images={images} setImages={setImages} />
+          <ImageUploader images={images} setImages={setImages} />
           <div className="flex w-full flex-col gap-6 md:flex-row">
             <InputField
               label="Brand:"
@@ -183,7 +179,7 @@ export const ItemInfoForm = ({
           />
           <div className="mt-4 flex flex-row-reverse justify-start gap-3">
             <Button type="submit">Advance</Button>
-            <LinkButton variant="outlined" href='/admin'>
+            <LinkButton variant="outlined" href="/admin">
               Back to Admin Panel
             </LinkButton>
           </div>

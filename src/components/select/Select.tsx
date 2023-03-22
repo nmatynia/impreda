@@ -74,9 +74,9 @@ export const Select = React.forwardRef(
                 'text-xs sm:text-sm'
               )}
             >
-              {options.map((option, optionIdx) => (
+              {options.map(option => (
                 <Listbox.Option
-                  key={optionIdx}
+                  key={option.key}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
                       active ? 'bg-gray-100' : 'text-primaryBlack'

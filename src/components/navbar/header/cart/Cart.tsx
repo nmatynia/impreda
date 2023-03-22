@@ -7,6 +7,7 @@ import type { CartItemProps } from './CartItem';
 import { CartItem } from './CartItem';
 import DefaultTee from '../../../../../public/images/default-tee.webp';
 import { Button } from '../../../button/Button';
+
 type CartProps = {
   className?: string;
 } & BoxProps;
@@ -48,9 +49,9 @@ export const Cart = ({ className, ...props }: CartProps) => {
     <Box className={clsxm('absolute w-screen sm:w-[440px]', className)} {...props}>
       <div className="flex flex-col justify-between">
         <div className="mr-2 max-h-[500px] overflow-y-auto">
-          {hardCodedItems.map((item, index) => (
+          {hardCodedItems.map(item => (
             <CartItem
-              key={`cart-item-${index}`}
+              key={item.name} // TODO: Change this to a unique id
               {...item}
               className="border-b-[1px] border-primaryBlack py-4 first:pt-0 "
             />

@@ -58,7 +58,7 @@ export const ItemListSection = ({ className }: ItemListSectionProps) => {
       <FilterPanel sectionName="Item List" />
       <div className="z-10 my-6 flex flex-col gap-6">
         {itemList.map(item => {
-          return <ItemListItem item={item} key={'item-' + item.id} />;
+          return <ItemListItem item={item} key={`item-${  item.id}`} />;
         })}
       </div>
     </section>

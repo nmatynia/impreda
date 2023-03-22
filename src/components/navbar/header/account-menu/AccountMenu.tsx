@@ -7,6 +7,7 @@ import type { BoxProps } from '../../../box/Box';
 import { Box } from '../../../box/Box';
 import { SvgIcon } from '../../../icons/SvgIcon';
 import { BodyText } from '../../../typography/Typography';
+
 type AccountMenuProps = {
   className?: string;
 } & BoxProps;
@@ -25,14 +26,18 @@ export const AccountMenu = ({ className, ...props }: AccountMenuProps) => {
         </Link>
       </ItemWrappper>
       <ItemWrappper>
-        <Link href={'/'} className="flex items-center justify-center gap-4">
+        <Link href="/" className="flex items-center justify-center gap-4">
           <SvgIcon name="OutlinedSettings" />
           <BodyText>Preferences</BodyText>
         </Link>
       </ItemWrappper>
       {session && (
         <ItemWrappper>
-          <button className="flex items-center justify-center gap-4" onClick={() => signOut()}>
+          <button
+            type="button"
+            className="flex items-center justify-center gap-4"
+            onClick={() => signOut()}
+          >
             <SvgIcon name="Logout" />
             <BodyText>Logout</BodyText>
           </button>

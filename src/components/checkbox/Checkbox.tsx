@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { Typography } from '../typography/Typography';
+
 type CheckboxProps = {
   className?: string;
   label: ReactNode;
