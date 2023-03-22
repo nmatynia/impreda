@@ -40,8 +40,14 @@ export const Button = ({
       disabled={isLoading}
       {...rest}
     >
-      {isLoading && <Loader className={clsxm('h-[14px] w-[14px]', loaderVariant[variant])} />}
-      <div className={isLoading ? 'opacity-0' : ''}>{children}</div>
+      {isLoading ? (
+        <>
+          <Loader className={clsxm('h-[14px] w-[14px]', loaderVariant[variant])} />
+          <div className={isLoading ? 'opacity-0' : ''}>{children}</div>
+        </>
+      ) : (
+        children
+      )}
     </button>
   );
 };
