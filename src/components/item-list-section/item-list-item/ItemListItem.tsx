@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import React from 'react';
+import { ItemType } from '../../../types/types';
 import clsxm from '../../../utils/clsxm';
 import { RoundedBox } from '../../box/RoundedBox';
 import { SvgIcon } from '../../icons/SvgIcon';
-import type { ItemProps } from '../../item-card/ItemCard';
 import { BodyText } from '../../typography/Typography';
 
 type ItemListItemProps = {
   className?: string;
-  item: ItemProps;
+  item: ItemType;
 };
 export const ItemListItem = ({ className, item }: ItemListItemProps) => {
   return (
@@ -21,7 +21,7 @@ export const ItemListItem = ({ className, item }: ItemListItemProps) => {
     >
       <div className="flex w-full max-w-[50%] gap-4 sm:max-w-max">
         <div className="relative aspect-square h-[52px] bg-primaryWhite">
-          <Image src={item.images[0] ?? ''} fill className="object-contain" alt="Item Image" />
+          <Image src={item.images[0].url ?? ''} fill className="object-contain" alt="Item Image" />
         </div>
         <div className="flex w-full flex-col gap-3">
           <BodyText className="w-full overflow-hidden overflow-ellipsis whitespace-nowrap ">
@@ -30,7 +30,7 @@ export const ItemListItem = ({ className, item }: ItemListItemProps) => {
           <div className="flex w-fit gap-4 whitespace-pre sm:gap-24">
             <BodyText>Price: {item.price}£</BodyText>
             <BodyText>Views: {item.views}</BodyText>
-            <BodyText className="hidden sm:block">Favorites: {item.saved}</BodyText>
+            <BodyText className="hidden sm:block">Favorites: {item.savedBy}</BodyText>
           </div>
         </div>
       </div>

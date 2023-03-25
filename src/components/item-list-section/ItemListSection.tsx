@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
+import type { ItemType } from '../../types/types';
 import clsxm from '../../utils/clsxm';
+import { trpc } from '../../utils/trpc';
 import { FilterPanel } from '../filter-panel/FilterPanel';
-import type { ItemProps } from '../item-card/ItemCard';
 import { ItemListItem } from './item-list-item/ItemListItem';
 
-const itemList: ItemProps[] = [
+const itemList: ItemType[] = [
   {
     id: '12324',
     brand: 'Rick Owens',
@@ -53,12 +54,19 @@ type ItemListSectionProps = {
   className?: string;
 };
 export const ItemListSection = ({ className }: ItemListSectionProps) => {
+  const [items, setItems] = useState<ItemType[]>([]);
+  trpc.items.getItems.useQuery(undefined, {
+    onSuccess: data => {
+      setItems(data);
+    }
+  });
+  console.log(items);
   return (
     <section className={clsxm('flex flex-col', className)}>
       <FilterPanel sectionName="Item List" />
       <div className="z-10 my-6 flex flex-col gap-6">
-        {itemList.map(item => {
-          return <ItemListItem item={item} key={`item-${  item.id}`} />;
+        {items.map(item => {
+          return <ItemListItem item={item} key={`item-${item.id}`} />;
         })}
       </div>
     </section>

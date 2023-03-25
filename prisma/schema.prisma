@@ -81,12 +81,13 @@ model Item {
   brand     String
   sex       Sex
   price     Int
-  image     Image[]
+  images     Image[]
   description String? @db.Text
   category  Category[]
   fabrics   String?    
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  views     Int      @default(0)
   size      Size[]
   color     Color[]
   savedBy   User[]

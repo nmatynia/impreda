@@ -45,7 +45,7 @@ const ItemCreator = () => {
     for (const image of images) {
       if (!image.file) return;
       const filename = encodeURIComponent(image.file.name ?? '');
-      // eslint-disable-next-line no-await-in-loop
+      // eslint-disable-next-line no-await-in-loop, @typescript-eslint/no-explicit-any
       const { url, fields }: { url: string; fields: any } = await createPresignedUrl({
         filename,
         itemId

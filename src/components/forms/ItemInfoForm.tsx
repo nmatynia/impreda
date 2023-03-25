@@ -73,7 +73,6 @@ const fabricOptions = [
 ];
 
 type ItemInfoFormProps = {
-  handleCloseDialog?: () => void;
   onSubmit: SubmitHandler<ItemDetailsType>;
   className?: string;
   images: ImageType[];
@@ -86,16 +85,13 @@ export const ItemInfoForm = ({ onSubmit, className, images, setImages }: ItemInf
     defaultValues: {}
   });
 
-  const utils = trpc.useContext();
   const [categoryOptions, setCategoryOptions] = useState<OptionType[]>([]);
   // TODO: Look into this eslint rule
-  // eslint-disable-next-line no-unused-expressions
   trpc.categories.getAllCategories.useQuery(undefined, {
     onSuccess: val => {
-      utils.images.invalidate();
-      setCategoryOptions(val.categories);
+      setCategoryOptions(val.categories ?? []);
     }
-  }).data ?? [];
+  });
 
   const { handleSubmit } = methods;
 
