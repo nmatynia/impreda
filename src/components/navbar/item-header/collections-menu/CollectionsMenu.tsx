@@ -11,7 +11,7 @@ const collections = [
   { name: 'SPRING 2023 / MESSAGE' },
   { name: 'SUMMER 2023 / SPIRIT' }
 ];
-type CollectionsMenuProps = BoxProps
+type CollectionsMenuProps = BoxProps;
 
 export const CollectionsMenu = ({ className, ...props }: CollectionsMenuProps) => {
   return (

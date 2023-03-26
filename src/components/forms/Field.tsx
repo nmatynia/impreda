@@ -6,9 +6,7 @@ import type {
   FieldValues,
   UseFormStateReturn
 } from 'react-hook-form';
-import {
-  useController
-} from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
 type FieldProps = {
   children: (

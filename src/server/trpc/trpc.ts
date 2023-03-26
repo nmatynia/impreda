@@ -10,7 +10,7 @@ const t = initTRPC.context<Context>().create({
   }
 });
 
-export const {router} = t;
+export const { router } = t;
 
 /**
  * Unprotected procedure

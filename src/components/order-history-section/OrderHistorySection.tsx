@@ -55,9 +55,8 @@ export const OrderHistorySection = ({ className }: OrderHistorySectionProps) => 
         {orderHistory.map(order => {
           if (order.items.length === 1) {
             return <HistoryItem key={`order-${order.id}`} order={order} />;
-          } 
-            return <HistoryBundle key={`order-${order.id}`} order={order} />;
-          
+          }
+          return <HistoryBundle key={`order-${order.id}`} order={order} />;
         })}
       </div>
     </section>

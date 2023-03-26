@@ -72,7 +72,7 @@ export const Typography = ({
     },
     children
   );
-}
+};
 
 export const Bold = ({
   as = 'b',
@@ -86,7 +86,7 @@ export const Bold = ({
     { className: clsxm(variantToClasses[variant], className), ...rest },
     children
   );
-}
+};
 
 export type TypographyPropsWithoutVariant = Omit<TypographyProps, 'variant'>;
 

@@ -9,7 +9,7 @@ export const categoriesRouter = router({
       }
     });
     return {
-      categories: categories.map((category) => ({ name: category.name, key: category.id }))
-    }
-  }),
+      categories: categories.map(category => ({ name: category.name, key: category.id }))
+    };
+  })
 });

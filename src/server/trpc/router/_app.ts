@@ -10,7 +10,7 @@ export const appRouter = router({
   auth: authRouter,
   images: imagesRouter,
   items: itemsRouter,
-  categories: categoriesRouter,
+  categories: categoriesRouter
 });
 
 // export type definition of API
