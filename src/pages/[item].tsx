@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Container } from '../components/container/Container';
 import type { ItemProps } from '../components/item-card/ItemCard';
@@ -13,13 +13,15 @@ import { ColorIndicator } from '../components/color-indicator/ColorIndicator';
 import { ItemContainer } from '../components/items-container/ItemContainer';
 import DefaultRickTeeImg from '../../public/images/default-rick-tee.webp';
 import DefaultAlyxJacketImg from '../../public/images/default-alyx-jacket.webp';
+import { trpc } from '../utils/trpc';
+import { ItemType } from '../types/types';
 
-const itemsHolder: ItemProps[] = [
+const itemsHolder: ItemType[] = [
   {
     id: '2',
     brand: 'Rick Owens',
     name: 'DRKSHDW Oversized Graphic T-Shirt',
-    sex: 'man',
+    sex: 'MALE',
     sizes: [
       { name: 'S', available: 1 },
       { name: 'M', available: 1 },
@@ -31,15 +33,24 @@ const itemsHolder: ItemProps[] = [
       { name: 'White', hex: 'white', available: 0 }
     ],
     price: 30,
-    saved: 21,
-    images: [DefaultRickTeeImg.src],
-    category: 't-shirt'
+    savedBy: 21,
+    images: [
+      {
+        id: '2',
+        filename: 'default-alyx-jacket.webp',
+        url: DefaultRickTeeImg.src
+      }
+    ],
+    category: {
+      id: '1',
+      name: 't-shirt'
+    }
   },
   {
     id: '4',
     brand: '1017 ALYX 9SM x Moncler',
     name: 'Almondis Jacket',
-    sex: 'man',
+    sex: 'MALE',
     sizes: [
       { name: 'S', available: 1 },
       { name: 'M', available: 1 },
@@ -52,9 +63,18 @@ const itemsHolder: ItemProps[] = [
       { name: 'Red', hex: '#dc2626', available: 0 } // hex for neutral red -
     ],
     price: 30,
-    saved: 12,
-    images: [DefaultAlyxJacketImg.src],
-    category: 'jacket'
+    savedBy: 1,
+    images: [
+      {
+        id: '2',
+        filename: 'default-alyx-jacket.webp',
+        url: DefaultAlyxJacketImg.src
+      }
+    ],
+    category: {
+      id: '1',
+      name: 'jacket'
+    }
   }
 ];
 
@@ -62,48 +82,26 @@ itemsHolder.push(...itemsHolder);
 itemsHolder.push(...itemsHolder);
 itemsHolder.push(...itemsHolder);
 
-const itemHolder: ItemProps = {
-  id: '2312',
-  brand: 'Rick Owens',
-  name: 'DRKSHDW Oversized Graphic T-Shirt',
-  sex: 'man',
-  sizes: [
-    { name: 'S', available: 1 },
-    { name: 'M', available: 0 },
-    { name: 'L', available: 1 },
-    { name: 'XL', available: 1 }
-  ],
-  colors: [
-    { name: 'Black', hex: '#000000', available: 1 },
-    { name: 'White', hex: 'white', available: 3 }
-  ],
-  price: 30,
-  saved: 321,
-  images: [DefaultRickTeeImg.src, DefaultRickTeeImg.src],
-  description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vulputate, dui ornare pellentesque sodales, nulla est 
-  semper metus, vel porttitor libero metus sed magna. Mauris vitae sapien nibh. Mauris lobortis, neque non tincidunt tincidunt, velit orci commodo neque, eu volutpat 
-  elit justo vitae sem. Nulla pulvinar pharetra velit.`,
-  fabrics: [
-    { name: 'Cotton', percentage: 80 },
-    { name: 'Nylon', percentage: 20 }
-  ],
-  category: 't-shirt'
-};
-
 const Item = () => {
   const router = useRouter();
-  const { item } = router.query;
+  const { id } = router.query;
+  const [loading, setLoading] = useState(true);
+
+  const { data: item } = trpc.items.getItem.useQuery((id as string) || '', {
+    onSuccess: () => setLoading(false)
+  });
+
   // TODO fetch item data based on item id
   // TODO selected size and color should have different variant selected
   return (
     <Container fullSize className="overflow-visible">
       <div className="relative flex h-fit w-full flex-col sm:flex-row">
         <div className="flex h-fit w-full flex-col gap-20 border-r-[1px] border-primaryBlack bg-primaryWhite py-20 sm:w-1/2">
-          {itemHolder.images.map((image, idx) => (
-            <div className="relative h-screenWithoutHeader" key={`image-${idx}`}>
+          {item?.images.map((image, idx) => (
+            <div className="relative h-screenWithoutHeader" key={image.id}>
               <Image
-                src={image}
-                alt={`${itemHolder.name} Photo ${idx}`}
+                src={image.url ?? ''}
+                alt={`${item?.name} Photo ${idx}`}
                 fill
                 className="object-contain"
               />
@@ -111,37 +109,38 @@ const Item = () => {
           ))}
         </div>
         <div className="sticky top-0 flex h-fit min-h-screenWithoutHeader w-full items-center justify-center sm:w-1/2">
-          <div className="flex flex-col p-8">
+          <div className="flex w-[32rem] flex-col p-8">
             <LargeBodyText>
-              <Bold>{itemHolder.name}</Bold>
+              <Bold>{item?.name}</Bold>
             </LargeBodyText>
             <div className="flex items-center gap-3">
-              <BodyText>{itemHolder.brand}</BodyText>
+              <BodyText>{item?.brand}</BodyText>
               <Dot />
-              <BodyText>£{itemHolder.price}</BodyText>
+              <BodyText>£{item?.price}</BodyText>
             </div>
             <div className="mt-10" />
-            <BodyText className="max-w-md">{itemHolder.description}</BodyText>
+            <BodyText className="max-w-md">{item?.description}</BodyText>
             <div className="mt-10" />
             <div className="flex flex-wrap gap-4">
-              {itemHolder.fabrics
-                ? itemHolder.fabrics.map((fabric, idx) => (
-                    <BodyText key={`fabric-${idx}`}>
-                      {fabric.percentage}% {fabric.name}
-                    </BodyText>
-                  ))
+              {item?.fabrics
+                ? // item?.fabrics.map((fabric, idx) => (
+                  // <BodyText key={`fabric-${idx}`}>
+                  //   {fabric.percentage}% {fabric.name}
+                  // </BodyText>
+                  // ))
+                  item.fabrics
                 : '100% Worth It'}
             </div>
             <div className="mt-5" />
             <div className="flex gap-2">
-              {itemHolder.colors.map(color => (
+              {item?.colors.map(color => (
                 <ColorIndicator {...color} className="w-6" key={color.name} />
               ))}
             </div>
             <div className="mt-5" />
             <div className="flex items-center justify-between">
               <div className="flex gap-2">
-                {itemHolder.sizes.map(size => (
+                {item?.sizes.map(size => (
                   <SizeIndicator variant="outlined" {...size} key={size.name} />
                 ))}
               </div>

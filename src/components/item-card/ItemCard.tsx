@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 import { ColorsType, ImageType, SizesType } from '../../types/types';
 import clsxm from '../../utils/clsxm';
@@ -44,6 +45,7 @@ export type ItemProps = {
 };
 
 export type ItemCardProps = {
+  id: string;
   brand: string;
   name: string;
   price: number;
@@ -54,6 +56,7 @@ export type ItemCardProps = {
 };
 
 export const ItemCard = ({
+  id,
   name,
   price,
   brand,
@@ -71,7 +74,10 @@ export const ItemCard = ({
         className
       )}
     >
-      <div className="relative z-10 flex aspect-[0.75] w-full select-none flex-col justify-between p-6">
+      <Link
+        href={{ pathname: '/product', query: { id } }}
+        className="relative z-10 flex aspect-[0.75] w-full select-none flex-col justify-between p-6"
+      >
         <Image
           src={images[0]?.url ?? ''} // TODO: Add holder img
           alt={name}
@@ -79,7 +85,7 @@ export const ItemCard = ({
           className="absolute -z-10 object-cover p-3"
           sizes="288px"
         />
-      </div>
+      </Link>
       <div
         className={clsxm(
           'item-basic-info flex h-24 flex-col items-center justify-center bg-primaryWhite p-4'

@@ -23,7 +23,7 @@ const ShopPage = () => {
             <ItemCardSkeleton className="hidden 2xl:block" />
           </>
         ) : (
-          items?.map(item => <ItemCard {...item} sizes={item.sizes} key={item.id} />)
+          items?.map(item => <ItemCard {...item} key={item.id} />)
         )}
       </ItemContainer>
     </Container>

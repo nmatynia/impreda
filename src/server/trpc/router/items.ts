@@ -145,5 +145,27 @@ export const itemsRouter = router({
         images: item.images
       };
     });
+  }),
+  getItem: publicProcedure.input(z.string()).query(async ({ ctx, input: id }) => {
+    const item = await ctx.prisma.item.findUnique({
+      where: {
+        id
+      },
+      include: {
+        sizes: true,
+        colors: true,
+        category: true,
+        images: true
+      }
+    });
+    return item;
+    // const uniqueSizesNames = [...new Set(item.sizes.map(size => size.name))];
+
+    // const sizes = uniqueSizesNames.map(name => ({
+    //   name,
+    //   available: item.sizes
+    //     .filter(size => size.name === name)
+    //     .reduce((acc, curr) => acc + curr.available, 0)
+    // }));
   })
 });
