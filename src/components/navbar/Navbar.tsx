@@ -8,7 +8,7 @@ export const Navbar = () => {
   const handleShowSearch = () => {
     setShowSearch(!showSearch);
   };
-  const navRef = useRef<any>();
+  const navRef = useRef<HTMLDivElement>(null);
 
   return (
     <nav ref={navRef} className="relative z-10">

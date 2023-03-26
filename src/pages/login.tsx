@@ -1,18 +1,18 @@
 import Image from 'next/image';
 import React from 'react';
-import RoundedBox from '../components/box/RoundedBox';
+import { signIn } from 'next-auth/react';
+import type { GetServerSideProps } from 'next';
+import Link from 'next/link';
+import { RoundedBox } from '../components/box/RoundedBox';
 import { BigHeading, BodyText, LargeBodyText, LogoText } from '../components/typography/Typography';
 import LoginThumbnail from '../../public/images/login-thumbnail.webp';
 import { Container } from '../components/container/Container';
-import Button from '../components/button/Button';
+import { Button } from '../components/button/Button';
 import { Input } from '../components/input/Input';
-import { signIn } from 'next-auth/react';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getServerAuthSession } from '../server/common/get-server-auth-session';
-import Link from 'next/link';
 
-//TODO - use form library
-const login = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+// TODO - use form library
+const login = () => {
   return (
     <Container className="h-full bg-primaryBlack px-0 md:h-fit md:bg-primaryWhite md:px-4">
       <RoundedBox className="flex w-full max-w-[1200px] bg-primaryBlack p-0 text-primaryWhite">
@@ -26,14 +26,14 @@ const login = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
           <div className="flex w-fit flex-col flex-wrap items-center  gap-4 sm:flex-row">
             <Button
-              variant={'outlined'}
+              variant="outlined"
               className="w-full border-primaryWhite text-primaryWhite sm:w-fit"
             >
               Login
             </Button>
             <BodyText>or</BodyText>
             <Button
-              variant={'outlined'}
+              variant="outlined"
               className="w-full whitespace-nowrap border-primaryWhite text-primaryWhite sm:w-fit"
               onClick={() =>
                 signIn('google', {
@@ -45,7 +45,7 @@ const login = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
             </Button>
           </div>
           <LargeBodyText className="text-primaryWhite">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link href="/register" className="underline hover:cursor-pointer">
               Register
             </Link>{' '}
@@ -58,6 +58,7 @@ const login = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
           alt="register-thumbnail"
           height={1200}
           width={969}
+          priority
         />
       </RoundedBox>
     </Container>

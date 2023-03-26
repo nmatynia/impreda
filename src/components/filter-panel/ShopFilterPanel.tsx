@@ -1,20 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import clsxm from '../../utils/clsxm';
-import Box from '../box/Box';
-import ButtonSwitch from '../button-switch/ButtonSwitch';
-import FilterMenu from '../filter-menu/FilterMenu';
+import { Box } from '../box/Box';
+import { ButtonSwitch } from '../button-switch/ButtonSwitch';
+import { FilterMenu } from '../filter-menu/FilterMenu';
 import { SvgIcon } from '../icons/SvgIcon';
 import { LargeBodyText } from '../typography/Typography';
+
 type FilterSectionProps = {
   sectionName: string;
   className?: string;
 };
 export const ShopFilterPanel = ({ sectionName = 'Filters', className }: FilterSectionProps) => {
-  const [openMenu, setOpenMenu] = useState(false);
-  const handleOpenMenu = () => {
-    setOpenMenu(!openMenu);
-  };
-
   return (
     <Box
       className={clsxm(
@@ -29,7 +25,6 @@ export const ShopFilterPanel = ({ sectionName = 'Filters', className }: FilterSe
         >
           <SvgIcon name="Filter" className="fill-primaryBlack" />
         </ButtonSwitch>
-        <FilterMenu className="absolute top-9 right-1/2" isOpen={openMenu} />
       </div>
     </Box>
   );

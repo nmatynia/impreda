@@ -1,10 +1,14 @@
-import React, { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React from 'react';
 import clsxm from '../../utils/clsxm';
-import { LargeBodyText } from '../typography/Typography';
-import Box from './Box';
+import { Box } from './Box';
 
-const RoundedBox = ({ children, className }: { children?: ReactNode; className?: string }) => {
+export const RoundedBox = ({
+  children,
+  className
+}: {
+  children?: ReactNode;
+  className?: string;
+}) => {
   return <Box className={clsxm('rounded-xl', className)}>{children}</Box>;
 };
-
-export default RoundedBox;

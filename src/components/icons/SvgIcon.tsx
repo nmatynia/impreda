@@ -1,4 +1,4 @@
-import { SVGProps } from 'react';
+import type { SVGProps } from 'react';
 import {
   BsFillPersonFill,
   BsPerson,
@@ -10,14 +10,21 @@ import {
   BsEye,
   BsCaretDown,
   BsBookmark,
-  BsBookmarkFill
+  BsBookmarkFill,
+  BsPlusSquare,
+  BsCheck2,
+  BsXLg,
+  BsUpload,
+  BsBoxes,
+  BsBoxSeam
 } from 'react-icons/bs';
 import { FaShoppingBag } from 'react-icons/fa';
 import { HiOutlineSearch } from 'react-icons/hi';
 import clsxm from '../../utils/clsxm';
+
 export type SvgIconComponent = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
-//TODO: Optimize fonts
+// TODO: Optimize fonts
 const iconMap = {
   Search: HiOutlineSearch,
   Cart: FaShoppingBag,
@@ -31,14 +38,20 @@ const iconMap = {
   CaretDown: BsCaretDown,
   ChevronDown: BsChevronDown,
   Bookmark: BsBookmark,
-  BookmarkFill: BsBookmarkFill
+  BookmarkFill: BsBookmarkFill,
+  Add: BsPlusSquare,
+  Check: BsCheck2,
+  Cross: BsXLg,
+  Upload: BsUpload,
+  Box: BsBoxSeam,
+  Boxes: BsBoxes
 };
 
 export type IconName = keyof typeof iconMap;
 
 type Props = SVGProps<SVGSVGElement> & { name: IconName };
 
-export function SvgIcon({ name, className, ...props }: Props) {
+export const SvgIcon = ({ name, className, ...props }: Props) => {
   const IconComponent = iconMap[name];
   return <IconComponent className={clsxm('h-5 w-5', className)} {...props} />;
-}
+};

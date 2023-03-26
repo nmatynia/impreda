@@ -2,20 +2,13 @@
 
 ## CI/CD
 
-- set up eslint
-- set up prettier
-- set up conventional commits
 - (?) set up husky
 - set up github actions etc.
 
-##Components
+## Components
 
-- ~~create NavBar~~
+- Display errors on fields
 - transition on Box
-- ~~Box - on clicking outside the Box is closed~~
-
-- searchBar enhancement - maybe fuzzy search?
-- ~~make cart responsive~~
 - Nav underline current category that the user is on
 - make the ItemHeader menus hoverable instead of clickable
 - make the Navbar sticky
@@ -24,13 +17,19 @@
 - after rethinking and reimplementing the Navbar have a look at item page at the right section and its spacing
 - item container - if the last item is alone in the row it's alignment is slightly off
 - account menu - make the logout invisible when not logged in
+- multiselect count is broken after clicking "ESC" on opened menu
+- make item creation go back to default values set from refs
 
 ## Pages
-
-- ~~get better image quality and optimize it - https://squoosh.app/~~
 
 ## Misc
 
 - custom scroll (e.g. cart)
-- custom cursor (e.g. when hovering on out of stock items)
+
+## Low Priority
+
+- Color picker and adding new colors to DB.
+- Color display in Select
+- searchBar enhancement - maybe fuzzy search?
 - give size chart functionality
+- custom cursor (e.g. when hovering on out of stock items)

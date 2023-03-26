@@ -1,11 +1,11 @@
 import React from 'react';
+import Link from 'next/link';
 import { websiteName } from '../../../utils/constants';
 import { SvgIcon } from '../../icons/SvgIcon';
 import { LogoText } from '../../typography/Typography';
-import Cart from './cart/Cart';
-import ButtonSwitch from '../../button-switch/ButtonSwitch';
-import AccountMenu from './account-menu/AccountMenu';
-import Link from 'next/link';
+import { Cart } from './cart/Cart';
+import { ButtonSwitch } from '../../button-switch/ButtonSwitch';
+import { AccountMenu } from './account-menu/AccountMenu';
 
 type HeaderProps = {
   handleShowSearch: () => void;

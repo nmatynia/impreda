@@ -61,6 +61,7 @@ model User {
   zipCode       String?
   phoneNumber   String?
   cardNumber    String?
+  admin         Boolean   @default(false)
   accounts      Account[]
   sessions      Session[]
   savedItems    Item[]
@@ -78,22 +79,45 @@ model Item {
   id        String   @id @default(cuid())
   name      String
   brand     String
-  sex       String //TODO: ENUM 'M' | 'F' | 'U'
+  sex       Sex
   price     Int
-  image     String // TODO: String[]
-  description String?
+  images     Image[]
+  description String? @db.Text
+  category  Category[]
   fabrics   String?    
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  views     Int      @default(0)
   size      Size[]
   color     Color[]
   savedBy   User[]
   orders    Order[]
 }
 
+model Image {
+  id        String   @id @default(cuid())
+  filename       String
+  url            String?
+  itemId    String
+  items     Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@index([itemId])
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  items     Item[]  
+}
+
+enum Sex {
+  MALE
+  FEMALE
+  UNISEX
+}
 model Size {
   id        String   @id @default(cuid())
-  name      String  //TODO: ENUM 'XS' | 'S' | 'M' | 'L' | 'XL';
+  name      SizeName  
   available Int
   itemId    String
   items     Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
@@ -102,6 +126,13 @@ model Size {
   @@index([itemId])
 }
 
+enum SizeName {
+  XS
+  S
+  M
+  L
+  XL
+}
 model Color {
   id        String   @id @default(cuid())
   name      String

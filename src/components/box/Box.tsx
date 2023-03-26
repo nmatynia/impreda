@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React from 'react';
 import clsxm from '../../utils/clsxm';
 
 type PositionVariant = 'left' | 'center' | 'right';
@@ -12,9 +13,9 @@ export type BoxProps = {
   className?: string;
   children?: ReactNode;
   isOpen?: boolean;
-  position?: PositionVariant; //If needed add more options
+  position?: PositionVariant; // If needed add more options
 };
-const Box = ({ className, children, isOpen = true, position = 'left' }: BoxProps) => {
+export const Box = ({ className, children, isOpen = true, position = 'left' }: BoxProps) => {
   return (
     <div
       className={clsxm(
@@ -28,5 +29,3 @@ const Box = ({ className, children, isOpen = true, position = 'left' }: BoxProps
     </div>
   );
 };
-
-export default Box;
