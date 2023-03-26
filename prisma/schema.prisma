@@ -37,7 +37,7 @@ model Account {
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
+  @@unique([provider, providerAccountId], name: "provider_providerAccountId")
   @@index([userId])
 }
 
@@ -61,13 +61,17 @@ model User {
   zipCode       String?
   phoneNumber   String?
   cardNumber    String?
-  admin         Boolean   @default(false)
+  role          Role   @default(USER)
   accounts      Account[]
   sessions      Session[]
   savedItems    Item[]
   orders        Order[]
 }
 
+enum Role {
+  ADMIN
+  USER
+}
 model VerificationToken {
   identifier String
   token      String   @unique

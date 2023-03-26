@@ -11,6 +11,8 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         // eslint-disable-next-line no-param-reassign
         session.user.id = user.id;
+        // eslint-disable-next-line no-param-reassign
+        session.user.role = user.role;
       }
       return session;
     }

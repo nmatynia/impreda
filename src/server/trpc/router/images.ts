@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import aws from 'aws-sdk';
 import { z } from 'zod';
 
@@ -18,7 +19,7 @@ export const imagesRouter = router({
       const { session } = ctx;
       const userId = session?.user?.id;
       if (!userId) {
-        throw new Error('Unauthanticated');
+        throw new TRPCError({ message: 'Unauthanticated', code: 'UNAUTHORIZED' });
       }
 
       const userInfo = await ctx.prisma.user.findUnique({
@@ -26,12 +27,12 @@ export const imagesRouter = router({
           id: userId
         },
         select: {
-          admin: true
+          role: true
         }
       });
 
-      if (userInfo && !userInfo.admin) {
-        throw new Error('Unauthorized');
+      if (userInfo && userInfo.role !== 'ADMIN') {
+        throw new TRPCError({ message: 'Unauthorized', code: 'UNAUTHORIZED' });
       }
 
       const { itemId } = input;

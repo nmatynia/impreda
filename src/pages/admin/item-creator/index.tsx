@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
+import { GetServerSideProps } from 'next';
 import { RoundedBox } from '../../../components/box/RoundedBox';
 import { LargeBodyText } from '../../../components/typography/Typography';
 import type { ItemDetailsType } from '../../../components/forms/ItemInfoForm';
@@ -12,6 +13,7 @@ import { trpc } from '../../../utils/trpc';
 import { SvgIcon } from '../../../components/icons/SvgIcon';
 import { Button } from '../../../components/button/Button';
 import { LinkButton } from '../../../components/link/LinkButton';
+import { getServerAuthSession } from '../../../server/common/get-server-auth-session';
 
 const ItemCreator = () => {
   const [step, setStep] = React.useState<number>(1);
@@ -147,3 +149,15 @@ const ItemCreator = () => {
 };
 
 export default ItemCreator;
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const session = await getServerAuthSession(ctx);
+
+  if (session?.user?.role !== 'ADMIN') {
+    return { redirect: { destination: '/' }, props: {} };
+  }
+
+  return {
+    props: {}
+  };
+};

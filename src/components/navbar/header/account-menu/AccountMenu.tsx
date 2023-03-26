@@ -18,13 +18,21 @@ export const AccountMenu = ({ className, ...props }: AccountMenuProps) => {
     <Box className={clsxm('absolute', className)} {...props}>
       <ItemWrappper>
         <Link
-          href={!session ? '/account' : '/login'}
+          href={session ? '/account' : '/login'}
           className="flex items-center justify-center gap-4"
         >
           <SvgIcon name="OutlinedPerson" />
-          <BodyText>{!session ? 'Login' : 'Account'}</BodyText>
+          <BodyText>{session ? 'Account' : 'Login'}</BodyText>
         </Link>
       </ItemWrappper>
+      {session?.user?.role === 'ADMIN' && (
+        <ItemWrappper>
+          <Link href="/admin" className="flex items-center justify-center gap-4">
+            <SvgIcon name="PersonGear" />
+            <BodyText>Admin Panel</BodyText>
+          </Link>
+        </ItemWrappper>
+      )}
       <ItemWrappper>
         <Link href="/" className="flex items-center justify-center gap-4">
           <SvgIcon name="OutlinedSettings" />

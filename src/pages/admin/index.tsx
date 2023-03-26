@@ -1,7 +1,9 @@
+import { GetServerSideProps } from 'next';
 import React from 'react';
 import { Container } from '../../components/container/Container';
 import { ItemListSection } from '../../components/item-list-section/ItemListSection';
 import { OrderHistorySection } from '../../components/order-history-section/OrderHistorySection';
+import { getServerAuthSession } from '../../server/common/get-server-auth-session';
 
 const AdminPage = () => {
   return (
@@ -15,3 +17,15 @@ const AdminPage = () => {
 };
 
 export default AdminPage;
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const session = await getServerAuthSession(ctx);
+
+  if (session?.user?.role !== 'ADMIN') {
+    return { redirect: { destination: '/' }, props: {} };
+  }
+
+  return {
+    props: {}
+  };
+};
