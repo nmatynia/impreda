@@ -71,7 +71,7 @@ export const itemsRouter = router({
           name: color.name,
           available: colorAvailibility,
           hex: color.hex,
-          size: {
+          sizes: {
             connect: sizesIds
           },
           items: {
@@ -87,7 +87,9 @@ export const itemsRouter = router({
       itemId: item.id
     };
   }),
-  getItems: publicProcedure.query(async ({ ctx }) => {
+  getListItems: publicProcedure.query(async ({ ctx }) => {
+    // TODO: Get rid of this hack and user _count
+    // TODO enhance that with filters
     const items = await ctx.prisma.item.findMany({
       select: {
         id: true,
@@ -96,10 +98,9 @@ export const itemsRouter = router({
         price: true,
         views: true,
         images: true,
-        savedBy: true // TODO: Get rid of this hack and user _count
+        savedBy: true
       }
     });
-    // TODO enhance that with filters
     return items.map(item => ({
       id: item.id,
       brand: item.brand,
@@ -109,5 +110,40 @@ export const itemsRouter = router({
       images: item.images,
       views: item.views
     }));
+  }),
+  getItems: publicProcedure.query(async ({ ctx }) => {
+    // TODO enhance that with filters
+    const items = await ctx.prisma.item.findMany({
+      select: {
+        id: true,
+        brand: true,
+        name: true,
+        sizes: true,
+        colors: true,
+        price: true,
+        images: true
+      }
+    });
+
+    return items.map(item => {
+      const uniqueSizesNames = [...new Set(item.sizes.map(size => size.name))];
+
+      const sizes = uniqueSizesNames.map(name => ({
+        name,
+        available: item.sizes
+          .filter(size => size.name === name)
+          .reduce((acc, curr) => acc + curr.available, 0)
+      }));
+
+      return {
+        id: item.id,
+        brand: item.brand,
+        name: item.name,
+        sizes,
+        colors: item.colors,
+        price: item.price,
+        images: item.images
+      };
+    });
   })
 });

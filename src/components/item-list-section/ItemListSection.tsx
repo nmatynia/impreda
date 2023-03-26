@@ -9,7 +9,7 @@ type ItemListSectionProps = {
 };
 export const ItemListSection = ({ className }: ItemListSectionProps) => {
   const [loading, setLoading] = useState(true);
-  const { data: items } = trpc.items.getItems.useQuery(undefined, {
+  const { data: items } = trpc.items.getListItems.useQuery(undefined, {
     onSuccess: () => setLoading(false)
   });
 
