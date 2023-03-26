@@ -18,7 +18,7 @@ export const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProp
     setOpen(!open);
   };
   const bundleName = useMemo(
-    () => `Bundle: ${order.items[0]?.itemName} and ${order.items.length} more`,
+    () => `${order.items[0]?.itemName} and ${order.items.length - 1} more`,
     [order]
   );
 
@@ -34,9 +34,14 @@ export const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProp
           className
         )}
       >
-        <div className="flex flex-col gap-3">
-          <BodyText>{bundleName}</BodyText>
-          <div className="flex gap-4 sm:gap-24">
+        <div className="flex w-[calc(100%-48px)] basis-full flex-col gap-3">
+          <div className="flex gap-2">
+            <SvgIcon name="Boxes" className="w-4 flex-shrink-0 fill-primaryWhite sm:w-5" />
+            <BodyText className="w-full overflow-hidden overflow-ellipsis whitespace-nowrap">
+              {bundleName}
+            </BodyText>
+          </div>
+          <div className="flex grid-cols-3 flex-wrap gap-x-4 xs:grid xs:gap-0">
             <BodyText>Price: {total}£</BodyText>
             <BodyText>Items: {order.items.length}</BodyText>
             <BodyText>
@@ -45,7 +50,7 @@ export const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProp
             {showBuyer && <BodyText>Buyer: {order.buyer}</BodyText>}
           </div>
         </div>
-        <div className="ml-2 flex gap-2">
+        <div className="ml-2 flex basis-12 gap-2">
           <button type="button" className="cursor-pointer">
             <SvgIcon name="Eye" className="fill-primaryWhite" />
           </button>
@@ -79,7 +84,12 @@ export const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProp
               items: [item]
             };
             return (
-              <HistoryItem key={item.itemName} order={itemOrder} className="ml-auto w-[90%]" />
+              <HistoryItem
+                key={item.itemName}
+                order={itemOrder}
+                showDate={false}
+                className="ml-auto w-[90%]"
+              />
             );
           })}
         </div>

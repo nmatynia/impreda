@@ -24,7 +24,7 @@ export type ItemType = {
   }[];
   price: number;
   savedBy: number;
-  images: string[];
+  images: ImageType[];
   description?: string;
   fabrics?: {
     name: string;
@@ -34,9 +34,8 @@ export type ItemType = {
   category: string; // TODO change to enum
 };
 
-type ImageType = {
+export type ImageType = {
   id: string;
   filename: string;
-  url: string;
-  [k: string]: string;
+  url: string | null;
 };

@@ -1,15 +1,26 @@
 import Image from 'next/image';
 import React from 'react';
-import { ItemType } from '../../../types/types';
+import { ImageType } from '../../../types/types';
 import clsxm from '../../../utils/clsxm';
 import { RoundedBox } from '../../box/RoundedBox';
 import { SvgIcon } from '../../icons/SvgIcon';
+import { Loader } from '../../loader/Loader';
 import { BodyText } from '../../typography/Typography';
 
 type ItemListItemProps = {
   className?: string;
-  item: ItemType;
+  item: ItemListItem;
 };
+
+type ItemListItem = {
+  brand: string;
+  name: string;
+  views: number;
+  price: number;
+  savedBy: number;
+  images: ImageType[];
+};
+
 export const ItemListItem = ({ className, item }: ItemListItemProps) => {
   return (
     <RoundedBox
@@ -19,9 +30,9 @@ export const ItemListItem = ({ className, item }: ItemListItemProps) => {
         className
       )}
     >
-      <div className="flex w-[calc(100%-20px)] basis-full  items-center gap-4 overflow-hidden">
+      <div className="flex w-[calc(100%-20px)] basis-full items-center gap-4 overflow-hidden">
         <div className="relative aspect-square h-[52px] bg-primaryWhite">
-          <Image src={item.images[0].url ?? ''} fill className="object-contain" alt="Item Image" />
+          <Image src={item.images[0]?.url ?? ''} fill className="object-contain" alt="Item Image" />
         </div>
         <div className="flex w-[calc(100%-68px)] basis-full flex-col gap-3">
           <BodyText className="w-full overflow-hidden overflow-ellipsis whitespace-nowrap ">
@@ -37,6 +48,20 @@ export const ItemListItem = ({ className, item }: ItemListItemProps) => {
       <button type="button" className="basis-5 cursor-pointer">
         <SvgIcon name="Edit" className="ml-5 fill-primaryWhite" />
       </button>
+    </RoundedBox>
+  );
+};
+
+export const ItemListItemSkeleton = ({ className }: { className?: string }) => {
+  return (
+    <RoundedBox
+      className={clsxm(
+        'relative flex w-full items-center justify-between',
+        'h-[5.833rem] overflow-hidden bg-primaryWhite py-5 text-primaryBlack',
+        className
+      )}
+    >
+      <Loader className={clsxm('h-4 w-4')} />
     </RoundedBox>
   );
 };

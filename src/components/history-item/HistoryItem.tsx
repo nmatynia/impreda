@@ -8,10 +8,16 @@ import { BodyText } from '../typography/Typography';
 type HistoryItemProps = {
   order: OrderType;
   showBuyer?: boolean;
+  showDate?: boolean;
   className?: string;
 };
 
-export const HistoryItem = ({ order, showBuyer = false, className }: HistoryItemProps) => {
+export const HistoryItem = ({
+  order,
+  showBuyer = false,
+  showDate = true,
+  className
+}: HistoryItemProps) => {
   return (
     <RoundedBox
       className={clsxm(
@@ -20,11 +26,17 @@ export const HistoryItem = ({ order, showBuyer = false, className }: HistoryItem
         className
       )}
     >
-      <div className="flex flex-col gap-3">
-        <BodyText>{order.items[0]?.itemName}</BodyText>
-        <div className="flex gap-4 whitespace-pre sm:gap-24">
+      <div className="flex w-[calc(100%-28px)] basis-full flex-col gap-3">
+        <div className="flex items-center gap-2">
+          <SvgIcon name="Box" className="w-3 flex-shrink-0 fill-primaryWhite sm:w-4" />
+          <BodyText className="w-full overflow-hidden overflow-ellipsis whitespace-nowrap">
+            {order.items[0]?.itemName}
+          </BodyText>
+        </div>
+
+        <div className="grid grid-cols-2 whitespace-pre xs:grid-cols-3">
           <BodyText>Price: {order.items[0]?.itemPrice}£</BodyText>
-          <BodyText>Date: {order.date}</BodyText>
+          {showDate && <BodyText>Date: {order.date}</BodyText>}
           {showBuyer && <BodyText>Buyer: {order.buyer}</BodyText>}
         </div>
       </div>

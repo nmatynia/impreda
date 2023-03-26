@@ -89,15 +89,25 @@ export const itemsRouter = router({
   }),
   getItems: publicProcedure.query(async ({ ctx }) => {
     const items = await ctx.prisma.item.findMany({
-      include: {
+      select: {
+        id: true,
+        brand: true,
+        name: true,
+        price: true,
+        views: true,
         images: true,
         savedBy: true // TODO: Get rid of this hack and user _count
       }
     });
     // TODO enhance that with filters
     return items.map(item => ({
-      ...item,
-      savedBy: item.savedBy.length
+      id: item.id,
+      brand: item.brand,
+      name: item.name,
+      price: item.price,
+      savedBy: item.savedBy.length,
+      images: item.images,
+      views: item.views
     }));
   })
 });

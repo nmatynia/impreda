@@ -40,6 +40,7 @@
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["warn", { "ignoreTypeValueShadow": true }],
     "guard-for-in": "off",
-    "no-use-before-define": "off"
+    "no-use-before-define": "off",
+    "react/self-closing-comp": "warn"
   }
 }

@@ -14,7 +14,9 @@ import {
   BsPlusSquare,
   BsCheck2,
   BsXLg,
-  BsUpload
+  BsUpload,
+  BsBoxes,
+  BsBoxSeam
 } from 'react-icons/bs';
 import { FaShoppingBag } from 'react-icons/fa';
 import { HiOutlineSearch } from 'react-icons/hi';
@@ -40,7 +42,9 @@ const iconMap = {
   Add: BsPlusSquare,
   Check: BsCheck2,
   Cross: BsXLg,
-  Upload: BsUpload
+  Upload: BsUpload,
+  Box: BsBoxSeam,
+  Boxes: BsBoxes
 };
 
 export type IconName = keyof typeof iconMap;
@@ -50,4 +54,4 @@ type Props = SVGProps<SVGSVGElement> & { name: IconName };
 export const SvgIcon = ({ name, className, ...props }: Props) => {
   const IconComponent = iconMap[name];
   return <IconComponent className={clsxm('h-5 w-5', className)} {...props} />;
-}
+};
