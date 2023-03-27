@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
-import {
-  GetStaticPaths,
-  GetStaticProps,
-  GetStaticPropsContext,
-  InferGetStaticPropsType
-} from 'next';
+import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import superjson from 'superjson';
-import { inferRouterOutputs, TRPCError } from '@trpc/server';
+import { TRPCError } from '@trpc/server';
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
-import { createNextApiHandler } from '@trpc/server/adapters/next';
+import { PrismaClient } from '@prisma/client';
 import { Container } from '../../components/container/Container';
 import { BodyText, Bold, LargeBodyText } from '../../components/typography/Typography';
 import { Dot } from '../../components/dot/Dot';
@@ -17,87 +12,29 @@ import { SizeIndicator } from '../../components/size-indicator/SizeIndicator';
 import { Button } from '../../components/button/Button';
 import { SvgIcon } from '../../components/icons/SvgIcon';
 import { ColorIndicator } from '../../components/color-indicator/ColorIndicator';
-// import DefaultRickTeeImg from '../../public/images/default-rick-tee.webp';
-// import DefaultAlyxJacketImg from '../../public/images/default-alyx-jacket.webp';
 import { trpc } from '../../utils/trpc';
-import { ItemsRouter } from '../../server/trpc/router/_app';
-import { itemsRouter } from '../../server/trpc/router/items';
-import { createContext, createContextInner } from '../../server/trpc/context';
-// const itemsHolder: ItemType[] = [
-//   {
-//     id: '2',
-//     brand: 'Rick Owens',
-//     name: 'DRKSHDW Oversized Graphic T-Shirt',
-//     sex: 'MALE',
-//     sizes: [
-//       { name: 'S', available: 1 },
-//       { name: 'M', available: 1 },
-//       { name: 'L', available: 1 },
-//       { name: 'XL', available: 1 }
-//     ],
-//     colors: [
-//       { name: 'Black', hex: '#000000', available: 1 },
-//       { name: 'White', hex: 'white', available: 0 }
-//     ],
-//     price: 30,
-//     savedBy: 21,
-//     images: [
-//       {
-//         id: '2',
-//         filename: 'default-alyx-jacket.webp',
-//         url: DefaultRickTeeImg.src
-//       }
-//     ],
-//     category: {
-//       id: '1',
-//       name: 't-shirt'
-//     }
-//   },
-//   {
-//     id: '4',
-//     brand: '1017 ALYX 9SM x Moncler',
-//     name: 'Almondis Jacket',
-//     sex: 'MALE',
-//     sizes: [
-//       { name: 'S', available: 1 },
-//       { name: 'M', available: 1 },
-//       { name: 'L', available: 1 },
-//       { name: 'XL', available: 1 }
-//     ],
-//     colors: [
-//       { name: 'Black', hex: '#000000', available: 0 },
-//       { name: 'White', hex: 'white', available: 0 },
-//       { name: 'Red', hex: '#dc2626', available: 0 } // hex for neutral red -
-//     ],
-//     price: 30,
-//     savedBy: 1,
-//     images: [
-//       {
-//         id: '2',
-//         filename: 'default-alyx-jacket.webp',
-//         url: DefaultAlyxJacketImg.src
-//       }
-//     ],
-//     category: {
-//       id: '1',
-//       name: 'jacket'
-//     }
-//   }
-// ];
-
-// itemsHolder.push(...itemsHolder);
-// itemsHolder.push(...itemsHolder);
-// itemsHolder.push(...itemsHolder);
+import { createContextInner } from '../../server/trpc/context';
+import { appRouter } from '../../server/trpc/router/_app';
 
 export async function getStaticProps(context: GetStaticPropsContext<{ id: string }>) {
   const ssg = await createProxySSGHelpers({
-    router: itemsRouter,
+    router: appRouter,
     ctx: await createContextInner({ session: null }),
     transformer: superjson
   });
+  const prisma = new PrismaClient();
+  const itemsIds = await prisma.item.findMany({
+    select: {
+      id: true
+    }
+  });
   const id = context.params?.id as string;
-  await ssg.getItem.prefetch(id);
-  // const { data: item } = await trpc.items.getItem.useQuery((context.params?.id as string) || '');
+  if (!itemsIds.map(i => i.id).includes(id)) {
+    return {
+      notFound: true
+    };
+  }
+  await ssg.items.getItem.prefetch(id);
   return {
     props: {
       trpcState: ssg.dehydrate(),
@@ -108,7 +45,8 @@ export async function getStaticProps(context: GetStaticPropsContext<{ id: string
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const itemsIds = await prisma?.item.findMany({
+  const prisma = new PrismaClient();
+  const itemsIds = await prisma.item.findMany({
     select: {
       id: true
     }
@@ -125,15 +63,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  // const router = useRouter();
-  // const { id } = router.query;
-  const [loading, setLoading] = useState(true);
-
-  const { data: item } = trpc.items.getItem.useQuery((id as string) || '', {
-    onSuccess: () => setLoading(false)
-  });
-
-  // TODO fetch item data based on item id
+  const { data: item } = trpc.items.getItem.useQuery(id as string);
   // TODO selected size and color should have different variant selected
   return (
     <Container fullSize className="overflow-visible">
