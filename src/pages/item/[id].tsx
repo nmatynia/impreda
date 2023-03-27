@@ -55,7 +55,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   if (!itemsIds || itemsIds.length === 0) {
     throw new TRPCError({
       code: 'NOT_FOUND',
-      message: `No itemsIds found. Found ${itemsIds} instead`
+      message: `No itemsIds found. Found ${typeof itemsIds} instead`
     });
   }
   const paths = itemsIds.map(item => ({
