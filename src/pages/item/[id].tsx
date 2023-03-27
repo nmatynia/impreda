@@ -52,11 +52,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
     }
   });
 
-  if (!itemsIds || itemsIds.length === 0) {
+  if (!itemsIds) {
     throw new TRPCError({
       code: 'NOT_FOUND',
-      message: `No itemsIds found. Found ${typeof itemsIds} instead`
+      message: `Prisma promise returned nullish value`
     });
+  } else if (itemsIds.length === 0) {
+    return { paths: [], fallback: 'blocking' };
   }
   const paths = itemsIds.map(item => ({
     params: { id: item.id }
