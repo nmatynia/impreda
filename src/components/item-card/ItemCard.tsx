@@ -75,7 +75,7 @@ export const ItemCard = ({
       )}
     >
       <Link
-        href={{ pathname: '/product', query: { id } }}
+        href={{ pathname: `/item/${id}` }}
         className="relative z-10 flex aspect-[0.75] w-full select-none flex-col justify-between p-6"
       >
         <Image

@@ -146,6 +146,16 @@ export const itemsRouter = router({
       };
     });
   }),
+
+  getItemsIds: publicProcedure.query(async ({ ctx }) => {
+    const item = await ctx.prisma.item.findMany({
+      select: {
+        id: true
+      }
+    });
+    return item;
+  }),
+
   getItem: publicProcedure.input(z.string()).query(async ({ ctx, input: id }) => {
     const item = await ctx.prisma.item.findUnique({
       where: {

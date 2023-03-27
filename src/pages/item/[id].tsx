@@ -1,97 +1,74 @@
-import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
-import { Container } from '../components/container/Container';
-import type { ItemProps } from '../components/item-card/ItemCard';
-import { ItemCard } from '../components/item-card/ItemCard';
-import { BodyText, Bold, LargeBodyText } from '../components/typography/Typography';
-import { Dot } from '../components/dot/Dot';
-import { SizeIndicator } from '../components/size-indicator/SizeIndicator';
-import { Button } from '../components/button/Button';
-import { SvgIcon } from '../components/icons/SvgIcon';
-import { ColorIndicator } from '../components/color-indicator/ColorIndicator';
-import { ItemContainer } from '../components/items-container/ItemContainer';
-import DefaultRickTeeImg from '../../public/images/default-rick-tee.webp';
-import DefaultAlyxJacketImg from '../../public/images/default-alyx-jacket.webp';
-import { trpc } from '../utils/trpc';
-import { ItemType } from '../types/types';
+import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType } from 'next';
+import superjson from 'superjson';
+import { TRPCError } from '@trpc/server';
+import { createProxySSGHelpers } from '@trpc/react-query/ssg';
+import { PrismaClient } from '@prisma/client';
+import { Container } from '../../components/container/Container';
+import { BodyText, Bold, LargeBodyText } from '../../components/typography/Typography';
+import { Dot } from '../../components/dot/Dot';
+import { SizeIndicator } from '../../components/size-indicator/SizeIndicator';
+import { Button } from '../../components/button/Button';
+import { SvgIcon } from '../../components/icons/SvgIcon';
+import { ColorIndicator } from '../../components/color-indicator/ColorIndicator';
+import { trpc } from '../../utils/trpc';
+import { createContextInner } from '../../server/trpc/context';
+import { appRouter } from '../../server/trpc/router/_app';
 
-const itemsHolder: ItemType[] = [
-  {
-    id: '2',
-    brand: 'Rick Owens',
-    name: 'DRKSHDW Oversized Graphic T-Shirt',
-    sex: 'MALE',
-    sizes: [
-      { name: 'S', available: 1 },
-      { name: 'M', available: 1 },
-      { name: 'L', available: 1 },
-      { name: 'XL', available: 1 }
-    ],
-    colors: [
-      { name: 'Black', hex: '#000000', available: 1 },
-      { name: 'White', hex: 'white', available: 0 }
-    ],
-    price: 30,
-    savedBy: 21,
-    images: [
-      {
-        id: '2',
-        filename: 'default-alyx-jacket.webp',
-        url: DefaultRickTeeImg.src
-      }
-    ],
-    category: {
-      id: '1',
-      name: 't-shirt'
+export async function getStaticProps(context: GetStaticPropsContext<{ id: string }>) {
+  const ssg = await createProxySSGHelpers({
+    router: appRouter,
+    ctx: await createContextInner({ session: null }),
+    transformer: superjson
+  });
+  const prisma = new PrismaClient();
+  const itemsIds = await prisma.item.findMany({
+    select: {
+      id: true
     }
-  },
-  {
-    id: '4',
-    brand: '1017 ALYX 9SM x Moncler',
-    name: 'Almondis Jacket',
-    sex: 'MALE',
-    sizes: [
-      { name: 'S', available: 1 },
-      { name: 'M', available: 1 },
-      { name: 'L', available: 1 },
-      { name: 'XL', available: 1 }
-    ],
-    colors: [
-      { name: 'Black', hex: '#000000', available: 0 },
-      { name: 'White', hex: 'white', available: 0 },
-      { name: 'Red', hex: '#dc2626', available: 0 } // hex for neutral red -
-    ],
-    price: 30,
-    savedBy: 1,
-    images: [
-      {
-        id: '2',
-        filename: 'default-alyx-jacket.webp',
-        url: DefaultAlyxJacketImg.src
-      }
-    ],
-    category: {
-      id: '1',
-      name: 'jacket'
-    }
+  });
+  const id = context.params?.id as string;
+  if (!itemsIds.map(i => i.id).includes(id)) {
+    return {
+      notFound: true
+    };
   }
-];
+  await ssg.items.getItem.prefetch(id);
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+      id
+    },
+    revalidate: 30
+  };
+}
 
-itemsHolder.push(...itemsHolder);
-itemsHolder.push(...itemsHolder);
-itemsHolder.push(...itemsHolder);
-
-const Item = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  const [loading, setLoading] = useState(true);
-
-  const { data: item } = trpc.items.getItem.useQuery((id as string) || '', {
-    onSuccess: () => setLoading(false)
+export const getStaticPaths: GetStaticPaths = async () => {
+  const prisma = new PrismaClient();
+  const itemsIds = await prisma.item.findMany({
+    select: {
+      id: true
+    }
   });
 
-  // TODO fetch item data based on item id
+  if (!itemsIds) {
+    throw new TRPCError({
+      code: 'NOT_FOUND',
+      message: `Prisma promise returned nullish value`
+    });
+  } else if (itemsIds.length === 0) {
+    return { paths: [], fallback: 'blocking' };
+  }
+  const paths = itemsIds.map(item => ({
+    params: { id: item.id }
+  }));
+
+  return { paths, fallback: 'blocking' };
+};
+
+const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { data: item } = trpc.items.getItem.useQuery(id as string);
   // TODO selected size and color should have different variant selected
   return (
     <Container fullSize className="overflow-visible">
@@ -159,11 +136,11 @@ const Item = () => {
           <Bold>RELATED ITEMS</Bold>
         </LargeBodyText>
       </div>
-      <ItemContainer>
+      {/* <ItemContainer>
         {itemsHolder.map(i => (
           <ItemCard {...i} key={i.id} />
         ))}
-      </ItemContainer>
+      </ItemContainer> */}
     </Container>
   );
 };
