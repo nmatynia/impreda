@@ -2,7 +2,7 @@ import { TRPCError } from '@trpc/server';
 import aws from 'aws-sdk';
 import { z } from 'zod';
 
-import { router, publicProcedure } from '../trpc';
+import { router, adminProcedure } from '../trpc';
 
 const s3 = new aws.S3({
   apiVersion: '2006-03-01',
@@ -13,28 +13,9 @@ const s3 = new aws.S3({
 });
 
 export const imagesRouter = router({
-  createPresignedUrl: publicProcedure
+  createPresignedUrl: adminProcedure
     .input(z.object({ itemId: z.string(), filename: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const { session } = ctx;
-      const userId = session?.user?.id;
-      if (!userId) {
-        throw new TRPCError({ message: 'Unauthanticated', code: 'UNAUTHORIZED' });
-      }
-
-      const userInfo = await ctx.prisma.user.findUnique({
-        where: {
-          id: userId
-        },
-        select: {
-          role: true
-        }
-      });
-
-      if (userInfo && userInfo.role !== 'ADMIN') {
-        throw new TRPCError({ message: 'Unauthorized', code: 'UNAUTHORIZED' });
-      }
-
       const { itemId } = input;
       const image = await ctx.prisma.image.create({
         data: {
