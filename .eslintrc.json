@@ -38,7 +38,7 @@
     "spaced-comment": "warn",
     "react/no-unstable-nested-components": "off",
     "no-shadow": "off",
-    "@typescript-eslint/no-shadow": ["warn", { "ignoreTypeValueShadow": true }],
+    "@typescript-eslint/no-shadow": "off",
     "guard-for-in": "off",
     "no-use-before-define": "off",
     "react/self-closing-comp": "warn"

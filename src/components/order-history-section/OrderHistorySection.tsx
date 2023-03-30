@@ -1,8 +1,8 @@
 import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { FilterPanel } from '../filter-panel/FilterPanel';
-import { HistoryBundle } from '../history-bundle/HistoryBundle';
-import { HistoryItem } from '../history-item/HistoryItem';
+import { HistoryBundle } from './history-bundle/HistoryBundle';
+import { HistoryItem } from './history-item/HistoryItem';
 
 // TODO: Consider saving total in the database instead of calculating it every time on client
 // TODO: Possibly display itemDesigner as well

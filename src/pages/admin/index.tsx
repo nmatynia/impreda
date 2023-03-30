@@ -3,6 +3,7 @@ import React from 'react';
 import { Container } from '../../components/container/Container';
 import { ItemListSection } from '../../components/item-list-section/ItemListSection';
 import { OrderHistorySection } from '../../components/order-history-section/OrderHistorySection';
+import { UserListSection } from '../../components/user-list-section/UserListSection';
 import { getServerAuthSession } from '../../server/common/get-server-auth-session';
 
 const AdminPage = () => {
@@ -12,6 +13,7 @@ const AdminPage = () => {
         <ItemListSection className="w-full lg:w-1/2" />
         <OrderHistorySection className="w-full lg:w-1/2" />
       </div>
+      <UserListSection className="w-full" />
     </Container>
   );
 };

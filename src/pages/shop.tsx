@@ -8,7 +8,7 @@ import { ItemContainer } from '../components/items-container/ItemContainer';
 import { ShopFilterPanel } from '../components/filter-panel/ShopFilterPanel';
 import { trpc } from '../utils/trpc';
 import { SexType, SizeNameType } from '../types/types';
-import { AppRouter, ItemsRouter } from '../server/trpc/router/_app';
+import { ItemsRouter } from '../server/trpc/router/_app';
 import { BodyText, LogoText } from '../components/typography/Typography';
 
 const ShopPage = () => {

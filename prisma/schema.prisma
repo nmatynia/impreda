@@ -61,6 +61,7 @@ model User {
   zipCode       String?
   phoneNumber   String?
   cardNumber    String?
+  joinedAt        DateTime  @default(now())
   role          Role   @default(USER)
   accounts      Account[]
   sessions      Session[]

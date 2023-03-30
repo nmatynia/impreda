@@ -1,11 +1,11 @@
 import { Transition } from '@headlessui/react';
 import React, { useMemo } from 'react';
-import clsxm from '../../utils/clsxm';
-import { RoundedBox } from '../box/RoundedBox';
+import clsxm from '../../../utils/clsxm';
+import { RoundedBox } from '../../box/RoundedBox';
 import { HistoryItem } from '../history-item/HistoryItem';
-import { SvgIcon } from '../icons/SvgIcon';
-import type { OrderType } from '../order-history-section/OrderHistorySection';
-import { BodyText } from '../typography/Typography';
+import { SvgIcon } from '../../icons/SvgIcon';
+import type { OrderType } from '../OrderHistorySection';
+import { BodyText } from '../../typography/Typography';
 
 type HistoryBundleProps = {
   order: OrderType;

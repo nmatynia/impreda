@@ -1,4 +1,3 @@
-import { TRPCError } from '@trpc/server';
 import aws from 'aws-sdk';
 import { z } from 'zod';
 

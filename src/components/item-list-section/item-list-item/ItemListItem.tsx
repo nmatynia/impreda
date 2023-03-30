@@ -4,7 +4,6 @@ import { ImageType } from '../../../types/types';
 import clsxm from '../../../utils/clsxm';
 import { RoundedBox } from '../../box/RoundedBox';
 import { SvgIcon } from '../../icons/SvgIcon';
-import { Loader } from '../../loader/Loader';
 import { BodyText } from '../../typography/Typography';
 
 type ItemListItemProps = {
@@ -48,20 +47,6 @@ export const ItemListItem = ({ className, item }: ItemListItemProps) => {
       <button type="button" className="basis-5 cursor-pointer">
         <SvgIcon name="Edit" className="ml-5 fill-primaryWhite" />
       </button>
-    </RoundedBox>
-  );
-};
-
-export const ItemListItemSkeleton = ({ className }: { className?: string }) => {
-  return (
-    <RoundedBox
-      className={clsxm(
-        'relative flex w-full items-center justify-between',
-        'h-[5.833rem] overflow-hidden bg-primaryWhite py-5 text-primaryBlack',
-        className
-      )}
-    >
-      <Loader className={clsxm('h-4 w-4')} />
     </RoundedBox>
   );
 };
