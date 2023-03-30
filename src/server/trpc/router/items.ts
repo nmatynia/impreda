@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { router, publicProcedure } from '../trpc';
+import { router, publicProcedure, adminProcedure } from '../trpc';
 
 const IteamCreationSchema = z.object({
   name: z.string(),
@@ -25,7 +25,7 @@ const IteamCreationSchema = z.object({
 });
 
 export const itemsRouter = router({
-  createItem: publicProcedure.input(IteamCreationSchema).mutation(async ({ ctx, input }) => {
+  createItem: adminProcedure.input(IteamCreationSchema).mutation(async ({ ctx, input }) => {
     const item = await ctx.prisma.item.create({
       data: {
         name: input.name,

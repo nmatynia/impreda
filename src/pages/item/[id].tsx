@@ -23,13 +23,13 @@ export async function getStaticProps(context: GetStaticPropsContext<{ id: string
     transformer: superjson
   });
   const prisma = new PrismaClient();
-  const itemsIds = await prisma.item.findMany({
-    select: {
-      id: true
+  const id = context.params?.id as string;
+  const itemsIds = await prisma.item.findUnique({
+    where: {
+      id
     }
   });
-  const id = context.params?.id as string;
-  if (!itemsIds.map(i => i.id).includes(id)) {
+  if (!itemsIds) {
     return {
       notFound: true
     };

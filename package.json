@@ -5,6 +5,7 @@
   "scripts": {
     "postinstall": "prisma generate",
     "db": "pscale connect impreda dev --port 3309",
+    "db:main": "pscale connect impreda main --port 3309",
     "dev": "next dev",
     "studio": "prisma studio",
     "build": "next build",
