@@ -1,8 +1,9 @@
+import { color } from 'framer-motion';
 import { z } from 'zod';
 
 import { router, publicProcedure, adminProcedure } from '../trpc';
 
-const IteamCreationSchema = z.object({
+const CreateItemSchema = z.object({
   name: z.string(),
   brand: z.string(),
   price: z.number(),
@@ -24,8 +25,18 @@ const IteamCreationSchema = z.object({
   )
 });
 
+const GetItemsSchema = z
+  .object({
+    sex: z.enum(['MALE', 'FEMALE', 'UNISEX']).optional(),
+    colorsNames: z.array(z.string()).optional(),
+    sizesNames: z.array(z.enum(['XS', 'S', 'M', 'L', 'XL'])).optional(),
+    categoryName: z.string().optional()
+    // TODO: Price range, sort by(views, saves , cheapest, most expensive, latest), brand,
+  })
+  .optional();
+
 export const itemsRouter = router({
-  createItem: adminProcedure.input(IteamCreationSchema).mutation(async ({ ctx, input }) => {
+  createItem: adminProcedure.input(CreateItemSchema).mutation(async ({ ctx, input }) => {
     const item = await ctx.prisma.item.create({
       data: {
         name: input.name,
@@ -111,9 +122,31 @@ export const itemsRouter = router({
       views: item.views
     }));
   }),
-  getItems: publicProcedure.query(async ({ ctx }) => {
-    // TODO enhance that with filters
+  getItems: publicProcedure.input(GetItemsSchema).query(async ({ ctx, input }) => {
+    const { sex, sizesNames, categoryName, colorsNames } = input ?? {};
     const items = await ctx.prisma.item.findMany({
+      where: {
+        sex,
+        sizes: {
+          every: {
+            name: {
+              in: sizesNames
+            }
+          }
+        },
+        category: {
+          some: {
+            name: categoryName
+          }
+        },
+        colors: {
+          every: {
+            name: {
+              in: colorsNames
+            }
+          }
+        }
+      },
       select: {
         id: true,
         brand: true,

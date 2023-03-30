@@ -8,8 +8,6 @@ export const categoriesRouter = router({
         name: true
       }
     });
-    return {
-      categories: categories.map(category => ({ name: category.name, key: category.id }))
-    };
+    return categories.map(category => ({ name: category.name, key: category.id }));
   })
 });

@@ -4,7 +4,7 @@ export type ItemType = {
   brand: string;
   name: string;
   sizes: SizesType[];
-  sex: 'MALE' | 'FEMALE' | 'UNISEX';
+  sex: SexType;
   colors: ColorsType[];
   price: number;
   savedBy: number;
@@ -15,7 +15,7 @@ export type ItemType = {
     percentage: number;
   }[];
   views?: number;
-  category: CategoryType; // TODO change to enum
+  category: CategoryType;
 };
 
 export type ImageType = {
@@ -32,7 +32,7 @@ export type ColorsType = {
 };
 
 export type SizesType = {
-  name: 'XS' | 'S' | 'M' | 'L' | 'XL';
+  name: SizeNameType;
   available: number;
   colors?: ColorsType[];
 };
@@ -41,3 +41,6 @@ export type CategoryType = {
   id: string;
   name: string;
 };
+
+export type SexType = 'MALE' | 'FEMALE' | 'UNISEX';
+export type SizeNameType = 'XS' | 'S' | 'M' | 'L' | 'XL';

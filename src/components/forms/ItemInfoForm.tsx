@@ -85,13 +85,7 @@ export const ItemInfoForm = ({ onSubmit, className, images, setImages }: ItemInf
     defaultValues: {}
   });
 
-  const [categoryOptions, setCategoryOptions] = useState<OptionType[]>([]);
-  // TODO: Look into this eslint rule
-  trpc.categories.getAllCategories.useQuery(undefined, {
-    onSuccess: val => {
-      setCategoryOptions(val.categories ?? []);
-    }
-  });
+  const { data: categoryOptions } = trpc.categories.getAllCategories.useQuery();
 
   const { handleSubmit } = methods;
 
@@ -147,7 +141,7 @@ export const ItemInfoForm = ({ onSubmit, className, images, setImages }: ItemInf
             name="category"
             label="Category:"
             className="z-40 w-full"
-            options={categoryOptions}
+            options={categoryOptions ?? []}
           />
           <SelectField
             placeholder="Choose sizes"
