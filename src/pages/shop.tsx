@@ -83,11 +83,11 @@ export const ItemContainerContent = ({
 
   return (
     <>
-      {items?.map(item => (
+      {items.map(item => (
         <ItemCard {...item} key={item.id} />
       ))}
-      ;
     </>
   );
 };
+
 export default ShopPage;

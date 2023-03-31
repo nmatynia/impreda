@@ -4,15 +4,33 @@ import { trpc } from '../../utils/trpc';
 import { UserListFilterPanel } from '../filter-panel/UserListFilterPanel';
 import { ListItemSkeleton } from '../list-item-skeleton/ListItemSkeleton';
 import { UserListItem } from './user-list-item/UserListItem';
+import { DialogModal } from '../dialog/DialogModal';
 
 type UserListSectionProps = {
   className?: string;
 };
 export const UserListSection = ({ className }: UserListSectionProps) => {
   const { data: users, isLoading } = trpc.user.getAllUsers.useQuery();
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [selectedUserId, setSelectedUserId] = React.useState<string | null>(null);
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleOpenDialog = (id: string) => {
+    setSelectedUserId(id);
+    setIsDialogOpen(true);
+  };
 
   return (
     <section className={clsxm('flex flex-col', className)}>
+      <DialogModal
+        isOpen={isDialogOpen}
+        title="User's details"
+        handleCloseDialog={handleCloseDialog}
+      >
+        {selectedUserId}
+      </DialogModal>
       <UserListFilterPanel sectionName="User List" />
       <div className="z-10 my-6 flex flex-col gap-6">
         {isLoading ? (
@@ -25,6 +43,7 @@ export const UserListSection = ({ className }: UserListSectionProps) => {
           users?.map(({ id, name, joinDate, totalSpent, totalPurchases }) => {
             return (
               <UserListItem
+                handlePreviewUser={() => handleOpenDialog(id)}
                 name={name ?? 'Unknown'}
                 joinDate={joinDate}
                 totalSpent={totalSpent}
