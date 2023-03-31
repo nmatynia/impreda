@@ -89,101 +89,84 @@ export const ItemInfoForm = ({ onSubmit, className, images, setImages }: ItemInf
 
   const { handleSubmit } = methods;
 
-  type Image = {
-    src: string;
-    filename: string;
-  };
-  const [previewedImage, setPreviewedImage] = useState<Image>();
-
   return (
-    <>
-      <Form className={className} onSubmit={handleSubmit(onSubmit)} {...methods}>
-        <div className="m-7 flex flex-col gap-8 md:mx-14">
-          <ImageUploader images={images} setImages={setImages} />
-          <div className="flex w-full flex-col gap-6 md:flex-row">
-            <InputField
-              label="Brand:"
-              placeholder={"Enter item's brand"}
-              name="brand"
-              className="w-full md:w-1/2"
-            />
-            <InputField
-              label="Name:"
-              placeholder={"Enter item's name"}
-              name="name"
-              className="w-full md:w-1/2"
-            />
-          </div>
-          <div className="flex w-full flex-col gap-6 md:flex-row">
-            <InputField
-              label="Price"
-              placeholder={"Enter item's brand"}
-              name="price"
-              type="number"
-              className="w-full md:w-1/2"
-            />
-            <SelectField
-              placeholder="Choose sex"
-              name="sex"
-              label="Sex"
-              className="z-50 w-full md:w-1/2"
-              options={sexOptions}
-            />
-          </div>
-          <TextAreaField
-            label="Description"
-            placeholder={"Enter item's or brand's description"}
-            name="description"
-            className="w-full"
+    <Form className={className} onSubmit={handleSubmit(onSubmit)} {...methods}>
+      <div className="m-7 flex flex-col gap-8 md:mx-14">
+        <ImageUploader images={images} setImages={setImages} />
+        <div className="flex w-full flex-col gap-6 md:flex-row">
+          <InputField
+            label="Brand:"
+            placeholder={"Enter item's brand"}
+            name="brand"
+            className="w-full md:w-1/2"
           />
-          <SelectField
-            placeholder="Choose category"
-            name="category"
-            label="Category:"
-            className="z-40 w-full"
-            options={categoryOptions ?? []}
+          <InputField
+            label="Name:"
+            placeholder={"Enter item's name"}
+            name="name"
+            className="w-full md:w-1/2"
           />
-          <SelectField
-            placeholder="Choose sizes"
-            name="sizes"
-            label="Sizes:"
-            className="z-30 w-full"
-            options={sizeOptions}
-            multiple
-          />
-          <SelectField
-            placeholder="Choose colors"
-            name="colors"
-            label="Colors:"
-            className="z-20 w-full"
-            options={colorOptions}
-            multiple
-          />
-          <SelectField
-            placeholder="Choose fabrics"
-            name="fabrics"
-            label="Fabrics:"
-            className="z-10 w-full"
-            options={fabricOptions}
-            multiple
-          />
-          <div className="mt-4 flex flex-row-reverse justify-start gap-3">
-            <Button type="submit">Advance</Button>
-            <LinkButton variant="outlined" href="/admin">
-              Back to Admin Panel
-            </LinkButton>
-          </div>
         </div>
-      </Form>
-      <DialogModal
-        title={previewedImage?.filename ?? 'Image preview'}
-        isOpen={!!previewedImage}
-        handleCloseDialog={() => setPreviewedImage(undefined)}
-      >
-        <div className="relative aspect-[0.75] max-h-screen w-full overflow-hidden rounded-sm">
-          <Image src={previewedImage?.src ?? ''} alt="item" className="z-0 object-contain" fill />
+        <div className="flex w-full flex-col gap-6 md:flex-row">
+          <InputField
+            label="Price"
+            placeholder={"Enter item's brand"}
+            name="price"
+            type="number"
+            className="w-full md:w-1/2"
+          />
+          <SelectField
+            placeholder="Choose sex"
+            name="sex"
+            label="Sex"
+            className="z-50 w-full md:w-1/2"
+            options={sexOptions}
+          />
         </div>
-      </DialogModal>
-    </>
+        <TextAreaField
+          label="Description"
+          placeholder={"Enter item's or brand's description"}
+          name="description"
+          className="w-full"
+        />
+        <SelectField
+          placeholder="Choose category"
+          name="category"
+          label="Category:"
+          className="z-40 w-full"
+          options={categoryOptions ?? []}
+        />
+        <SelectField
+          placeholder="Choose sizes"
+          name="sizes"
+          label="Sizes:"
+          className="z-30 w-full"
+          options={sizeOptions}
+          multiple
+        />
+        <SelectField
+          placeholder="Choose colors"
+          name="colors"
+          label="Colors:"
+          className="z-20 w-full"
+          options={colorOptions}
+          multiple
+        />
+        <SelectField
+          placeholder="Choose fabrics"
+          name="fabrics"
+          label="Fabrics:"
+          className="z-10 w-full"
+          options={fabricOptions}
+          multiple
+        />
+        <div className="mt-4 flex flex-row-reverse justify-start gap-3">
+          <Button type="submit">Advance</Button>
+          <LinkButton variant="outlined" href="/admin">
+            Back to Admin Panel
+          </LinkButton>
+        </div>
+      </div>
+    </Form>
   );
 };

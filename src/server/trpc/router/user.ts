@@ -1,4 +1,5 @@
 import { TRPCError } from '@trpc/server';
+import { z } from 'zod';
 import { UserDetailsSchema } from '../../../components/user-account-box/UserAcountBox';
 
 import { router, publicProcedure, protectedProcedure, adminProcedure } from '../trpc';
@@ -12,7 +13,17 @@ export const userRouter = router({
       }
     });
   }),
-
+  getUserById: adminProcedure.input(z.string()).query(async ({ ctx, input: id }) => {
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id
+      }
+    });
+    if (!user) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' });
+    }
+    return user;
+  }),
   update: publicProcedure.input(UserDetailsSchema).mutation(async ({ ctx, input }) => {
     const userId = ctx.session?.user?.id;
     const user = await ctx.prisma.user.findUnique({

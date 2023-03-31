@@ -16,7 +16,6 @@
 - change the space screenWithoutHeader so it is pixel perfect both on mobile and desktop
 - after rethinking and reimplementing the Navbar have a look at item page at the right section and its spacing
 - item container - if the last item is alone in the row it's alignment is slightly off
-- account menu - make the logout invisible when not logged in
 - multiselect count is broken after clicking "ESC" on opened menu
 - make item creation go back to default values set from refs
 
@@ -33,3 +32,5 @@
 - searchBar enhancement - maybe fuzzy search?
 - give size chart functionality
 - custom cursor (e.g. when hovering on out of stock items)
+- display more data in user preview in admin panel
+- perhaps make the previewed image smaller (item-creator)
