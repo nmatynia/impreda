@@ -35,7 +35,7 @@ export const UserAccountBox = () => {
     refetchOnWindowFocus: false
   });
 
-  const { mutateAsync: updateUser } = trpc.user.update.useMutation({
+  const { mutateAsync: updateUser } = trpc.user.updateCurrentUser.useMutation({
     onSuccess: () => {
       utils.user.invalidate();
     }
