@@ -41,7 +41,7 @@ export const UserDetailsDialog = ({
       utils.user.invalidate();
     }
   });
-  const { mutateAsync: deleteUser, isDeleting } = trpc.user.deleteUser.useMutation({
+  const { mutateAsync: deleteUser, isLoading: isDeleting } = trpc.user.deleteUser.useMutation({
     onSuccess: () => {
       utils.user.invalidate();
     }

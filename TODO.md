@@ -34,4 +34,5 @@
 - custom cursor (e.g. when hovering on out of stock items)
 - display more data in user preview in admin panel
 - perhaps make the previewed image smaller (item-creator)
+- isLoading state in UserDetailsDialog in admin view
 - user list dialog, throws one trpc error after deleting a user (there is one request to fetch user details but the user is no longer existing)
