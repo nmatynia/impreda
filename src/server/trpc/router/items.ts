@@ -1,6 +1,7 @@
-import { color } from 'framer-motion';
+import aws from 'aws-sdk';
 import { z } from 'zod';
 
+import { TRPCError } from '@trpc/server';
 import { router, publicProcedure, adminProcedure } from '../trpc';
 
 const CreateItemSchema = z.object({
@@ -110,6 +111,9 @@ export const itemsRouter = router({
         views: true,
         images: true,
         savedBy: true
+      },
+      orderBy: {
+        updatedAt: 'desc'
       }
     });
     return items.map(item => ({
@@ -210,5 +214,54 @@ export const itemsRouter = router({
     //     .filter(size => size.name === name)
     //     .reduce((acc, curr) => acc + curr.available, 0)
     // }));
+  }),
+  // TODO - test it
+  deleteItem: adminProcedure.input(z.string()).mutation(async ({ ctx, input: id }) => {
+    const item = await ctx.prisma.item.findUnique({
+      where: {
+        id
+      },
+      include: {
+        images: true
+      }
+    });
+    if (!item) {
+      throw new TRPCError({ code: 'NOT_FOUND' });
+    }
+    const bucketName = process.env.AWS_S3_BUCKET_NAME;
+    if (!bucketName) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Bucket name not found' });
+    }
+    const s3objectName = item.images[0]?.url?.split(bucketName)[1]?.split('/')[0];
+    if (!s3objectName) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Certificate file key not found' });
+    }
+    const s3 = new aws.S3({
+      apiVersion: '2006-03-01',
+      accessKeyId: process.env.APP_AWS_ACCESS_KEY,
+      secretAccessKey: process.env.APP_AWS_SECRET_KEY,
+      region: process.env.APP_AWS_REGION,
+      signatureVersion: 'v4'
+    });
+    const promiseArray = [];
+    try {
+      const params: AWS.S3.DeleteObjectRequest = {
+        Bucket: bucketName,
+        Key: s3objectName
+      };
+      promiseArray.push(s3.deleteObject(params).promise());
+    } catch (error) {
+      throw new Error(`Error deleting image from S3: ${error}`);
+    }
+
+    promiseArray.push(
+      ctx.prisma.item.delete({
+        where: {
+          id
+        }
+      })
+    );
+    await Promise.all(promiseArray);
+    return true;
   })
 });

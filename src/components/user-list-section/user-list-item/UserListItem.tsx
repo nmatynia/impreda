@@ -10,13 +10,15 @@ type UserListItemProps = {
   joinDate: string;
   totalPurchases: number;
   totalSpent: number;
+  handlePreviewUser: () => void;
 };
 export const UserListItem = ({
   className,
   name,
   joinDate,
   totalPurchases,
-  totalSpent
+  totalSpent,
+  handlePreviewUser
 }: UserListItemProps) => {
   return (
     <RoundedBox
@@ -41,7 +43,7 @@ export const UserListItem = ({
         </div>
       </div>
       <div className="ml-2 flex basis-6 gap-2">
-        <button type="button" className="cursor-pointer">
+        <button type="button" className="cursor-pointer" onClick={handlePreviewUser}>
           <SvgIcon name="Eye" className="fill-primaryWhite" />
         </button>
       </div>

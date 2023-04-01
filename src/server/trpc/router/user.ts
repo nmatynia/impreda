@@ -1,7 +1,18 @@
 import { TRPCError } from '@trpc/server';
+import { z } from 'zod';
 import { UserDetailsSchema } from '../../../components/user-account-box/UserAcountBox';
 
 import { router, publicProcedure, protectedProcedure, adminProcedure } from '../trpc';
+
+export const UpdateUserByIdDetailsSchema = z.object({
+  id: z.string(),
+  name: z.string().min(1).max(50).nullish(),
+  address: z.string().min(3).max(50).nullish(),
+  city: z.string().min(3).max(50).nullish(),
+  zipCode: z.string().min(1).max(50).nullish(),
+  cardNumber: z.string().min(16).max(19).nullish(),
+  phoneNumber: z.string().min(9).max(10).nullish()
+});
 
 export const userRouter = router({
   getCurrent: protectedProcedure.query(({ ctx }) => {
@@ -12,8 +23,18 @@ export const userRouter = router({
       }
     });
   }),
-
-  update: publicProcedure.input(UserDetailsSchema).mutation(async ({ ctx, input }) => {
+  getUserById: adminProcedure.input(z.string()).query(async ({ ctx, input: id }) => {
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id
+      }
+    });
+    if (!user) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' });
+    }
+    return user;
+  }),
+  updateCurrentUser: publicProcedure.input(UserDetailsSchema).mutation(async ({ ctx, input }) => {
     const userId = ctx.session?.user?.id;
     const user = await ctx.prisma.user.findUnique({
       where: {
@@ -32,6 +53,26 @@ export const userRouter = router({
       }
     });
   }),
+  updateById: publicProcedure
+    .input(UpdateUserByIdDetailsSchema)
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.prisma.user.findUnique({
+        where: {
+          id: input.id
+        }
+      });
+      if (!user) {
+        throw new TRPCError({ code: 'FORBIDDEN' });
+      }
+      return ctx.prisma.user.update({
+        where: {
+          id: input.id
+        },
+        data: {
+          ...input
+        }
+      });
+    }),
   getAllUsers: adminProcedure.query(async ({ ctx }) => {
     const users = await ctx.prisma.user.findMany({
       select: {
@@ -43,6 +84,9 @@ export const userRouter = router({
           }
         },
         joinedAt: true
+      },
+      orderBy: {
+        joinedAt: 'desc'
       }
     });
 
@@ -67,6 +111,21 @@ export const userRouter = router({
         totalSpent,
         totalPurchases
       };
+    });
+  }),
+  deleteUser: adminProcedure.input(z.string()).mutation(async ({ ctx, input: id }) => {
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id
+      }
+    });
+    if (!user) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'User not found' });
+    }
+    return ctx.prisma.user.delete({
+      where: {
+        id
+      }
     });
   })
 });

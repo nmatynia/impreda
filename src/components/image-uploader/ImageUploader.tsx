@@ -16,7 +16,15 @@ type ImageUploaderProps = {
 };
 
 export const ImageUploader = ({ images, setImages }: ImageUploaderProps) => {
-  const [previewedImage, setPreviewedImage] = useState<ImageType>();
+  const [previewedImage, setPreviewedImage] = useState<ImageType | null>(null);
+  const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false);
+  const handleOpenPreviewDialog = (image: ImageType) => {
+    setPreviewedImage(image);
+    setIsPreviewDialogOpen(true);
+  };
+  const handleClosePreviewDialog = () => {
+    setIsPreviewDialogOpen(false);
+  };
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files: Blob[] = Array.from(e.target.files as FileList);
     const imagesObj = files.map(file => ({
@@ -35,8 +43,9 @@ export const ImageUploader = ({ images, setImages }: ImageUploaderProps) => {
     <>
       <DialogModal
         title={previewedImage?.filename ?? 'Image preview'}
-        isOpen={!!previewedImage}
-        handleCloseDialog={() => setPreviewedImage(undefined)}
+        isOpen={isPreviewDialogOpen}
+        handleCloseDialog={handleClosePreviewDialog}
+        className="w-[calc(50vw-4rem)] max-w-3xl whitespace-nowrap"
       >
         <div className="relative aspect-[0.75] max-h-screen w-full overflow-hidden rounded-sm">
           <Image src={previewedImage?.src ?? ''} alt="item" className="z-0 object-contain" fill />
@@ -84,9 +93,7 @@ export const ImageUploader = ({ images, setImages }: ImageUploaderProps) => {
                   alt="item"
                   className="z-0 object-cover"
                   fill
-                  onClick={() => {
-                    setPreviewedImage(image);
-                  }}
+                  onClick={() => handleOpenPreviewDialog(image)}
                 />
               </div>
             ))}

@@ -3,9 +3,12 @@ import type { ReactNode } from 'react';
 import React, { Fragment } from 'react';
 import clsxm from '../../utils/clsxm';
 import { SvgIcon } from '../icons/SvgIcon';
+import { RoundedBox } from '../box/RoundedBox';
+import { LargeBodyText } from '../typography/Typography';
 
 type DialogModalProps = {
   title: string;
+  actionElement?: ReactNode;
   children: ReactNode;
   isOpen: boolean;
   handleCloseDialog: () => void;
@@ -15,13 +18,14 @@ type DialogModalProps = {
 export const DialogModal = ({
   title,
   children,
+  actionElement,
   isOpen,
   handleCloseDialog,
   className
 }: DialogModalProps) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className={clsxm('relative z-10', className)} onClose={handleCloseDialog}>
+      <Dialog as="div" className={clsxm('relative z-10')} onClose={handleCloseDialog}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -45,19 +49,22 @@ export const DialogModal = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title
-                  as="h3"
-                  className="flex justify-between pb-6 text-lg font-medium leading-6 text-gray-900"
-                >
-                  {title}
-                  <SvgIcon
-                    name="Cross"
-                    className="h-4 w-4 cursor-pointer text-primaryBlack"
-                    onClick={handleCloseDialog}
-                  />
-                </Dialog.Title>
-                {children}
+              <Dialog.Panel>
+                <RoundedBox className={clsxm('mt-16 w-full p-0 text-left shadow-xl', className)}>
+                  <Dialog.Title
+                    as="h3"
+                    className="flex w-full items-center justify-between border-b-[1px] border-primaryBlack p-8"
+                  >
+                    <div className="flex gap-5">
+                      <LargeBodyText>{title}</LargeBodyText>
+                      {actionElement}
+                    </div>
+                    <button type="button" className="cursor-pointer" onClick={handleCloseDialog}>
+                      <SvgIcon name="Cross" className=" text-primaryBlack" />
+                    </button>
+                  </Dialog.Title>
+                  {children}
+                </RoundedBox>
               </Dialog.Panel>
             </Transition.Child>
           </div>

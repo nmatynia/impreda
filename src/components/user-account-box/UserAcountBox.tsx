@@ -6,10 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { trpc } from '../../utils/trpc';
 import { RoundedBox } from '../box/RoundedBox';
 import { SvgIcon } from '../icons/SvgIcon';
-import { BodyText, Bold, LargeBodyText } from '../typography/Typography';
-import { Button } from '../button/Button';
-import { InputField } from '../forms/InputField';
-import { Form } from '../forms/Form';
+import { LargeBodyText } from '../typography/Typography';
+import { EditUserDetailsForm } from '../forms/EditUserDetailsForm';
 
 export const UserDetailsSchema = z.object({
   name: z.string().min(1).max(50).nullish(),
@@ -20,7 +18,7 @@ export const UserDetailsSchema = z.object({
   phoneNumber: z.string().min(9).max(10).nullish()
 });
 
-type UserDetailsType = z.infer<typeof UserDetailsSchema>;
+export type UserDetailsType = z.infer<typeof UserDetailsSchema>;
 
 export const UserAccountBox = () => {
   const [isEditing, setIsEditing] = React.useState(false);
@@ -30,14 +28,14 @@ export const UserAccountBox = () => {
     reset();
   };
   const utils = trpc.useContext();
-  const { data } = trpc.user.getCurrent.useQuery(undefined, {
+  const { data: user } = trpc.user.getCurrent.useQuery(undefined, {
     onSuccess: data => {
       if (data) reset(data);
     },
     refetchOnWindowFocus: false
   });
 
-  const { mutateAsync: updateUser } = trpc.user.update.useMutation({
+  const { mutateAsync: updateUser } = trpc.user.updateCurrentUser.useMutation({
     onSuccess: () => {
       utils.user.invalidate();
     }
@@ -46,12 +44,12 @@ export const UserAccountBox = () => {
   const methods = useForm<UserDetailsType>({
     resolver: zodResolver(UserDetailsSchema),
     defaultValues: {
-      name: data?.name,
-      address: data?.address,
-      city: data?.city,
-      zipCode: data?.zipCode,
-      cardNumber: data?.cardNumber,
-      phoneNumber: data?.phoneNumber
+      name: user?.name,
+      address: user?.address,
+      city: user?.city,
+      zipCode: user?.zipCode,
+      cardNumber: user?.cardNumber,
+      phoneNumber: user?.phoneNumber
     }
   });
 
@@ -71,83 +69,13 @@ export const UserAccountBox = () => {
           <SvgIcon name="Edit" className="fill-primaryBlack" />
         </button>
       </div>
-      <Form className="flex flex-col gap-7 p-8" onSubmit={handleSubmit(onSubmit)} {...methods}>
-        <div className="flex flex-col gap-7 sm:flex-row sm:gap-14">
-          <div className="flex flex-col gap-7">
-            <div>
-              <BodyText>Name:</BodyText>
-              {isEditing ? (
-                <InputField placeholder="Enter name" name="name" />
-              ) : (
-                <BodyText>
-                  <Bold>{data?.name ?? '----'}</Bold>
-                </BodyText>
-              )}
-            </div>
-            <div>
-              <BodyText>Address:</BodyText>
-              {isEditing ? (
-                <InputField placeholder="Enter address" name="address" />
-              ) : (
-                <BodyText>
-                  <Bold>{data?.address ?? '----'}</Bold>
-                </BodyText>
-              )}
-            </div>
-            <div>
-              <BodyText>City:</BodyText>
-              {isEditing ? (
-                <InputField placeholder="Enter city" name="city" />
-              ) : (
-                <BodyText>
-                  <Bold>{data?.city ?? '----'}</Bold>
-                </BodyText>
-              )}
-            </div>
-            <div>
-              <BodyText>Zip code:</BodyText>
-              {isEditing ? (
-                <InputField placeholder="Enter zip code" name="zipCode" />
-              ) : (
-                <BodyText>
-                  <Bold>{data?.zipCode ?? '----'}</Bold>
-                </BodyText>
-              )}
-            </div>
-          </div>
-          <div className="flex flex-col gap-7">
-            <div>
-              <BodyText>Card Details:</BodyText>
-              {isEditing ? (
-                <InputField placeholder="Enter card details" name="cardDetails" />
-              ) : (
-                <BodyText>
-                  <Bold>{data?.cardNumber ?? '----'}</Bold>
-                </BodyText>
-              )}
-            </div>
-            <div>
-              <BodyText>Phone Number:</BodyText>
-              {isEditing ? (
-                <InputField placeholder="Enter phone number" name="phoneNumber" />
-              ) : (
-                <BodyText>
-                  <Bold>{data?.phoneNumber ?? '----'}</Bold>
-                </BodyText>
-              )}
-            </div>
-          </div>
-        </div>
-        {isEditing && (
-          // Prevents clicking Cancel button on enter in the form
-          <div className="flex flex-row-reverse justify-start gap-3">
-            <Button type="submit">Save</Button>
-            <Button variant="outlined" onClick={handleDisableEditing}>
-              Cancel
-            </Button>
-          </div>
-        )}
-      </Form>
+      <EditUserDetailsForm
+        user={user}
+        onSubmit={handleSubmit(onSubmit)}
+        handleDisableEditing={handleDisableEditing}
+        isEditing={isEditing}
+        {...methods}
+      />
     </RoundedBox>
   );
 };
