@@ -29,15 +29,27 @@ export const UserDetailsDialog = ({
     onSuccess: data => {
       if (data) reset(data);
     },
-    refetchOnWindowFocus: false
+    onError: error => {
+      console.error(error);
+    },
+    refetchOnWindowFocus: false,
+    enabled: !!selectedUserId
   });
 
-  const { mutateAsync: updateUser } = trpc.user.update.useMutation({
+  const { mutateAsync: updateUser } = trpc.user.updateById.useMutation({
     onSuccess: () => {
       utils.user.invalidate();
     }
   });
-
+  const { mutateAsync: deleteUser, isDeleting } = trpc.user.deleteUser.useMutation({
+    onSuccess: () => {
+      utils.user.invalidate();
+    }
+  });
+  const handleUserDeletion = async () => {
+    await deleteUser(selectedUserId);
+    handleCloseDialog();
+  };
   const methods = useForm<UserDetailsType>({
     resolver: zodResolver(UserDetailsSchema),
     defaultValues: {
@@ -54,18 +66,24 @@ export const UserDetailsDialog = ({
 
   const onSubmit: SubmitHandler<UserDetailsType> = async (data, e) => {
     e?.preventDefault();
-    await updateUser(data);
+    await updateUser({ ...data, id: selectedUserId });
     handleDisableEditing();
   };
+
   return (
     <DialogModal
       title="User's details"
       isOpen={isDialogOpen}
       handleCloseDialog={handleCloseDialog}
       actionElement={
-        <button type="button">
-          <SvgIcon name="Edit" onClick={handleEnableEditing} />
-        </button>
+        <>
+          <button type="button">
+            <SvgIcon name="Edit" onClick={handleEnableEditing} />
+          </button>
+          <button type="button">
+            <SvgIcon name="Trash" onClick={handleUserDeletion} />
+          </button>
+        </>
       }
       className="w-[calc(100vw-4rem)] max-w-3xl whitespace-nowrap"
     >

@@ -16,6 +16,7 @@ export const UserListSection = ({ className }: UserListSectionProps) => {
   const [selectedUserId, setSelectedUserId] = React.useState<string | null>(null);
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
+    setSelectedUserId(null);
   };
   const handleOpenDialog = (id: string) => {
     setSelectedUserId(id);
