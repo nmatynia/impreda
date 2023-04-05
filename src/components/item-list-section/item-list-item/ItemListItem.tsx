@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
+import Link from 'next/link';
 import { ImageType } from '../../../types/types';
 import clsxm from '../../../utils/clsxm';
 import { RoundedBox } from '../../box/RoundedBox';
@@ -12,6 +13,7 @@ type ItemListItemProps = {
 };
 
 type ItemListItem = {
+  id: string;
   brand: string;
   name: string;
   views: number;
@@ -44,9 +46,9 @@ export const ItemListItem = ({ className, item }: ItemListItemProps) => {
           </div>
         </div>
       </div>
-      <button type="button" className="basis-5 cursor-pointer">
+      <Link href={`/admin/item-creator?id=${item.id}`} className="basis-5 cursor-pointer">
         <SvgIcon name="Edit" className="ml-5 fill-primaryWhite" />
-      </button>
+      </Link>
     </RoundedBox>
   );
 };

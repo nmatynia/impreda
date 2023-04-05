@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { RoundedBox } from '../../../components/box/RoundedBox';
 import { LargeBodyText } from '../../../components/typography/Typography';
 import type { ItemDetailsType } from '../../../components/forms/ItemInfoForm';
@@ -16,6 +17,45 @@ import { LinkButton } from '../../../components/link/LinkButton';
 import { getServerAuthSession } from '../../../server/common/get-server-auth-session';
 
 const ItemCreator = () => {
+  const { id: itemId } = useRouter().query;
+  const isEdit = !!itemId && typeof itemId === 'string';
+  const { data: itemData } = trpc.items.getItem.useQuery(itemId as string, {
+    enabled: isEdit
+  });
+  const { data: categoryOptions } = trpc.categories.getAllCategories.useQuery();
+  const itemInfoFormDefaultValues = useMemo<ItemDetailsType | undefined>(
+    () =>
+      itemData
+        ? {
+            ...itemData,
+            category: categoryOptions?.find(
+              category => category.key === itemData?.category?.[0]?.id
+            ) as ItemDetailsType['category'],
+            sizes: itemData.sizes.map(size => ({
+              key: size.name,
+              name: size.name
+            })),
+            colors: itemData.colors.map(color => ({
+              key: color.name,
+              name: color.name,
+              hex: color.hex
+            })),
+            fabrics: [
+              {
+                key: itemData.fabrics,
+                name: itemData.fabrics.slice(0, 1).toUpperCase() + itemData.fabrics.slice(1)
+              }
+            ], // TODO: redo it
+            sex: {
+              name: itemData.sex.slice(0, 1) + itemData.sex.slice(1).toLowerCase(),
+              key: itemData.sex
+            },
+            price: itemData.price.toString()
+          }
+        : undefined,
+    [itemData, categoryOptions]
+  );
+
   const [step, setStep] = React.useState<number>(1);
   const handleNextStep = () => setStep(step + 1);
   const handlePreviousStep = () => setStep(step - 1);
@@ -120,9 +160,15 @@ const ItemCreator = () => {
         <div className="flex w-full items-center border-b-[1px] border-primaryBlack p-8">
           <LargeBodyText>Add new item</LargeBodyText>
         </div>
-        {step === 1 && (
-          <ItemInfoForm onSubmit={handleSubmitItemInfoForm} images={images} setImages={setImages} />
-        )}
+        {step === 1 &&
+          itemInfoFormDefaultValues && ( // TODO: temporary
+            <ItemInfoForm
+              onSubmit={handleSubmitItemInfoForm}
+              images={images}
+              setImages={setImages}
+              defaultValues={itemInfoFormDefaultValues}
+            />
+          )}
         {step === 2 && colors.current && sizes.current && (
           <ItemAvailabilityForm
             sizes={sizes.current as OptionType<ItemAvailabilityType['colors'][0]['sizes']>}

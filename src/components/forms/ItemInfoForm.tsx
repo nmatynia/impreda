@@ -1,20 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import Image from 'next/image';
-import React, { useState } from 'react';
+import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { trpc } from '../../utils/trpc';
 import { Button } from '../button/Button';
-import { DialogModal } from '../dialog/DialogModal';
 import { ImageUploader } from '../image-uploader/ImageUploader';
 import type { ImageType } from '../image-uploader/ImageUploader';
-import type { OptionType } from '../select/Select';
 import { Form } from './Form';
 import { InputField } from './InputField';
 import { SelectField } from './SelectField';
 import { TextAreaField } from './TextAreaField';
 import { LinkButton } from '../link/LinkButton';
+import { colorOptions, fabricOptions, sexOptions, sizeOptions } from '../../utils/constants';
 
 export const ItemDetailsSchema = z.object({
   name: z.string(),
@@ -30,61 +28,26 @@ export const ItemDetailsSchema = z.object({
 
 export type ItemDetailsType = z.infer<typeof ItemDetailsSchema>;
 
-const sizeOptions = [
-  { name: 'XS', key: 'XS' },
-  { name: 'S', key: 'S' },
-  { name: 'M', key: 'M' },
-  { name: 'L', key: 'L' },
-  { name: 'XL', key: 'XL' },
-  { name: 'XXL', key: 'XXL' }
-];
-
-const sexOptions = [
-  { name: 'Male', key: 'MALE' },
-  { name: 'Female', key: 'FEMALE' },
-  { name: 'Unisex', key: 'UNISEX' }
-];
-
-const colorOptions = [
-  { name: 'Red', key: 'red', hex: '#FF0000' },
-  { name: 'Blue', key: 'blue', hex: '#323ea8' },
-  { name: 'Green', key: 'green', hex: '#00c469' },
-  { name: 'Yellow', key: 'yellow', hex: '#d9e000' },
-  { name: 'Black', key: 'black', hex: '#141414' },
-  { name: 'White', key: 'white', hex: '#f7f7f7' },
-  { name: 'Pink', key: 'pink', hex: '#ff38e4' },
-  { name: 'Purple', key: 'purple', hex: '#bb00ff' },
-  { name: 'Orange', key: 'orange', hex: '#ffc117' },
-  { name: 'Brown', key: 'brown', hex: '#52482e' },
-  { name: 'Grey', key: 'grey', hex: '#919191' }
-];
-
-const fabricOptions = [
-  { name: 'Cotton', key: 'cotton' },
-  { name: 'Silk', key: 'silk' },
-  { name: 'Wool', key: 'wool' },
-  { name: 'Linen', key: 'linen' },
-  { name: 'Polyester', key: 'polyester' },
-  { name: 'Rayon', key: 'rayon' },
-  { name: 'Nylon', key: 'nylon' },
-  { name: 'Denim', key: 'denim' },
-  { name: 'Canvas', key: 'canvas' },
-  { name: 'Velvet', key: 'velvet' }
-];
-
 type ItemInfoFormProps = {
-  onSubmit: SubmitHandler<ItemDetailsType>;
-  className?: string;
   images: ImageType[];
+  className?: string;
+  defaultValues?: ItemDetailsType;
+  onSubmit: SubmitHandler<ItemDetailsType>;
   setImages: React.Dispatch<React.SetStateAction<ImageType[]>>;
 };
 
-export const ItemInfoForm = ({ onSubmit, className, images, setImages }: ItemInfoFormProps) => {
+export const ItemInfoForm = ({
+  className,
+  images,
+  defaultValues,
+  setImages,
+  onSubmit
+}: ItemInfoFormProps) => {
   const methods = useForm<ItemDetailsType>({
     resolver: zodResolver(ItemDetailsSchema),
-    defaultValues: {}
+    defaultValues
   });
-
+  console.log(defaultValues);
   const { data: categoryOptions } = trpc.categories.getAllCategories.useQuery();
 
   const { handleSubmit } = methods;

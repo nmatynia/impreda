@@ -87,9 +87,9 @@ model Item {
   sex       Sex
   price     Int
   images     Image[]
-  description String? @db.Text
+  description String @db.Text @default("No description provided")
   category  Category[]
-  fabrics   String?    
+  fabrics   String   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   views     Int      @default(0)
