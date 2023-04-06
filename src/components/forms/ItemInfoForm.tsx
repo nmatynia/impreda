@@ -47,9 +47,7 @@ export const ItemInfoForm = ({
     resolver: zodResolver(ItemDetailsSchema),
     defaultValues
   });
-  console.log(defaultValues);
   const { data: categoryOptions } = trpc.categories.getAllCategories.useQuery();
-
   const { handleSubmit } = methods;
 
   return (

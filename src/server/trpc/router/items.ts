@@ -200,7 +200,11 @@ export const itemsRouter = router({
       },
       include: {
         sizes: true,
-        colors: true,
+        colors: {
+          include: {
+            sizes: true
+          }
+        },
         category: true,
         images: true
       }

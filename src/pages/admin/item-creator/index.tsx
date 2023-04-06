@@ -15,6 +15,7 @@ import { SvgIcon } from '../../../components/icons/SvgIcon';
 import { Button } from '../../../components/button/Button';
 import { LinkButton } from '../../../components/link/LinkButton';
 import { getServerAuthSession } from '../../../server/common/get-server-auth-session';
+import { SexType } from '../../../types/types';
 
 const ItemCreator = () => {
   const { id: itemId } = useRouter().query;
@@ -23,38 +24,6 @@ const ItemCreator = () => {
     enabled: isEdit
   });
   const { data: categoryOptions } = trpc.categories.getAllCategories.useQuery();
-  const itemInfoFormDefaultValues = useMemo<ItemDetailsType | undefined>(
-    () =>
-      itemData
-        ? {
-            ...itemData,
-            category: categoryOptions?.find(
-              category => category.key === itemData?.category?.[0]?.id
-            ) as ItemDetailsType['category'],
-            sizes: itemData.sizes.map(size => ({
-              key: size.name,
-              name: size.name
-            })),
-            colors: itemData.colors.map(color => ({
-              key: color.name,
-              name: color.name,
-              hex: color.hex
-            })),
-            fabrics: [
-              {
-                key: itemData.fabrics,
-                name: itemData.fabrics.slice(0, 1).toUpperCase() + itemData.fabrics.slice(1)
-              }
-            ], // TODO: redo it
-            sex: {
-              name: itemData.sex.slice(0, 1) + itemData.sex.slice(1).toLowerCase(),
-              key: itemData.sex
-            },
-            price: itemData.price.toString()
-          }
-        : undefined,
-    [itemData, categoryOptions]
-  );
 
   const [step, setStep] = React.useState<number>(1);
   const handleNextStep = () => setStep(step + 1);
@@ -65,11 +34,82 @@ const ItemCreator = () => {
   const name = React.useRef<string>();
   const price = React.useRef<number>();
   const description = React.useRef<string>();
-  const sex = React.useRef<'MALE' | 'FEMALE' | 'UNISEX'>();
+  const sex = React.useRef<OptionType<{ key: SexType }>>();
   const sizes = React.useRef<OptionType[]>();
   const colors = React.useRef<OptionType[]>();
   const fabrics = React.useRef<OptionType[]>();
   const category = React.useRef<string>();
+
+  const itemInfoFormDefaultValues = useMemo<ItemDetailsType | undefined>(
+    () =>
+      itemData
+        ? {
+            brand: brand.current ?? itemData.brand,
+            name: name.current ?? itemData.name,
+            description: description.current ?? itemData.description,
+            category: categoryOptions?.find(
+              category => category.key === itemData?.category?.[0]?.id
+            ) as ItemDetailsType['category'],
+            sizes:
+              sizes.current ??
+              [...new Set(itemData.sizes.map(size => size.name))].map(sizeName => ({
+                key: sizeName,
+                name: sizeName
+              })),
+            colors:
+              colors.current ??
+              itemData.colors.map(color => ({
+                key: color.name.toLowerCase(),
+                name: color.name,
+                hex: color.hex
+              })),
+            fabrics: fabrics.current ?? [
+              {
+                key: itemData.fabrics,
+                name: itemData.fabrics.slice(0, 1).toUpperCase() + itemData.fabrics.slice(1)
+              }
+            ], // TODO: redo it to support multiple fabrics
+            sex: sex.current ?? {
+              name: itemData.sex.slice(0, 1) + itemData.sex.slice(1).toLowerCase(),
+              key: itemData.sex
+            },
+            price: price.current?.toString() ?? itemData.price.toString()
+          }
+        : undefined,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      itemData,
+      categoryOptions,
+      brand.current,
+      name.current,
+      price.current,
+      sex.current,
+      sizes.current,
+      colors.current,
+      fabrics.current,
+      description.current,
+      category.current
+    ]
+  );
+
+  const itemAvailabilityFormDefaultValues = useMemo<ItemAvailabilityType | undefined>(
+    () =>
+      itemData
+        ? {
+            colors: itemData.colors.map(color => ({
+              key: color.name,
+              name: color.name,
+              hex: color.hex,
+              sizes: color.sizes.map(size => ({
+                key: size.name,
+                name: size.name,
+                available: !colors.current || !sizes.current ? size.available.toString() : '0'
+              }))
+            }))
+          }
+        : undefined,
+    [itemData]
+  );
 
   const utils = trpc.useContext();
 
@@ -115,11 +155,12 @@ const ItemCreator = () => {
   };
 
   const handleSubmitItemInfoForm: SubmitHandler<ItemDetailsType> = async (data, e) => {
+    console.log({ data });
     e?.preventDefault();
     brand.current = data.brand;
     name.current = data.name;
     price.current = Number(data.price);
-    sex.current = data.sex.key;
+    sex.current = data.sex;
     sizes.current = data.sizes;
     colors.current = data.colors;
     fabrics.current = data.fabrics;
@@ -143,7 +184,7 @@ const ItemCreator = () => {
         brand: brand.current,
         name: name.current,
         price: price.current,
-        sex: sex.current,
+        sex: sex.current.key,
         description: description.current,
         fabrics: (fabrics.current as any)[0].key, // TODO temporary
         category: category.current,
@@ -173,8 +214,9 @@ const ItemCreator = () => {
           <ItemAvailabilityForm
             sizes={sizes.current as OptionType<ItemAvailabilityType['colors'][0]['sizes']>}
             colors={colors.current as OptionType<ItemAvailabilityType['colors']>}
-            handlePreviousStep={handlePreviousStep}
+            defaultValues={itemAvailabilityFormDefaultValues}
             onSubmit={handleSubmitItemAvailabilityForm}
+            handlePreviousStep={handlePreviousStep}
           />
         )}
         {step === 3 && (
