@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -34,6 +34,7 @@ type ItemInfoFormProps = {
   defaultValues?: ItemDetailsType;
   onSubmit: SubmitHandler<ItemDetailsType>;
   setImages: React.Dispatch<React.SetStateAction<ImageType[]>>;
+  setColorSizeDirty: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const ItemInfoForm = ({
@@ -41,14 +42,20 @@ export const ItemInfoForm = ({
   images,
   defaultValues,
   setImages,
-  onSubmit
+  onSubmit,
+  setColorSizeDirty
 }: ItemInfoFormProps) => {
   const methods = useForm<ItemDetailsType>({
     resolver: zodResolver(ItemDetailsSchema),
     defaultValues
   });
   const { data: categoryOptions } = trpc.categories.getAllCategories.useQuery();
-  const { handleSubmit } = methods;
+  const { handleSubmit, formState } = methods;
+
+  // If the sizes or colors fields are dirty then the ItemAvailabilityForm won't make use of default values
+  useEffect(() => {
+    setColorSizeDirty(!!formState.dirtyFields.colors || !!formState.dirtyFields.sizes);
+  }, [formState.dirtyFields.colors, formState.dirtyFields.sizes, setColorSizeDirty]);
 
   return (
     <Form className={className} onSubmit={handleSubmit(onSubmit)} {...methods}>

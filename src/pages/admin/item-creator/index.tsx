@@ -16,7 +16,6 @@ import { Button } from '../../../components/button/Button';
 import { LinkButton } from '../../../components/link/LinkButton';
 import { getServerAuthSession } from '../../../server/common/get-server-auth-session';
 import { SexType } from '../../../types/types';
-import { Loader } from '../../../components/loader/Loader';
 import clsxm from '../../../utils/clsxm';
 
 const ItemCreator = () => {
@@ -31,7 +30,7 @@ const ItemCreator = () => {
   const [step, setStep] = React.useState<number>(1);
   const handleNextStep = () => setStep(step + 1);
   const handlePreviousStep = () => setStep(step - 1);
-
+  const [colorSizeDirty, setColorSizeDirty] = useState<boolean>(false);
   const [images, setImages] = useState<ImageType[]>([]);
   const brand = React.useRef<string>();
   const name = React.useRef<string>();
@@ -51,7 +50,8 @@ const ItemCreator = () => {
             name: name.current ?? itemData.name,
             description: description.current ?? itemData.description,
             category: categoryOptions?.find(
-              category => category.key === itemData?.category?.[0]?.id
+              categoryOption =>
+                categoryOption.key === (category.current ?? itemData?.category?.[0]?.id)
             ) as ItemDetailsType['category'],
             sizes:
               sizes.current ??
@@ -97,7 +97,7 @@ const ItemCreator = () => {
 
   const itemAvailabilityFormDefaultValues = useMemo<ItemAvailabilityType | undefined>(
     () =>
-      itemData
+      itemData && !colorSizeDirty
         ? {
             colors: itemData.colors.map(color => ({
               key: color.name,
@@ -106,12 +106,12 @@ const ItemCreator = () => {
               sizes: color.sizes.map(size => ({
                 key: size.name,
                 name: size.name,
-                available: !colors.current || !sizes.current ? size.available.toString() : '0'
+                available: size.available.toString()
               }))
             }))
           }
         : undefined,
-    [itemData]
+    [itemData, colorSizeDirty]
   );
 
   const utils = trpc.useContext();
@@ -217,7 +217,7 @@ const ItemCreator = () => {
         )}
       >
         <div className="flex w-full items-center justify-between border-b-[1px] border-primaryBlack p-8">
-          <LargeBodyText>Add new item</LargeBodyText>
+          <LargeBodyText>{isEdit ? 'Item details' : 'Item creation'}</LargeBodyText>
           {isEdit && (
             <button type="button" onClick={handleDeleteItem}>
               {isDeleting ? <LargeBodyText>Deleting...</LargeBodyText> : <SvgIcon name="Trash" />}
@@ -232,6 +232,7 @@ const ItemCreator = () => {
               images={images}
               setImages={setImages}
               defaultValues={itemInfoFormDefaultValues}
+              setColorSizeDirty={setColorSizeDirty}
             />
           )}
         {step === 2 && colors.current && sizes.current && (
@@ -241,16 +242,21 @@ const ItemCreator = () => {
             defaultValues={itemAvailabilityFormDefaultValues}
             onSubmit={handleSubmitItemAvailabilityForm}
             handlePreviousStep={handlePreviousStep}
+            isEdit={isEdit}
           />
         )}
         {step === 3 && (
           <div className="m-7 flex flex-col gap-5 md:mx-14">
             <div className="my-12 flex flex-col items-center justify-center">
               <SvgIcon name="Check" className="h-8 w-8" />
-              <LargeBodyText>Item created successfully!</LargeBodyText>
+              <LargeBodyText>
+                {isEdit ? 'Item edited successfully!' : 'Item created successfully!'}
+              </LargeBodyText>
             </div>
             <div className="mt-4 flex justify-start gap-3 self-end">
-              <Button onClick={() => window.location.reload()}>Add another item</Button>
+              {!isEdit && (
+                <Button onClick={() => window.location.reload()}>Add another item</Button>
+              )}
               <LinkButton href="/admin">Back to Admin Panel</LinkButton>
             </div>
           </div>

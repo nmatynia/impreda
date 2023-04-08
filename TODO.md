@@ -39,3 +39,4 @@
 - user list dialog, throws one trpc error after deleting a user (there is one request to fetch user details but the user is no longer existing)
 - additional modal, dropdown to confirm deletion of item/user
 - enhance Loader - /item-creator
+- enhance handeling the states between forms in item-creator, right now it looks hacky and ugly

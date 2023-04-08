@@ -137,11 +137,15 @@ const seedItems = async () => {
     });
 
     await Promise.all(
-      item.sizes.map(async sizeName => {
-        const size = await prisma.size.create({
+      item.colors.map(async colorName => {
+        const colorData = colorOptions.find(color => color.key === colorName);
+        if (!colorData) return;
+        const color = await prisma.color.create({
           data: {
-            name: sizeName,
+            name: colorData.name,
+            hex: colorData.hex,
             available: 10,
+
             items: {
               connect: {
                 id: createdItem?.id
@@ -150,29 +154,25 @@ const seedItems = async () => {
           }
         });
         await Promise.all(
-          item.colors.map(async colorName => {
-            const color = colorOptions.find(color => color.key === colorName);
-            if (!color) return;
-            await prisma.color.create({
+          item.sizes.map(async sizeName => {
+            await prisma.size.create({
               data: {
-                name: color.name,
-                hex: color.hex,
+                name: sizeName,
                 available: 5,
-                sizes: {
-                  connect: {
-                    id: size?.id
-                  }
-                },
                 items: {
                   connect: {
                     id: createdItem?.id
+                  }
+                },
+                colors: {
+                  connect: {
+                    id: color?.id
                   }
                 }
               }
             });
           })
         );
-        return Promise.resolve();
       })
     );
   };

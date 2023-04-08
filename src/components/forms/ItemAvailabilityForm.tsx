@@ -36,6 +36,7 @@ type ItemAvailabilityProps = {
   sizes: OptionType<ItemAvailabilityType['colors'][0]['sizes']>;
   colors: OptionType<ItemAvailabilityType['colors']>;
   defaultValues?: ItemAvailabilityType;
+  isEdit: boolean;
   onSubmit: SubmitHandler<ItemAvailabilityType>;
   handlePreviousStep: () => void;
 };
@@ -44,6 +45,7 @@ export const ItemAvailabilityForm = ({
   sizes,
   colors,
   defaultValues,
+  isEdit,
   onSubmit,
   handlePreviousStep
 }: ItemAvailabilityProps) => {
@@ -86,7 +88,7 @@ export const ItemAvailabilityForm = ({
         })}
         <div className="mt-4 flex flex-row-reverse justify-start gap-3">
           <Button type="submit" isLoading={isSubmitting}>
-            Add the item
+            {isEdit ? 'Edit the item' : 'Add the item'}
           </Button>
           <Button variant="outlined" disabled={isSubmitting} onClick={handlePreviousStep}>
             Back
