@@ -27,6 +27,7 @@
 
 ## Low Priority
 
+- Toasts on adding/deleting/editing users/items etc.
 - Color picker and adding new colors to DB.
 - Color display in Select
 - searchBar enhancement - maybe fuzzy search?
@@ -36,3 +37,5 @@
 - perhaps make the previewed image smaller (item-creator)
 - isLoading state in UserDetailsDialog in admin view
 - user list dialog, throws one trpc error after deleting a user (there is one request to fetch user details but the user is no longer existing)
+- additional modal, dropdown to confirm deletion of item/user
+- enhance Loader - /item-creator

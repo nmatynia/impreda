@@ -81,7 +81,7 @@ const seed = async () => {
   await seedCategory();
   await seedItems();
   // eslint-disable-next-line no-console
-  console.log('Seeding done ✅');
+  console.log('Seeding is done ✅');
 };
 
 const seedCategory = async () => {

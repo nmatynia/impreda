@@ -16,9 +16,12 @@ import { Button } from '../../../components/button/Button';
 import { LinkButton } from '../../../components/link/LinkButton';
 import { getServerAuthSession } from '../../../server/common/get-server-auth-session';
 import { SexType } from '../../../types/types';
+import { Loader } from '../../../components/loader/Loader';
+import clsxm from '../../../utils/clsxm';
 
 const ItemCreator = () => {
-  const { id: itemId } = useRouter().query;
+  const router = useRouter();
+  const { id: itemId } = router.query;
   const isEdit = !!itemId && typeof itemId === 'string';
   const { data: itemData } = trpc.items.getItem.useQuery(itemId as string, {
     enabled: isEdit
@@ -119,12 +122,17 @@ const ItemCreator = () => {
     }
   });
 
-  const { mutateAsync: deleteItem } = trpc.items.deleteItem.useMutation({
+  const { mutateAsync: deleteItem, isLoading: isDeleting } = trpc.items.deleteItem.useMutation({
     onSuccess: () => {
       utils.items.invalidate();
     }
   });
-
+  const handleDeleteItem = async () => {
+    if (isEdit) {
+      await deleteItem(itemId);
+      router.push('/admin');
+    }
+  };
   const { mutateAsync: createItem } = trpc.items.createItem.useMutation();
 
   const uploadToDB = async (itemId: string) => {
@@ -201,16 +209,22 @@ const ItemCreator = () => {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-4">
-      <RoundedBox className="my-16 w-full overflow-visible p-0">
+    <div className={clsxm('mx-auto max-w-3xl px-4', isDeleting && ' cursor-progress')}>
+      <RoundedBox
+        className={clsxm(
+          'relative my-16 w-full overflow-visible p-0',
+          isDeleting && 'pointer-events-none select-none'
+        )}
+      >
         <div className="flex w-full items-center justify-between border-b-[1px] border-primaryBlack p-8">
           <LargeBodyText>Add new item</LargeBodyText>
           {isEdit && (
-            <button type="button" onClick={() => deleteItem(itemId)}>
-              <SvgIcon name="Trash" />
+            <button type="button" onClick={handleDeleteItem}>
+              {isDeleting ? <LargeBodyText>Deleting...</LargeBodyText> : <SvgIcon name="Trash" />}
             </button>
           )}
         </div>
+        {/* <div className="absolute h-full w-full bg-primaryBlack/20" /> */}
         {step === 1 &&
           itemInfoFormDefaultValues && ( // TODO: temporary
             <ItemInfoForm

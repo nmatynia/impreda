@@ -219,7 +219,6 @@ export const itemsRouter = router({
     //     .reduce((acc, curr) => acc + curr.available, 0)
     // }));
   }),
-  // TODO - test it
   deleteItem: adminProcedure.input(z.string()).mutation(async ({ ctx, input: id }) => {
     const item = await ctx.prisma.item.findUnique({
       where: {
@@ -236,12 +235,7 @@ export const itemsRouter = router({
     if (!bucketName) {
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Bucket name not found' });
     }
-    const s3objectName = item.images[0]?.url?.split(bucketName)[1]?.split('/')[1];
-    // console.log(item.images[0]?.url);
-    // console.log({ s3objectName });
-    if (!s3objectName) {
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Certificate file key not found' });
-    }
+
     const s3 = new aws.S3({
       apiVersion: '2006-03-01',
       accessKeyId: process.env.APP_AWS_ACCESS_KEY,
@@ -249,25 +243,45 @@ export const itemsRouter = router({
       region: process.env.APP_AWS_REGION,
       signatureVersion: 'v4'
     });
-    const promiseArray = [];
+
+    await Promise.all(
+      item.images.map(image => {
+        const nestedObject = image.url?.slice(image.url.indexOf(id));
+        if (!nestedObject) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: `S3 object was not found: ${image.filename}`
+          });
+        }
+        const params: AWS.S3.DeleteObjectRequest = {
+          Bucket: bucketName,
+          Key: `${nestedObject}`
+        };
+        return s3.deleteObject(params).promise();
+      })
+    ).catch(() => {
+      throw new TRPCError({ message: `Error deleting nested object from S3`, code: 'BAD_REQUEST' });
+    });
+
     try {
       const params: AWS.S3.DeleteObjectRequest = {
         Bucket: bucketName,
-        Key: s3objectName
+        Key: id
       };
-      promiseArray.push(s3.deleteObject(params).promise());
+      await s3.deleteObject(params).promise();
     } catch (error) {
-      throw new Error(`Error deleting image from S3: ${error}`);
+      throw new TRPCError({
+        message: `Error deleting top-most object from S3`,
+        code: 'BAD_REQUEST'
+      });
     }
 
-    promiseArray.push(
-      ctx.prisma.item.delete({
-        where: {
-          id
-        }
-      })
-    );
-    await Promise.all(promiseArray);
+    await ctx.prisma.item.delete({
+      where: {
+        id
+      }
+    });
+
     return true;
   })
 });
