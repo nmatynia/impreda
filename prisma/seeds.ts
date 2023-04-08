@@ -31,7 +31,7 @@ type Item = {
   category: string;
   sizes: SizeNameType[];
   colors: string[];
-  imgUrl: string;
+  imagePath: string;
 };
 
 const items: Item[] = [
@@ -44,7 +44,8 @@ const items: Item[] = [
     category: 'Dresses',
     sizes: ['XS', 'S'],
     colors: ['black', 'orange'],
-    imgUrl: 'https://impreda-bucket.s3.eu-west-2.amazonaws.com/seeded-dress.jpg'
+    imagePath:
+      'file:///C:/Users/Norbert/Desktop/uni_stuff/Dev_Project/impreda/public/images/default-dress.jpg'
   },
   {
     name: 'DRKSHDW T-Shirt',
@@ -55,7 +56,8 @@ const items: Item[] = [
     category: 'T-Shirts',
     sizes: ['M', 'L'],
     colors: ['black', 'white'],
-    imgUrl: 'https://impreda-bucket.s3.eu-west-2.amazonaws.com/seeded-dress.jpg'
+    imagePath:
+      'file:///C:/Users/Norbert/Desktop/uni_stuff/Dev_Project/impreda/public/images/default-rick-tee.webp'
   }
 ];
 
@@ -112,9 +114,7 @@ const seedItems = async () => {
         itemId: createdItem?.id
       }
     });
-    const imagePath = url.fileURLToPath(
-      'file:///C:/Users/Norbert/Desktop/uni_stuff/Dev_Project/impreda/public/images/default-dress.jpg'
-    );
+    const imagePath = url.fileURLToPath(item.imagePath);
     const imageBuffer = fs.readFileSync(imagePath);
     const key = `${createdItem.id}/${image.id}`;
     await s3
