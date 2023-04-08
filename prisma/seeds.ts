@@ -71,6 +71,8 @@ const s3 = new aws.S3({
 });
 
 if (!process.env.AWS_S3_BUCKET_NAME) {
+  // eslint-disable-next-line no-console
+  console.log('AWS_S3_BUCKET_NAME is not defined ❌');
   throw new TRPCError({
     code: 'NOT_FOUND',
     message: 'AWS_S3_BUCKET_NAME is not defined'
@@ -151,11 +153,11 @@ const seedItems = async () => {
           item.colors.map(async colorName => {
             const color = colorOptions.find(color => color.key === colorName);
             if (!color) return;
-            prisma.color.create({
+            await prisma.color.create({
               data: {
                 name: color.name,
                 hex: color.hex,
-                available: 10,
+                available: 5,
                 sizes: {
                   connect: {
                     id: size?.id
@@ -174,7 +176,7 @@ const seedItems = async () => {
       })
     );
   };
-  Promise.all(items.map(item => createItem(item)));
+  await Promise.all(items.map(item => createItem(item)));
 };
 
 seed();
