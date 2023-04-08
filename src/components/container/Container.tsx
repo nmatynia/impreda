@@ -14,7 +14,7 @@ export const Container = ({ children, className, fullSize }: ContainerProps) => 
       className={clsxm(
         'mx-auto flex w-fit flex-col items-center justify-center overflow-hidden',
         'py-16 px-4',
-        fullSize && 'w-full py-0 px-0',
+        fullSize && 'h-full w-full justify-start py-0 px-0',
         className
       )}
     >

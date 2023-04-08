@@ -58,7 +58,7 @@ export const itemsRouter = router({
     // eslint-disable-next-line no-restricted-syntax
     for (const color of input.colors) {
       let colorAvailibility = 0;
-      const sizesIds = [];
+      const sizesIds: { id: string }[] = [];
       // eslint-disable-next-line no-restricted-syntax
       for (const size of color.sizes) {
         // eslint-disable-next-line no-await-in-loop
@@ -236,7 +236,9 @@ export const itemsRouter = router({
     if (!bucketName) {
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Bucket name not found' });
     }
-    const s3objectName = item.images[0]?.url?.split(bucketName)[1]?.split('/')[0];
+    const s3objectName = item.images[0]?.url?.split(bucketName)[1]?.split('/')[1];
+    // console.log(item.images[0]?.url);
+    // console.log({ s3objectName });
     if (!s3objectName) {
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Certificate file key not found' });
     }

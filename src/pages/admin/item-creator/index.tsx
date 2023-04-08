@@ -119,6 +119,12 @@ const ItemCreator = () => {
     }
   });
 
+  const { mutateAsync: deleteItem } = trpc.items.deleteItem.useMutation({
+    onSuccess: () => {
+      utils.items.invalidate();
+    }
+  });
+
   const { mutateAsync: createItem } = trpc.items.createItem.useMutation();
 
   const uploadToDB = async (itemId: string) => {
@@ -155,7 +161,6 @@ const ItemCreator = () => {
   };
 
   const handleSubmitItemInfoForm: SubmitHandler<ItemDetailsType> = async (data, e) => {
-    console.log({ data });
     e?.preventDefault();
     brand.current = data.brand;
     name.current = data.name;
@@ -198,8 +203,13 @@ const ItemCreator = () => {
   return (
     <div className="mx-auto max-w-3xl px-4">
       <RoundedBox className="my-16 w-full overflow-visible p-0">
-        <div className="flex w-full items-center border-b-[1px] border-primaryBlack p-8">
+        <div className="flex w-full items-center justify-between border-b-[1px] border-primaryBlack p-8">
           <LargeBodyText>Add new item</LargeBodyText>
+          {isEdit && (
+            <button type="button" onClick={() => deleteItem(itemId)}>
+              <SvgIcon name="Trash" />
+            </button>
+          )}
         </div>
         {step === 1 &&
           itemInfoFormDefaultValues && ( // TODO: temporary
