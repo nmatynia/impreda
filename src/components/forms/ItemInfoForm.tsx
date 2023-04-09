@@ -32,6 +32,7 @@ type ItemInfoFormProps = {
   images: ImageType[];
   className?: string;
   defaultValues?: ItemDetailsType;
+  isLoading: boolean;
   onSubmit: SubmitHandler<ItemDetailsType>;
   setImages: React.Dispatch<React.SetStateAction<ImageType[]>>;
   setColorSizeDirty: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,6 +42,7 @@ export const ItemInfoForm = ({
   className,
   images,
   defaultValues,
+  isLoading,
   setImages,
   onSubmit,
   setColorSizeDirty
@@ -60,28 +62,31 @@ export const ItemInfoForm = ({
   return (
     <Form className={className} onSubmit={handleSubmit(onSubmit)} {...methods}>
       <div className="m-7 flex flex-col gap-8 md:mx-14">
-        <ImageUploader images={images} setImages={setImages} />
-        <div className="flex w-full flex-col gap-6 md:flex-row">
+        <ImageUploader images={images} setImages={setImages} isLoading={isLoading} />
+        <div className="flex w-full flex-col gap-8 md:flex-row">
           <InputField
             label="Brand:"
             placeholder={"Enter item's brand"}
             name="brand"
             className="w-full md:w-1/2"
+            isLoading={isLoading}
           />
           <InputField
             label="Name:"
             placeholder={"Enter item's name"}
             name="name"
             className="w-full md:w-1/2"
+            isLoading={isLoading}
           />
         </div>
-        <div className="flex w-full flex-col gap-6 md:flex-row">
+        <div className="flex w-full flex-col gap-8 md:flex-row">
           <InputField
             label="Price"
             placeholder={"Enter item's brand"}
             name="price"
             type="number"
             className="w-full md:w-1/2"
+            isLoading={isLoading}
           />
           <SelectField
             placeholder="Choose sex"
@@ -89,6 +94,7 @@ export const ItemInfoForm = ({
             label="Sex"
             className="z-50 w-full md:w-1/2"
             options={sexOptions}
+            isLoading={isLoading}
           />
         </div>
         <TextAreaField
@@ -96,6 +102,7 @@ export const ItemInfoForm = ({
           placeholder={"Enter item's or brand's description"}
           name="description"
           className="w-full"
+          isLoading={isLoading}
         />
         <SelectField
           placeholder="Choose category"
@@ -103,6 +110,7 @@ export const ItemInfoForm = ({
           label="Category:"
           className="z-40 w-full"
           options={categoryOptions ?? []}
+          isLoading={isLoading}
         />
         <SelectField
           placeholder="Choose sizes"
@@ -110,6 +118,7 @@ export const ItemInfoForm = ({
           label="Sizes:"
           className="z-30 w-full"
           options={sizeOptions}
+          isLoading={isLoading}
           multiple
         />
         <SelectField
@@ -118,6 +127,7 @@ export const ItemInfoForm = ({
           label="Colors:"
           className="z-20 w-full"
           options={colorOptions}
+          isLoading={isLoading}
           multiple
         />
         <SelectField
@@ -126,6 +136,7 @@ export const ItemInfoForm = ({
           label="Fabrics:"
           className="z-10 w-full"
           options={fabricOptions}
+          isLoading={isLoading}
           multiple
         />
         <div className="mt-4 flex flex-row-reverse justify-start gap-3">

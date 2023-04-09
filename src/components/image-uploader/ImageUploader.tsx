@@ -12,10 +12,11 @@ export type ImageType = {
 };
 type ImageUploaderProps = {
   images: ImageType[];
+  isLoading?: boolean;
   setImages: React.Dispatch<React.SetStateAction<ImageType[]>>;
 };
 
-export const ImageUploader = ({ images, setImages }: ImageUploaderProps) => {
+export const ImageUploader = ({ images, isLoading, setImages }: ImageUploaderProps) => {
   const [previewedImage, setPreviewedImage] = useState<ImageType | null>(null);
   const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false);
   const handleOpenPreviewDialog = (image: ImageType) => {
@@ -39,6 +40,9 @@ export const ImageUploader = ({ images, setImages }: ImageUploaderProps) => {
     const newImages = images.filter(image => image.src !== src);
     setImages(newImages);
   };
+  if (isLoading) {
+    return <div className={clsxm('flex h-32 w-full', 'animate-pulse bg-primaryBlack/50')} />;
+  }
   return (
     <>
       <DialogModal
@@ -51,6 +55,7 @@ export const ImageUploader = ({ images, setImages }: ImageUploaderProps) => {
           <Image src={previewedImage?.src ?? ''} alt="item" className="z-0 object-contain" fill />
         </div>
       </DialogModal>
+
       <>
         <div
           className={clsxm(

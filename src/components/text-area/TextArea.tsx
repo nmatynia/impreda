@@ -11,6 +11,7 @@ export type TextAreaProps = {
   password?: boolean;
   color?: InputColorVariant;
   isValid?: boolean;
+  isLoading?: boolean;
 } & InputHTMLAttributes<HTMLTextAreaElement>;
 
 type InputColorVariant = 'black' | 'white';
@@ -31,10 +32,14 @@ export const TextArea = React.forwardRef(
       innerClassName,
       color = 'black',
       isValid = true,
+      isLoading,
       ...rest
     }: TextAreaProps,
     ref: ForwardedRef<HTMLTextAreaElement>
   ) => {
+    if (isLoading) {
+      return <div className={clsxm('h-32 w-80 animate-pulse bg-primaryBlack/50', className)} />;
+    }
     return (
       <div className={clsxm('relative flex w-80 flex-col gap-1  ', className)}>
         {label && <BodyText as="label">{label}</BodyText>}

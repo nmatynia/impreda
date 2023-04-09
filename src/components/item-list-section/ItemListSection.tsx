@@ -9,16 +9,13 @@ type ItemListSectionProps = {
   className?: string;
 };
 export const ItemListSection = ({ className }: ItemListSectionProps) => {
-  const [loading, setLoading] = useState(true);
-  const { data: items } = trpc.items.getListItems.useQuery(undefined, {
-    onSuccess: () => setLoading(false)
-  });
+  const { data: items, isLoading } = trpc.items.getListItems.useQuery();
 
   return (
     <section className={clsxm('flex flex-col', className)}>
       <ItemListFilterPanel sectionName="Item List" />
       <div className="z-10 my-6 flex flex-col gap-6">
-        {loading ? (
+        {isLoading ? (
           <>
             <ListItemSkeleton />
             <ListItemSkeleton />

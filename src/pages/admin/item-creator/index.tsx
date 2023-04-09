@@ -22,9 +22,12 @@ const ItemCreator = () => {
   const router = useRouter();
   const { id: itemId } = router.query;
   const isEdit = !!itemId && typeof itemId === 'string';
-  const { data: itemData } = trpc.items.getItem.useQuery(itemId as string, {
-    enabled: isEdit
-  });
+  const { data: itemData, isLoading: isLoadingDetails } = trpc.items.getItem.useQuery(
+    itemId as string,
+    {
+      enabled: isEdit
+    }
+  );
   const { data: categoryOptions } = trpc.categories.getAllCategories.useQuery();
 
   const [step, setStep] = React.useState<number>(1);
@@ -230,7 +233,6 @@ const ItemCreator = () => {
       handleNextStep();
     }
   };
-
   return (
     <div className={clsxm('mx-auto max-w-3xl px-4', isDeleting && ' cursor-progress')}>
       <RoundedBox
@@ -248,16 +250,16 @@ const ItemCreator = () => {
           )}
         </div>
         {/* <div className="absolute h-full w-full bg-primaryBlack/20" /> */}
-        {step === 1 &&
-          itemInfoFormDefaultValues && ( // TODO: temporary
-            <ItemInfoForm
-              onSubmit={handleSubmitItemInfoForm}
-              images={images}
-              setImages={setImages}
-              defaultValues={itemInfoFormDefaultValues}
-              setColorSizeDirty={setColorSizeDirty}
-            />
-          )}
+        {step === 1 && (
+          <ItemInfoForm
+            onSubmit={handleSubmitItemInfoForm}
+            images={images}
+            setImages={setImages}
+            defaultValues={itemInfoFormDefaultValues}
+            setColorSizeDirty={setColorSizeDirty}
+            isLoading={isEdit && isLoadingDetails}
+          />
+        )}
         {step === 2 && colors.current && sizes.current && (
           <ItemAvailabilityForm
             sizes={sizes.current as OptionType<ItemAvailabilityType['colors'][0]['sizes']>}
