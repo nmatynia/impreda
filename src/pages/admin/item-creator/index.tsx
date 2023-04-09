@@ -127,6 +127,7 @@ const ItemCreator = () => {
       utils.items.invalidate();
     }
   });
+
   const handleDeleteItem = async () => {
     if (isEdit) {
       await deleteItem(itemId);
@@ -134,6 +135,7 @@ const ItemCreator = () => {
     }
   };
   const { mutateAsync: createItem } = trpc.items.createItem.useMutation();
+  const { mutateAsync: updateItem } = trpc.items.updateItem.useMutation();
 
   const uploadToDB = async (itemId: string) => {
     const requests: Promise<Response>[] = [];
@@ -185,14 +187,34 @@ const ItemCreator = () => {
   const handleSubmitItemAvailabilityForm: SubmitHandler<ItemAvailabilityType> = async (data, e) => {
     e?.preventDefault();
     if (
-      brand.current &&
-      name.current &&
-      price.current &&
-      sex.current &&
-      description.current &&
-      fabrics.current &&
-      category.current
+      !(
+        brand.current &&
+        name.current &&
+        price.current &&
+        sex.current &&
+        description.current &&
+        fabrics.current &&
+        category.current
+      )
     ) {
+      return;
+    }
+    if (isEdit) {
+      const item = await updateItem({
+        id: itemId,
+        brand: brand.current,
+        name: name.current,
+        price: price.current,
+        sex: sex.current.key,
+        description: description.current,
+        fabrics: (fabrics.current as any)[0].key, // TODO temporary
+        category: category.current,
+        colors: data.colors
+      });
+
+      await uploadToDB(item.itemId);
+      handleNextStep();
+    } else {
       const item = await createItem({
         brand: brand.current,
         name: name.current,
@@ -203,6 +225,7 @@ const ItemCreator = () => {
         category: category.current,
         colors: data.colors
       });
+
       await uploadToDB(item.itemId);
       handleNextStep();
     }

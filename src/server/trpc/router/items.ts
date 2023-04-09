@@ -26,6 +26,29 @@ const CreateItemSchema = z.object({
   )
 });
 
+const UpdateItemSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  brand: z.string(),
+  price: z.number(),
+  sex: z.enum(['MALE', 'FEMALE', 'UNISEX']),
+  description: z.string(),
+  fabrics: z.string(),
+  category: z.string(),
+  colors: z.array(
+    z.object({
+      name: z.string(),
+      hex: z.string(),
+      sizes: z.array(
+        z.object({
+          name: z.enum(['XS', 'S', 'M', 'L', 'XL']),
+          available: z.string()
+        })
+      )
+    })
+  )
+});
+
 const GetItemsSchema = z
   .object({
     sex: z.enum(['MALE', 'FEMALE', 'UNISEX']).optional(),
@@ -97,6 +120,69 @@ export const itemsRouter = router({
 
     return {
       itemId: item.id
+    };
+  }),
+  updateItem: adminProcedure.input(UpdateItemSchema).mutation(async ({ ctx, input }) => {
+    await ctx.prisma.item.update({
+      where: {
+        id: input.id
+      },
+      data: {
+        name: input.name,
+        brand: input.brand,
+        sex: input.sex,
+        price: input.price,
+        description: input.description,
+        fabrics: input.fabrics,
+        category: {
+          connect: {
+            id: input.category
+          }
+        }
+      }
+    });
+    // TODO: Perhaphs listen to the ESlint rule and refactor this code
+    // eslint-disable-next-line no-restricted-syntax
+    for (const color of input.colors) {
+      let colorAvailibility = 0;
+      const sizesIds: { id: string }[] = [];
+      // eslint-disable-next-line no-restricted-syntax
+      for (const size of color.sizes) {
+        // eslint-disable-next-line no-await-in-loop
+        const { id: sizeId } = await ctx.prisma.size.create({
+          data: {
+            name: size.name,
+            available: Number(size.available),
+            items: {
+              connect: {
+                id: input.id
+              }
+            }
+          }
+        });
+        colorAvailibility += Number(size.available);
+        sizesIds.push({ id: sizeId });
+      }
+
+      // eslint-disable-next-line no-await-in-loop
+      await ctx.prisma.color.create({
+        data: {
+          name: color.name,
+          available: colorAvailibility,
+          hex: color.hex,
+          sizes: {
+            connect: sizesIds
+          },
+          items: {
+            connect: {
+              id: input.id
+            }
+          }
+        }
+      });
+    }
+    return {
+      itemId: input.id
     };
   }),
   getListItems: publicProcedure.query(async ({ ctx }) => {
