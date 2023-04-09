@@ -70,7 +70,7 @@ export const ItemContainerContent = ({
 
   if (!items || items.length === 0) {
     return (
-      <div className="col-span-3 flex justify-center">
+      <div className="col-span-full flex min-h-max justify-center">
         <div className="flex max-w-md flex-col items-center gap-5 px-8 py-20 text-center">
           <LogoText>We couldn&apos;t find any item that you&apos;re looking for.</LogoText>
           <BodyText>

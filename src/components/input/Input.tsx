@@ -13,6 +13,7 @@ export type InputProps = {
   password?: boolean;
   color?: InputColorVariant;
   isValid?: boolean;
+  isLoading?: boolean;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 type InputColorVariant = 'black' | 'white';
@@ -34,13 +35,17 @@ export const Input = React.forwardRef(
       innerClassName,
       color = 'black',
       isValid = true,
+      isLoading,
       type,
       ...rest
     }: InputProps,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
+    if (isLoading) {
+      return <div className={clsxm('h-14 w-80 animate-pulse bg-primaryBlack/50', className)} />;
+    }
     return (
-      <div className={clsxm('relative flex w-80 flex-col', className)}>
+      <div className={clsxm('relative h-14 w-80', className)}>
         {label && <BodyText as="label">{label}</BodyText>}
         <input
           placeholder={placeholder}

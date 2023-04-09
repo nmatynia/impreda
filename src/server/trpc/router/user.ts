@@ -3,16 +3,7 @@ import { z } from 'zod';
 import { UserDetailsSchema } from '../../../components/user-account-box/UserAcountBox';
 
 import { router, publicProcedure, protectedProcedure, adminProcedure } from '../trpc';
-
-export const UpdateUserByIdDetailsSchema = z.object({
-  id: z.string(),
-  name: z.string().min(1).max(50).nullish(),
-  address: z.string().min(3).max(50).nullish(),
-  city: z.string().min(3).max(50).nullish(),
-  zipCode: z.string().min(1).max(50).nullish(),
-  cardNumber: z.string().min(16).max(19).nullish(),
-  phoneNumber: z.string().min(9).max(10).nullish()
-});
+import { UpdateUserByIdDetailsSchema } from '../../../utils/validation';
 
 export const userRouter = router({
   getCurrent: protectedProcedure.query(({ ctx }) => {

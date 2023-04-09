@@ -3,38 +3,56 @@ import { z } from 'zod';
 
 import { TRPCError } from '@trpc/server';
 import { router, publicProcedure, adminProcedure } from '../trpc';
+import { CreateItemSchema, GetItemsSchema, UpdateItemSchema } from '../../../utils/validation';
+import { Context } from '../context';
 
-const CreateItemSchema = z.object({
-  name: z.string(),
-  brand: z.string(),
-  price: z.number(),
-  sex: z.enum(['MALE', 'FEMALE', 'UNISEX']),
-  description: z.string(),
-  fabrics: z.string(),
-  category: z.string(),
-  colors: z.array(
-    z.object({
-      name: z.string(),
-      hex: z.string(),
-      sizes: z.array(
-        z.object({
-          name: z.enum(['XS', 'S', 'M', 'L', 'XL']),
-          available: z.string()
-        })
-      )
-    })
-  )
-});
+// You will need other logic for updates cause the colors are doubled now since the old ones are not updated/deleted but a new one is created.
+const createSizeAndImage = async (
+  ctx: Context,
+  colors: z.infer<typeof CreateItemSchema>['colors'],
+  itemId: string
+) => {
+  // TODO: Perhaphs listen to the ESlint rule and refactor this code
+  // eslint-disable-next-line no-restricted-syntax
+  for (const color of colors) {
+    let colorAvailibility = 0;
+    const sizesIds: { id: string }[] = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const size of color.sizes) {
+      // eslint-disable-next-line no-await-in-loop
+      const { id: sizeId } = await ctx.prisma.size.create({
+        data: {
+          name: size.name,
+          available: Number(size.available),
+          items: {
+            connect: {
+              id: itemId
+            }
+          }
+        }
+      });
+      colorAvailibility += Number(size.available);
+      sizesIds.push({ id: sizeId });
+    }
 
-const GetItemsSchema = z
-  .object({
-    sex: z.enum(['MALE', 'FEMALE', 'UNISEX']).optional(),
-    colorsNames: z.array(z.string()).optional(),
-    sizesNames: z.array(z.enum(['XS', 'S', 'M', 'L', 'XL'])).optional(),
-    categoryName: z.string().optional()
-    // TODO: Price range, sort by(views, saves , cheapest, most expensive, latest), brand,
-  })
-  .optional();
+    // eslint-disable-next-line no-await-in-loop
+    await ctx.prisma.color.create({
+      data: {
+        name: color.name,
+        available: colorAvailibility,
+        hex: color.hex,
+        sizes: {
+          connect: sizesIds
+        },
+        items: {
+          connect: {
+            id: itemId
+          }
+        }
+      }
+    });
+  }
+};
 
 export const itemsRouter = router({
   createItem: adminProcedure.input(CreateItemSchema).mutation(async ({ ctx, input }) => {
@@ -54,49 +72,33 @@ export const itemsRouter = router({
       }
     });
 
-    // TODO: Perhaphs listen to the ESlint rule and refactor this code
-    // eslint-disable-next-line no-restricted-syntax
-    for (const color of input.colors) {
-      let colorAvailibility = 0;
-      const sizesIds = [];
-      // eslint-disable-next-line no-restricted-syntax
-      for (const size of color.sizes) {
-        // eslint-disable-next-line no-await-in-loop
-        const { id: sizeId } = await ctx.prisma.size.create({
-          data: {
-            name: size.name,
-            available: Number(size.available),
-            items: {
-              connect: {
-                id: item.id
-              }
-            }
-          }
-        });
-        colorAvailibility += Number(size.available);
-        sizesIds.push({ id: sizeId });
-      }
-
-      // eslint-disable-next-line no-await-in-loop
-      await ctx.prisma.color.create({
-        data: {
-          name: color.name,
-          available: colorAvailibility,
-          hex: color.hex,
-          sizes: {
-            connect: sizesIds
-          },
-          items: {
-            connect: {
-              id: item.id
-            }
-          }
-        }
-      });
-    }
-
+    await createSizeAndImage(ctx, input.colors, item.id);
     return {
       itemId: item.id
+    };
+  }),
+  updateItem: adminProcedure.input(UpdateItemSchema).mutation(async ({ ctx, input }) => {
+    await ctx.prisma.item.update({
+      where: {
+        id: input.id
+      },
+      data: {
+        name: input.name,
+        brand: input.brand,
+        sex: input.sex,
+        price: input.price,
+        description: input.description,
+        fabrics: input.fabrics,
+        category: {
+          connect: {
+            id: input.category
+          }
+        }
+      }
+    });
+    await createSizeAndImage(ctx, input.colors, input.id);
+    return {
+      itemId: input.id
     };
   }),
   getListItems: publicProcedure.query(async ({ ctx }) => {
@@ -200,7 +202,11 @@ export const itemsRouter = router({
       },
       include: {
         sizes: true,
-        colors: true,
+        colors: {
+          include: {
+            sizes: true
+          }
+        },
         category: true,
         images: true
       }
@@ -215,7 +221,6 @@ export const itemsRouter = router({
     //     .reduce((acc, curr) => acc + curr.available, 0)
     // }));
   }),
-  // TODO - test it
   deleteItem: adminProcedure.input(z.string()).mutation(async ({ ctx, input: id }) => {
     const item = await ctx.prisma.item.findUnique({
       where: {
@@ -232,10 +237,7 @@ export const itemsRouter = router({
     if (!bucketName) {
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Bucket name not found' });
     }
-    const s3objectName = item.images[0]?.url?.split(bucketName)[1]?.split('/')[0];
-    if (!s3objectName) {
-      throw new TRPCError({ code: 'NOT_FOUND', message: 'Certificate file key not found' });
-    }
+
     const s3 = new aws.S3({
       apiVersion: '2006-03-01',
       accessKeyId: process.env.APP_AWS_ACCESS_KEY,
@@ -243,25 +245,45 @@ export const itemsRouter = router({
       region: process.env.APP_AWS_REGION,
       signatureVersion: 'v4'
     });
-    const promiseArray = [];
+
+    await Promise.all(
+      item.images.map(image => {
+        const nestedObject = image.url?.slice(image.url.indexOf(id));
+        if (!nestedObject) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: `S3 object was not found: ${image.filename}`
+          });
+        }
+        const params: AWS.S3.DeleteObjectRequest = {
+          Bucket: bucketName,
+          Key: `${nestedObject}`
+        };
+        return s3.deleteObject(params).promise();
+      })
+    ).catch(() => {
+      throw new TRPCError({ message: `Error deleting nested object from S3`, code: 'BAD_REQUEST' });
+    });
+
     try {
       const params: AWS.S3.DeleteObjectRequest = {
         Bucket: bucketName,
-        Key: s3objectName
+        Key: id
       };
-      promiseArray.push(s3.deleteObject(params).promise());
+      await s3.deleteObject(params).promise();
     } catch (error) {
-      throw new Error(`Error deleting image from S3: ${error}`);
+      throw new TRPCError({
+        message: `Error deleting top-most object from S3`,
+        code: 'BAD_REQUEST'
+      });
     }
 
-    promiseArray.push(
-      ctx.prisma.item.delete({
-        where: {
-          id
-        }
-      })
-    );
-    await Promise.all(promiseArray);
+    await ctx.prisma.item.delete({
+      where: {
+        id
+      }
+    });
+
     return true;
   })
 });

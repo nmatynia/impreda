@@ -15,6 +15,7 @@ export type SelectProps = {
   options: OptionType[];
   defaultValue?: OptionType | OptionType[];
   multiple?: boolean;
+  isLoading?: boolean;
 } & Partial<ControllerRenderProps<FieldValues, string>>;
 
 /**
@@ -28,9 +29,22 @@ export type SelectProps = {
 // eslint-disable-next-line react/display-name
 export const Select = React.forwardRef(
   (
-    { className, label, options, name, defaultValue, multiple, placeholder, ...rest }: SelectProps,
+    {
+      className,
+      label,
+      options,
+      name,
+      defaultValue,
+      multiple,
+      placeholder,
+      isLoading,
+      ...rest
+    }: SelectProps,
     ref: React.ForwardedRef<HTMLSelectElement>
   ) => {
+    if (isLoading) {
+      return <div className={clsxm('h-14 animate-pulse bg-primaryBlack/50', className)} />;
+    }
     return (
       <Listbox
         name={name}
@@ -40,7 +54,7 @@ export const Select = React.forwardRef(
         by="key"
         {...rest}
       >
-        <div className={clsxm('relative', className)}>
+        <div className={clsxm('relative h-14', className)}>
           {label && <BodyText as="label">{label}</BodyText>}
           <Listbox.Button
             className={clsxm(
