@@ -22,13 +22,69 @@ const ItemCreator = () => {
   const router = useRouter();
   const { id: itemId } = router.query;
   const isEdit = !!itemId && typeof itemId === 'string';
-  const { data: itemData, isLoading: isLoadingDetails } = trpc.items.getItem.useQuery(
-    itemId as string,
-    {
-      enabled: isEdit
-    }
-  );
   const { data: categoryOptions } = trpc.categories.getAllCategories.useQuery();
+
+  const [itemInfoFormDefaultValues, setItemInfoFormDefaultValues] = useState<ItemDetailsType>();
+  const [itemAvailabilityFormDefaultValues, setItemAvailabilityFormDefaultValues] =
+    useState<ItemAvailabilityType>();
+  const { isLoading: isLoadingDetails } = trpc.items.getItem.useQuery(itemId as string, {
+    onSuccess: itemData => {
+      setItemInfoFormDefaultValues(
+        itemData
+          ? {
+              brand: brand.current ?? itemData.brand,
+              name: name.current ?? itemData.name,
+              description: description.current ?? itemData.description,
+              category: categoryOptions?.find(
+                categoryOption =>
+                  categoryOption.key === (category.current ?? itemData?.category?.[0]?.id)
+              ) as ItemDetailsType['category'],
+              sizes:
+                sizes.current ??
+                [...new Set(itemData.sizes.map(size => size.name))].map(sizeName => ({
+                  key: sizeName,
+                  name: sizeName
+                })),
+              colors:
+                colors.current ??
+                itemData.colors.map(color => ({
+                  key: color.name.toLowerCase(),
+                  name: color.name,
+                  hex: color.hex
+                })),
+              fabrics: fabrics.current ?? [
+                {
+                  key: itemData.fabrics,
+                  name: itemData.fabrics.slice(0, 1).toUpperCase() + itemData.fabrics.slice(1)
+                }
+              ], // TODO: redo it to support multiple fabrics
+              sex: sex.current ?? {
+                name: itemData.sex.slice(0, 1) + itemData.sex.slice(1).toLowerCase(),
+                key: itemData.sex
+              },
+              price: price.current?.toString() ?? itemData.price.toString()
+            }
+          : undefined
+      );
+      setItemAvailabilityFormDefaultValues(
+        itemData && !colorSizeDirty
+          ? {
+              colors: itemData.colors.map(color => ({
+                key: color.name,
+                name: color.name,
+                hex: color.hex,
+                sizes: color.sizes.map(size => ({
+                  key: size.name,
+                  name: size.name,
+                  available: size.available.toString()
+                }))
+              }))
+            }
+          : undefined
+      );
+    },
+    enabled: isEdit
+  });
 
   const [step, setStep] = React.useState<number>(1);
   const handleNextStep = () => setStep(step + 1);
@@ -44,78 +100,6 @@ const ItemCreator = () => {
   const colors = React.useRef<OptionType[]>();
   const fabrics = React.useRef<OptionType[]>();
   const category = React.useRef<string>();
-
-  const itemInfoFormDefaultValues = useMemo<ItemDetailsType | undefined>(
-    () =>
-      itemData
-        ? {
-            brand: brand.current ?? itemData.brand,
-            name: name.current ?? itemData.name,
-            description: description.current ?? itemData.description,
-            category: categoryOptions?.find(
-              categoryOption =>
-                categoryOption.key === (category.current ?? itemData?.category?.[0]?.id)
-            ) as ItemDetailsType['category'],
-            sizes:
-              sizes.current ??
-              [...new Set(itemData.sizes.map(size => size.name))].map(sizeName => ({
-                key: sizeName,
-                name: sizeName
-              })),
-            colors:
-              colors.current ??
-              itemData.colors.map(color => ({
-                key: color.name.toLowerCase(),
-                name: color.name,
-                hex: color.hex
-              })),
-            fabrics: fabrics.current ?? [
-              {
-                key: itemData.fabrics,
-                name: itemData.fabrics.slice(0, 1).toUpperCase() + itemData.fabrics.slice(1)
-              }
-            ], // TODO: redo it to support multiple fabrics
-            sex: sex.current ?? {
-              name: itemData.sex.slice(0, 1) + itemData.sex.slice(1).toLowerCase(),
-              key: itemData.sex
-            },
-            price: price.current?.toString() ?? itemData.price.toString()
-          }
-        : undefined,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      itemData,
-      categoryOptions,
-      brand.current,
-      name.current,
-      price.current,
-      sex.current,
-      sizes.current,
-      colors.current,
-      fabrics.current,
-      description.current,
-      category.current
-    ]
-  );
-
-  const itemAvailabilityFormDefaultValues = useMemo<ItemAvailabilityType | undefined>(
-    () =>
-      itemData && !colorSizeDirty
-        ? {
-            colors: itemData.colors.map(color => ({
-              key: color.name,
-              name: color.name,
-              hex: color.hex,
-              sizes: color.sizes.map(size => ({
-                key: size.name,
-                name: size.name,
-                available: size.available.toString()
-              }))
-            }))
-          }
-        : undefined,
-    [itemData, colorSizeDirty]
-  );
 
   const utils = trpc.useContext();
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { trpc } from '../../utils/trpc';
 import { ItemListFilterPanel } from '../filter-panel/ItemListFilterPanel';

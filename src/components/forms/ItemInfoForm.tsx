@@ -52,7 +52,11 @@ export const ItemInfoForm = ({
     defaultValues
   });
   const { data: categoryOptions } = trpc.categories.getAllCategories.useQuery();
-  const { handleSubmit, formState } = methods;
+  const { handleSubmit, formState, reset } = methods;
+
+  useEffect(() => {
+    if (!isLoading) reset(defaultValues);
+  }, [isLoading, defaultValues, reset]);
 
   // If the sizes or colors fields are dirty then the ItemAvailabilityForm won't make use of default values
   useEffect(() => {
