@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,15 +7,9 @@ datasource db {
   // Further reading:
   // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
   // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-  provider = "mysql"
-  url = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
-}
-
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 // Necessary for Next auth
@@ -47,6 +38,7 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId])
 }
 
@@ -61,18 +53,20 @@ model User {
   zipCode       String?
   phoneNumber   String?
   cardNumber    String?
-  joinedAt        DateTime  @default(now())
-  role          Role   @default(USER)
+  joinedAt      DateTime  @default(now())
+  role          Role      @default(USER)
   accounts      Account[]
   sessions      Session[]
   savedItems    Item[]
   orders        Order[]
+  cart          Cart?
 }
 
 enum Role {
   ADMIN
   USER
 }
+
 model VerificationToken {
   identifier String
   token      String   @unique
@@ -80,39 +74,41 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
 model Item {
-  id        String   @id @default(cuid())
-  name      String
-  brand     String
-  sex       Sex
-  price     Int
-  images     Image[]
-  description String @db.Text @default("No description provided")
-  category  Category[]
-  fabrics   String   
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  views     Int      @default(0)
-  sizes     Size[]
-  colors     Color[]
-  savedBy   User[]
-  orders    Order[]
+  id          String     @id @default(cuid())
+  name        String
+  brand       String
+  sex         Sex
+  price       Int
+  images      Image[]
+  description String     @default("No description provided") @db.Text
+  category    Category[]
+  fabrics     String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  views       Int        @default(0)
+  sizes       Size[]
+  colors      Color[]
+  savedBy     User[]
+  orders      Order[]
+  CartItem    CartItem[]
 }
 
 model Image {
-  id        String   @id @default(cuid())
-  filename       String
-  url            String?
-  itemId    String
-  items     Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  id       String  @id @default(cuid())
+  filename String
+  url      String?
+  itemId   String
+  items    Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
   @@index([itemId])
 }
 
 model Category {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  items     Item[]  
+  id    String @id @default(cuid())
+  name  String @unique
+  items Item[]
 }
 
 enum Sex {
@@ -120,13 +116,15 @@ enum Sex {
   FEMALE
   UNISEX
 }
+
 model Size {
-  id        String   @id @default(cuid())
-  name      SizeName  
+  id        String     @id @default(cuid())
+  name      SizeName
   available Int
   itemId    String
-  items     Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
-  colors     Color[] 
+  items     Item       @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  colors    Color[]
+  CartItem  CartItem[]
 
   @@index([itemId])
 }
@@ -138,14 +136,16 @@ enum SizeName {
   L
   XL
 }
+
 model Color {
-  id        String   @id @default(cuid())
+  id        String     @id @default(cuid())
   name      String
   hex       String
   available Int
   itemId    String
-  items     Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
-  sizes      Size[]
+  items     Item       @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  sizes     Size[]
+  CartItem  CartItem[]
 
   @@index([itemId])
 }
@@ -160,8 +160,36 @@ model Order {
   city      String
   zipCode   String
   items     Item[]
-  user      User?  @relation(fields: [userId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
 
+model Cart {
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  userId    String     @unique
+  items     CartItem[]
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  cartId    String
+  itemId    String
+  sizeId    String
+  colorId   String
+  quantity  Int
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  size      Size     @relation(fields: [sizeId], references: [id], onDelete: Cascade)
+  color     Color    @relation(fields: [colorId], references: [id], onDelete: Cascade)
+
+  @@index([cartId])
+  @@index([itemId])
+  @@index([sizeId])
+  @@index([colorId])
+}
