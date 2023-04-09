@@ -3,61 +3,56 @@ import { z } from 'zod';
 
 import { TRPCError } from '@trpc/server';
 import { router, publicProcedure, adminProcedure } from '../trpc';
+import { CreateItemSchema, GetItemsSchema, UpdateItemSchema } from '../../../utils/validation';
+import { Context } from '../context';
 
-const CreateItemSchema = z.object({
-  name: z.string(),
-  brand: z.string(),
-  price: z.number(),
-  sex: z.enum(['MALE', 'FEMALE', 'UNISEX']),
-  description: z.string(),
-  fabrics: z.string(),
-  category: z.string(),
-  colors: z.array(
-    z.object({
-      name: z.string(),
-      hex: z.string(),
-      sizes: z.array(
-        z.object({
-          name: z.enum(['XS', 'S', 'M', 'L', 'XL']),
-          available: z.string()
-        })
-      )
-    })
-  )
-});
+// You will need other logic for updates cause the colors are doubled now since the old ones are not updated/deleted but a new one is created.
+const createSizeAndImage = async (
+  ctx: Context,
+  colors: z.infer<typeof CreateItemSchema>['colors'],
+  itemId: string
+) => {
+  // TODO: Perhaphs listen to the ESlint rule and refactor this code
+  // eslint-disable-next-line no-restricted-syntax
+  for (const color of colors) {
+    let colorAvailibility = 0;
+    const sizesIds: { id: string }[] = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const size of color.sizes) {
+      // eslint-disable-next-line no-await-in-loop
+      const { id: sizeId } = await ctx.prisma.size.create({
+        data: {
+          name: size.name,
+          available: Number(size.available),
+          items: {
+            connect: {
+              id: itemId
+            }
+          }
+        }
+      });
+      colorAvailibility += Number(size.available);
+      sizesIds.push({ id: sizeId });
+    }
 
-const UpdateItemSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  brand: z.string(),
-  price: z.number(),
-  sex: z.enum(['MALE', 'FEMALE', 'UNISEX']),
-  description: z.string(),
-  fabrics: z.string(),
-  category: z.string(),
-  colors: z.array(
-    z.object({
-      name: z.string(),
-      hex: z.string(),
-      sizes: z.array(
-        z.object({
-          name: z.enum(['XS', 'S', 'M', 'L', 'XL']),
-          available: z.string()
-        })
-      )
-    })
-  )
-});
-
-const GetItemsSchema = z
-  .object({
-    sex: z.enum(['MALE', 'FEMALE', 'UNISEX']).optional(),
-    colorsNames: z.array(z.string()).optional(),
-    sizesNames: z.array(z.enum(['XS', 'S', 'M', 'L', 'XL'])).optional(),
-    categoryName: z.string().optional()
-    // TODO: Price range, sort by(views, saves , cheapest, most expensive, latest), brand,
-  })
-  .optional();
+    // eslint-disable-next-line no-await-in-loop
+    await ctx.prisma.color.create({
+      data: {
+        name: color.name,
+        available: colorAvailibility,
+        hex: color.hex,
+        sizes: {
+          connect: sizesIds
+        },
+        items: {
+          connect: {
+            id: itemId
+          }
+        }
+      }
+    });
+  }
+};
 
 export const itemsRouter = router({
   createItem: adminProcedure.input(CreateItemSchema).mutation(async ({ ctx, input }) => {
@@ -77,47 +72,7 @@ export const itemsRouter = router({
       }
     });
 
-    // TODO: Perhaphs listen to the ESlint rule and refactor this code
-    // eslint-disable-next-line no-restricted-syntax
-    for (const color of input.colors) {
-      let colorAvailibility = 0;
-      const sizesIds: { id: string }[] = [];
-      // eslint-disable-next-line no-restricted-syntax
-      for (const size of color.sizes) {
-        // eslint-disable-next-line no-await-in-loop
-        const { id: sizeId } = await ctx.prisma.size.create({
-          data: {
-            name: size.name,
-            available: Number(size.available),
-            items: {
-              connect: {
-                id: item.id
-              }
-            }
-          }
-        });
-        colorAvailibility += Number(size.available);
-        sizesIds.push({ id: sizeId });
-      }
-
-      // eslint-disable-next-line no-await-in-loop
-      await ctx.prisma.color.create({
-        data: {
-          name: color.name,
-          available: colorAvailibility,
-          hex: color.hex,
-          sizes: {
-            connect: sizesIds
-          },
-          items: {
-            connect: {
-              id: item.id
-            }
-          }
-        }
-      });
-    }
-
+    await createSizeAndImage(ctx, input.colors, item.id);
     return {
       itemId: item.id
     };
@@ -141,46 +96,7 @@ export const itemsRouter = router({
         }
       }
     });
-    // TODO: Perhaphs listen to the ESlint rule and refactor this code
-    // eslint-disable-next-line no-restricted-syntax
-    for (const color of input.colors) {
-      let colorAvailibility = 0;
-      const sizesIds: { id: string }[] = [];
-      // eslint-disable-next-line no-restricted-syntax
-      for (const size of color.sizes) {
-        // eslint-disable-next-line no-await-in-loop
-        const { id: sizeId } = await ctx.prisma.size.create({
-          data: {
-            name: size.name,
-            available: Number(size.available),
-            items: {
-              connect: {
-                id: input.id
-              }
-            }
-          }
-        });
-        colorAvailibility += Number(size.available);
-        sizesIds.push({ id: sizeId });
-      }
-
-      // eslint-disable-next-line no-await-in-loop
-      await ctx.prisma.color.create({
-        data: {
-          name: color.name,
-          available: colorAvailibility,
-          hex: color.hex,
-          sizes: {
-            connect: sizesIds
-          },
-          items: {
-            connect: {
-              id: input.id
-            }
-          }
-        }
-      });
-    }
+    await createSizeAndImage(ctx, input.colors, input.id);
     return {
       itemId: input.id
     };
