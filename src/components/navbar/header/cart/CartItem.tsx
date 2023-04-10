@@ -2,32 +2,49 @@ import Image from 'next/image';
 import React from 'react';
 import clsxm from '../../../../utils/clsxm';
 import { BodyText, Bold } from '../../../typography/Typography';
+import { Dot } from '../../../dot/Dot';
 
 export type CartItemProps = {
   src: string;
-  designer: string;
+  brand: string;
   name: string;
   price: number;
   quantity: number;
+  size: string;
+  color: string;
 };
 
 export const CartItem = ({
   src,
-  designer,
+  brand,
   name,
   price,
   quantity,
+  size,
+  color,
   className
 }: CartItemProps & { className?: string }) => {
   return (
     <div className={clsxm('flex w-full justify-between bg-primaryWhite', className)}>
       <div className="flex gap-4">
-        <Image src={src} alt={name} className="select-none object-contain" width={48} height={48} />
+        <Image
+          src={src}
+          alt={name}
+          className="h-12 w-12 select-none object-contain"
+          width={48}
+          height={48}
+        />
         <div className="flex min-w-fit flex-col flex-nowrap justify-between whitespace-nowrap">
           <BodyText>
-            <Bold>{designer}</Bold>
+            <Bold>{brand}</Bold>
           </BodyText>
-          <BodyText>{name}</BodyText>
+          <div className="flex gap-2">
+            <BodyText>{name}</BodyText>
+            <Dot />
+            <BodyText>{size}</BodyText>
+            <Dot />
+            <BodyText>{color}</BodyText>
+          </div>
         </div>
       </div>
 

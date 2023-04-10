@@ -58,5 +58,25 @@ export const cartRouter = router({
     }
 
     return true;
+  }),
+  getCart: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.prisma.cart.findUnique({
+      where: {
+        userId: ctx?.session?.user?.id
+      },
+      include: {
+        items: {
+          include: {
+            item: {
+              include: {
+                images: true
+              }
+            },
+            color: true,
+            size: true
+          }
+        }
+      }
+    });
   })
 });

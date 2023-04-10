@@ -70,9 +70,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { data: item } = trpc.items.getItem.useQuery(id as string);
   // TODO selected size and color should have different variant selected
-
   // add store for clicked color
   // sort sizes on backend
+  // reserve item for a user?
   const [selectedColorId, setSelectedColorId] = React.useState<string | undefined>(
     item?.colors[0]?.id
   );
@@ -89,7 +89,12 @@ const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
     setSelectedSizeId(filteredSizes?.[0]?.id);
   }, [filteredSizes]);
 
-  const { mutateAsync: addToCart } = trpc.cart.addToCart.useMutation();
+  const utils = trpc.useContext();
+  const { mutateAsync: addToCart } = trpc.cart.addToCart.useMutation({
+    onSuccess: () => {
+      utils.cart.invalidate();
+    }
+  });
   const handleAddToCart = async () => {
     if (!(selectedSizeId && selectedColorId && item)) {
       return;
@@ -100,6 +105,7 @@ const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
       colorId: selectedColorId
     });
   };
+
   return (
     <Container fullSize className="overflow-visible">
       <div className="relative flex h-fit w-full flex-col sm:flex-row">
