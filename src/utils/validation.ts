@@ -55,3 +55,7 @@ export const AddItemToCartSchema = z.object({
   sizeId: z.string(),
   colorId: z.string()
 });
+
+export const RemoveItemFromCartSchema = z.object({
+  cartItemId: z.string()
+});

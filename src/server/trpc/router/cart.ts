@@ -1,4 +1,5 @@
-import { AddItemToCartSchema } from '../../../utils/validation';
+import { TRPCError } from '@trpc/server';
+import { AddItemToCartSchema, RemoveItemFromCartSchema } from '../../../utils/validation';
 import { Context } from '../context';
 import { router, protectedProcedure } from '../trpc';
 
@@ -78,5 +79,42 @@ export const cartRouter = router({
         }
       }
     });
-  })
+  }),
+  removeFromCart: protectedProcedure
+    .input(RemoveItemFromCartSchema)
+    .mutation(async ({ ctx, input: { cartItemId } }) => {
+      // TODO: unreserve the item?
+      const cartItem = await ctx.prisma.cartItem.findUnique({
+        where: {
+          id: cartItemId
+        }
+      });
+
+      if (!cartItem) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST'
+        });
+      }
+
+      if (cartItem?.quantity > 1) {
+        await ctx.prisma.cartItem.update({
+          where: {
+            id: cartItemId
+          },
+          data: {
+            quantity: {
+              decrement: 1
+            }
+          }
+        });
+        return true;
+      }
+
+      await ctx.prisma.cartItem.delete({
+        where: {
+          id: cartItemId
+        }
+      });
+      return true;
+    })
 });
