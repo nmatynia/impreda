@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import superjson from 'superjson';
@@ -70,6 +70,36 @@ export const getStaticPaths: GetStaticPaths = async () => {
 const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { data: item } = trpc.items.getItem.useQuery(id as string);
   // TODO selected size and color should have different variant selected
+
+  // add store for clicked color
+  // sort sizes on backend
+  const [selectedColorId, setSelectedColorId] = React.useState<string | undefined>(
+    item?.colors[0]?.id
+  );
+  const filteredSizes = useMemo(
+    () => item?.colors.find(color => color.id === selectedColorId)?.sizes,
+    [item, selectedColorId]
+  );
+
+  const [selectedSizeId, setSelectedSizeId] = React.useState<string | undefined>(
+    filteredSizes?.filter(size => size.available > 0)?.[0]?.id
+  );
+
+  useEffect(() => {
+    setSelectedSizeId(filteredSizes?.[0]?.id);
+  }, [filteredSizes]);
+
+  const { mutateAsync: addToCart } = trpc.cart.addToCart.useMutation();
+  const handleAddToCart = async () => {
+    if (!(selectedSizeId && selectedColorId && item)) {
+      return;
+    }
+    await addToCart({
+      itemId: id,
+      sizeId: selectedSizeId,
+      colorId: selectedColorId
+    });
+  };
   return (
     <Container fullSize className="overflow-visible">
       <div className="relative flex h-fit w-full flex-col sm:flex-row">
@@ -111,22 +141,44 @@ const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
             <div className="mt-5" />
             <div className="flex gap-2">
               {item?.colors.map(color => (
-                <ColorIndicator {...color} className="w-6" key={color.name} />
+                <ColorIndicator
+                  {...color}
+                  className="w-6"
+                  key={color.name}
+                  selected={color.id === selectedColorId}
+                  onClick={() => setSelectedColorId(color.id)}
+                />
               ))}
             </div>
             <div className="mt-5" />
             <div className="flex items-center justify-between">
               <div className="flex gap-2">
-                {item?.sizes.map(size => (
-                  <SizeIndicator variant="outlined" {...size} key={size.name} />
+                {filteredSizes?.map(size => (
+                  <SizeIndicator
+                    variant="outlined"
+                    {...size}
+                    key={size.name}
+                    selected={size.id === selectedSizeId}
+                    onClick={() => setSelectedSizeId(size.id)}
+                  />
                 ))}
               </div>
               <BodyText className="cursor-pointer underline">Size chart</BodyText>
             </div>
             <div className="mt-10" />
-            <Button variant="outlined" className="flex items-center gap-2 px-5">
-              <BodyText>Add to cart</BodyText>
-              <SvgIcon name="Cart" className="h-4 w-4" />
+            <Button
+              variant="outlined"
+              className="flex items-center gap-2 px-5"
+              onClick={handleAddToCart}
+            >
+              {selectedColorId && selectedSizeId ? (
+                <>
+                  <BodyText>Add to cart</BodyText>
+                  <SvgIcon name="Cart" className="h-4 w-4" />
+                </>
+              ) : (
+                <BodyText>Out of stock</BodyText>
+              )}
             </Button>
           </div>
         </div>

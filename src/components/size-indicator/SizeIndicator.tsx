@@ -8,8 +8,9 @@ type SizeIndicatorProps = {
   variant?: 'primary' | 'outlined';
   textVariant?: TypographyVariant;
   available: number;
+  selected?: boolean;
   className?: string;
-};
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 const sizeIndicatorVariants = {
   primary: {
     default: 'bg-primaryBlack text-primaryWhite',
@@ -27,7 +28,9 @@ export const SizeIndicator = ({
   variant = 'primary',
   available,
   className,
-  textVariant = 'body'
+  textVariant = 'body',
+  selected,
+  ...props
 }: SizeIndicatorProps) => {
   const outOfStock = available === 0;
   return (
@@ -40,8 +43,12 @@ export const SizeIndicator = ({
         outOfStock && 'hover: cursor-not-allowed',
         typographyVariants[textVariant],
         sizeIndicatorVariants[variant].default,
+        selected &&
+          !outOfStock &&
+          sizeIndicatorVariants[variant === 'primary' ? 'outlined' : 'primary'].default,
         className
       )}
+      {...props}
     >
       {outOfStock && (
         <div
