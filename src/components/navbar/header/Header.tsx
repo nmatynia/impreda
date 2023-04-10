@@ -29,7 +29,7 @@ export const Header = ({ handleShowSearch }: HeaderProps) => {
           <div className="relative h-fit w-fit">
             <SvgIcon name="Cart" className="h-5 w-5 cursor-pointer" />
             <div className="absolute top-3 -right-1 flex h-4 w-4 items-center justify-center rounded-full  bg-primaryWhite">
-              <SmallBodyText className="md:text-[10px]">{cartItems?.length}</SmallBodyText>
+              <SmallBodyText className="md:text-[10px]">{cartItems?.length ?? '0'}</SmallBodyText>
             </div>
           </div>
         </ButtonSwitch>

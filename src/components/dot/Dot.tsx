@@ -6,6 +6,8 @@ export type DotProps = {
 };
 export const Dot = ({ className }: DotProps) => {
   return (
-    <div className={clsxm('my-auto h-[2px] w-[2px] rounded-full bg-primaryBlack', className)} />
+    <div
+      className={clsxm('my-auto h-[2px] w-[2px] shrink-0 rounded-full bg-primaryBlack', className)}
+    />
   );
 };
