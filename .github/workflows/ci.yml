@@ -19,13 +19,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16.18.1
 
       - name: Install dependencies
-        run: npm ci
+        run: yarn install
 
       - name: Run ESLint
-        run: npm run lint
+        run: yarn lint
 
       - name: Run TypeScript for type checking
-        run: npm run typecheck
+        run: yarn typecheck
