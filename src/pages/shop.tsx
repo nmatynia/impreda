@@ -10,6 +10,7 @@ import { trpc } from '../utils/trpc';
 import { SexType, SizeNameType } from '../types/types';
 import { ItemsRouter } from '../server/trpc/router/_app';
 import { BodyText, LogoText } from '../components/typography/Typography';
+import { NotFound } from '../components/not-found/NotFound';
 
 const ShopPage = () => {
   const {
@@ -70,14 +71,10 @@ export const ItemContainerContent = ({
 
   if (!items || items.length === 0) {
     return (
-      <div className="col-span-full flex min-h-max justify-center">
-        <div className="flex max-w-md flex-col items-center gap-5 px-8 py-20 text-center">
-          <LogoText>We couldn&apos;t find any item that you&apos;re looking for.</LogoText>
-          <BodyText>
-            Explore our exquisite selection products and find something equally special.
-          </BodyText>
-        </div>
-      </div>
+      <NotFound
+        title="We couldn't find any item that you're looking for."
+        subtitle="Explore our exquisite selection products and find something equally special."
+      />
     );
   }
 

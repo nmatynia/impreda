@@ -87,9 +87,17 @@ export const cartRouter = router({
       const cart = await ctx.prisma.cart.findUnique({
         where: {
           userId: ctx?.session?.user?.id
+        },
+        select: {
+          id: true,
+          _count: {
+            select: {
+              items: true
+            }
+          }
         }
       });
-
+      console.log('\n\n', cart?._count.items);
       const cartItem = await ctx.prisma.cartItem.findUnique({
         where: {
           id: cartItemId
@@ -123,11 +131,44 @@ export const cartRouter = router({
         return true;
       }
 
+      if (cart?._count.items === 1) {
+        await ctx.prisma.cart.delete({
+          where: {
+            id: cart.id
+          }
+        });
+        return true;
+      }
+
       await ctx.prisma.cartItem.delete({
         where: {
           id: cartItemId
         }
       });
+
       return true;
-    })
+    }),
+  removeCart: protectedProcedure.mutation(async ({ ctx }) => {
+    // TODO: unreserve the item?
+    const cart = await ctx.prisma.cart.findUnique({
+      where: {
+        userId: ctx?.session?.user?.id
+      }
+    });
+
+    if (!cart) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'No cart found'
+      });
+    }
+
+    await ctx.prisma.cart.delete({
+      where: {
+        id: cart.id
+      }
+    });
+
+    return true;
+  })
 });

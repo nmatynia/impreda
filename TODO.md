@@ -18,6 +18,7 @@
 - item container - if the last item is alone in the row it's alignment is slightly off
 - multiselect count is broken after clicking "ESC" on opened menu
 - make item creation go back to default values set from refs
+- item reservation in cart
 
 ## Pages
 
