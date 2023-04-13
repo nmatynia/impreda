@@ -1,12 +1,19 @@
 import { GetServerSideProps } from 'next';
 import { RoundedBox } from '../../components/box/RoundedBox';
-import { BodyText, LargeBodyText, LogoText } from '../../components/typography/Typography';
+import {
+  BodyText,
+  Bold,
+  LargeBodyText,
+  LogoText,
+  SmallBodyText
+} from '../../components/typography/Typography';
 import clsxm from '../../utils/clsxm';
 import { getServerAuthSession } from '../../server/common/get-server-auth-session';
 import { trpc } from '../../utils/trpc';
 import { CartItem } from '../../components/navbar/header/cart/CartItem';
 import { SvgIcon } from '../../components/icons/SvgIcon';
 import { NotFound } from '../../components/not-found/NotFound';
+import { LinkButton } from '../../components/link/LinkButton';
 
 const ItemCreator = () => {
   const utils = trpc.useContext();
@@ -20,6 +27,10 @@ const ItemCreator = () => {
   const handleDeleteCart = () => {
     removeCart();
   };
+
+  const total =
+    cartItems?.reduce((acc, cartItem) => acc + cartItem.item.price * cartItem.quantity, 0) ?? 0;
+
   return (
     <div className={clsxm('mx-auto max-w-3xl px-4')}>
       <RoundedBox className={clsxm('relative my-16 w-full overflow-visible p-0')}>
@@ -58,6 +69,15 @@ const ItemCreator = () => {
               subtitle="Visit our shopping page to explore our amazing item selection and fill your cart with your desired items"
             />
           )}
+          <div className="sticky bottom-0 flex items-center justify-between bg-primaryWhite pt-8">
+            <div className="flex flex-col gap-1">
+              <LargeBodyText />
+              <Bold>Total: £{total}</Bold> <SmallBodyText>+ shipping</SmallBodyText>
+            </div>
+            <LinkButton variant="primary" href="/checkout">
+              Checkout
+            </LinkButton>
+          </div>
         </div>
       </RoundedBox>
     </div>
