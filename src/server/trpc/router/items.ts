@@ -212,15 +212,8 @@ export const itemsRouter = router({
       }
     });
     return item;
-    // const uniqueSizesNames = [...new Set(item.sizes.map(size => size.name))];
-
-    // const sizes = uniqueSizesNames.map(name => ({
-    //   name,
-    //   available: item.sizes
-    //     .filter(size => size.name === name)
-    //     .reduce((acc, curr) => acc + curr.available, 0)
-    // }));
   }),
+
   deleteItem: adminProcedure.input(z.string()).mutation(async ({ ctx, input: id }) => {
     const item = await ctx.prisma.item.findUnique({
       where: {

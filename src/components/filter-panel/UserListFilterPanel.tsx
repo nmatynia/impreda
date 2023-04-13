@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { RoundedBox } from '../box/RoundedBox';

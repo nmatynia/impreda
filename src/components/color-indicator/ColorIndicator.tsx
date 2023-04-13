@@ -1,15 +1,24 @@
 import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { isDark } from '../../utils/helpers/isDark';
+import { SvgIcon } from '../icons/SvgIcon';
 
 type ColorIndicatorProps = {
   className?: string;
   hex: string;
   available: number;
   name: string;
-};
+  selected?: boolean;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const ColorIndicator = ({ hex, available, name, className }: ColorIndicatorProps) => {
+export const ColorIndicator = ({
+  hex,
+  available,
+  name,
+  selected,
+  className,
+  ...props
+}: ColorIndicatorProps) => {
   const outOfStock = available === 0;
   return (
     <button
@@ -23,7 +32,14 @@ export const ColorIndicator = ({ hex, available, name, className }: ColorIndicat
       )}
       style={{ backgroundColor: hex }}
       title={name}
+      {...props}
     >
+      {selected && !outOfStock && (
+        <SvgIcon
+          name="Eye"
+          className={clsxm('h-4 w-4', isDark(hex) ? 'fill-primaryWhite' : 'fill-primaryBlack')}
+        />
+      )}
       {outOfStock && (
         <div
           className={clsxm(

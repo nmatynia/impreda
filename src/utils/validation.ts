@@ -47,3 +47,15 @@ export const UpdateUserByIdDetailsSchema = z.object({
   cardNumber: z.string().min(16).max(19).nullish(),
   phoneNumber: z.string().min(9).max(10).nullish()
 });
+
+// * Cart
+
+export const AddItemToCartSchema = z.object({
+  itemId: z.string(),
+  sizeId: z.string(),
+  colorId: z.string()
+});
+
+export const RemoveItemFromCartSchema = z.object({
+  cartItemId: z.string()
+});

@@ -41,3 +41,4 @@
 - enhance Loader - /item-creator
 - enhance handeling the states between forms in item-creator, right now it looks hacky and ugly
 - edition of the colors doesnt update existing colors, also it resets quantity (could be solved better)
+- item availibility form - change default value state behaviour
