@@ -1,10 +1,15 @@
 import Image from 'next/image';
 import React from 'react';
+import Link from 'next/link';
 import clsxm from '../../../../utils/clsxm';
 import { BodyText, Bold } from '../../../typography/Typography';
 import { Dot } from '../../../dot/Dot';
+import { SvgIcon } from '../../../icons/SvgIcon';
+import { trpc } from '../../../../utils/trpc';
 
 export type CartItemProps = {
+  id: string;
+  itemId: string;
   src: string;
   brand: string;
   name: string;
@@ -15,6 +20,8 @@ export type CartItemProps = {
 };
 
 export const CartItem = ({
+  id,
+  itemId,
   src,
   brand,
   name,
@@ -24,20 +31,41 @@ export const CartItem = ({
   color,
   className
 }: CartItemProps & { className?: string }) => {
+  const utils = trpc.useContext();
+  const { mutateAsync: removeFromCart } = trpc.cart.removeFromCart.useMutation({
+    onSuccess: () => {
+      utils.cart.invalidate();
+    }
+  });
+  const itemLink = `/item/${itemId}`;
   return (
-    <div className={clsxm('flex w-full justify-between bg-primaryWhite', className)}>
+    <div className={clsxm('relative flex w-full justify-between bg-primaryWhite', className)}>
+      <div className="mr-3 flex items-center" />
       <div className="flex basis-full gap-4 overflow-hidden">
-        <Image
-          src={src}
-          alt={name}
-          className="h-12 w-12 shrink-0 select-none object-contain"
-          width={48}
-          height={48}
-        />
+        <Link href={itemLink} className="shrink-0">
+          <Image
+            src={src}
+            alt={name}
+            className="h-12 w-12 select-none object-contain"
+            width={48}
+            height={48}
+          />
+        </Link>
         <div className="flex w-auto flex-col flex-nowrap justify-between overflow-hidden overflow-ellipsis whitespace-nowrap">
-          <BodyText className="overflow-hidden overflow-ellipsis">
-            <Bold className="overflow-hidden overflow-ellipsis">{brand}</Bold>
-          </BodyText>
+          <div className="flex gap-2">
+            <BodyText className="overflow-hidden overflow-ellipsis">
+              <Link href={itemLink}>
+                <Bold>{brand}</Bold>
+              </Link>
+            </BodyText>
+            <button
+              type="button"
+              className={clsxm('flex items-center justify-center', 'cursor-pointer rounded-full')}
+              onClick={() => removeFromCart({ cartItemId: id })}
+            >
+              <SvgIcon name="Trash" className="h-[14px] w-[14px] fill-primaryBlack" />
+            </button>
+          </div>
           <div className="flex gap-2 overflow-hidden">
             <BodyText>{size}</BodyText>
             <Dot />

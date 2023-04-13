@@ -84,6 +84,12 @@ export const cartRouter = router({
     .input(RemoveItemFromCartSchema)
     .mutation(async ({ ctx, input: { cartItemId } }) => {
       // TODO: unreserve the item?
+      const cart = await ctx.prisma.cart.findUnique({
+        where: {
+          userId: ctx?.session?.user?.id
+        }
+      });
+
       const cartItem = await ctx.prisma.cartItem.findUnique({
         where: {
           id: cartItemId
@@ -93,6 +99,13 @@ export const cartRouter = router({
       if (!cartItem) {
         throw new TRPCError({
           code: 'BAD_REQUEST'
+        });
+      }
+
+      if (cartItem.cartId !== cart?.id) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'You do not have permission to remove this item from the cart'
         });
       }
 

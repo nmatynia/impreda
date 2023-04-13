@@ -17,12 +17,20 @@ export const Cart = ({ className, ...props }: CartProps) => {
   const total =
     cartItems?.reduce((acc, cartItem) => acc + cartItem.item.price * cartItem.quantity, 0) ?? 0;
   return (
-    <Box className={clsxm('absolute w-screen sm:w-[440px]', className)} {...props}>
-      <div className="flex flex-col justify-between">
-        <div className="mr-2 max-h-[500px] overflow-y-auto">
+    <Box
+      className={clsxm(
+        'absolute max-h-[80vh] w-screen overflow-y-auto pb-0 sm:w-[560px]',
+        className
+      )}
+      {...props}
+    >
+      <div className="flex flex-col justify-between ">
+        <div className="mr-2">
           {cartItems?.map(cartItem => (
             <CartItem
               key={cartItem.id}
+              id={cartItem.id}
+              itemId={cartItem.item.id}
               brand={cartItem.item.brand}
               name={cartItem.item.name}
               price={cartItem.item.price * cartItem.quantity}
@@ -34,7 +42,7 @@ export const Cart = ({ className, ...props }: CartProps) => {
             />
           ))}
         </div>
-        <div className="flex items-center justify-between pt-8">
+        <div className="sticky bottom-0 flex items-center justify-between bg-primaryWhite pt-8 pb-8">
           <LargeBodyText>
             <Bold>Total: £{total}</Bold>
           </LargeBodyText>
