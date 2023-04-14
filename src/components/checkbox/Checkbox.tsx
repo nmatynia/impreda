@@ -5,9 +5,10 @@ import { Typography } from '../typography/Typography';
 
 type CheckboxProps = {
   className?: string;
+  labelClassName?: string;
   label: ReactNode;
 };
-export const Checkbox = ({ className, label }: CheckboxProps) => {
+export const Checkbox = ({ className, labelClassName, label }: CheckboxProps) => {
   return (
     <div className="mb-4 flex items-center">
       <input
@@ -20,7 +21,10 @@ export const Checkbox = ({ className, label }: CheckboxProps) => {
           className
         )}
       />
-      <Typography as="label" className="ml-2 text-sm font-medium text-primaryWhite">
+      <Typography
+        as="label"
+        className={clsxm('ml-2 text-sm font-medium text-primaryWhite', labelClassName)}
+      >
         {label}
       </Typography>
     </div>

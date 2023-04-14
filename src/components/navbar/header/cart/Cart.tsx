@@ -21,7 +21,7 @@ export const Cart = ({ className, ...props }: CartProps) => {
       )}
       {...props}
     >
-      <CartContent buttonLink="/checkout" buttonText="Checkout" />
+      <CartContent buttonLink="/cart" buttonText="Go to cart" />
     </Box>
   );
 };
