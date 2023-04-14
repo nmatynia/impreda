@@ -53,7 +53,7 @@ const login = () => {
           </LargeBodyText>
         </div>
         <Image
-          src={LoginThumbnail.src}
+          src={LoginThumbnail}
           className="hidden aspect-auto h-auto w-1/2 object-cover md:block"
           alt="register-thumbnail"
           height={1200}

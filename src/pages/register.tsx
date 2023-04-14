@@ -17,7 +17,7 @@ const register = () => {
     <Container className="h-full bg-primaryBlack px-0 md:h-fit md:bg-primaryWhite md:px-4">
       <RoundedBox className="flex w-full max-w-[1200px] bg-primaryBlack p-0 text-primaryWhite">
         <Image
-          src={RegisterThumbnail.src}
+          src={RegisterThumbnail}
           className="hidden aspect-auto h-auto w-1/2 object-cover md:block"
           alt="register-thumbnail"
           height={1200}
