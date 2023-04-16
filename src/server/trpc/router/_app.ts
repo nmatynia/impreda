@@ -4,6 +4,7 @@ import { cartRouter } from './cart';
 import { categoriesRouter } from './categories';
 import { imagesRouter } from './images';
 import { itemsRouter } from './items';
+import { orderRouter } from './order';
 import { userRouter } from './user';
 
 export const appRouter = router({
@@ -12,9 +13,11 @@ export const appRouter = router({
   images: imagesRouter,
   items: itemsRouter,
   categories: categoriesRouter,
-  cart: cartRouter
+  cart: cartRouter,
+  order: orderRouter
 });
 
 // export type definition of API
 export type AppRouter = typeof appRouter;
 export type ItemsRouter = typeof itemsRouter;
+export type OrderRouter = typeof orderRouter;

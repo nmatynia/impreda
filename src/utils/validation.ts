@@ -57,5 +57,13 @@ export const AddItemToCartSchema = z.object({
 });
 
 export const RemoveItemFromCartSchema = z.object({
-  cartItemId: z.string()
+  orderItemId: z.string()
+});
+
+// * Orders
+
+export const CreateOrderSchema = z.object({
+  address: z.string().min(3).max(50),
+  city: z.string().min(3).max(50),
+  zipCode: z.string().min(1).max(50)
 });

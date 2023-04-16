@@ -91,8 +91,7 @@ model Item {
   sizes       Size[]
   colors      Color[]
   savedBy     User[]
-  orders      Order[]
-  CartItem    CartItem[]
+  OrderItem    OrderItem[]
 }
 
 model Image {
@@ -124,7 +123,7 @@ model Size {
   itemId    String
   items     Item       @relation(fields: [itemId], references: [id], onDelete: Cascade)
   colors    Color[]
-  CartItem  CartItem[]
+  OrderItem  OrderItem[]
 
   @@index([itemId])
 }
@@ -145,7 +144,7 @@ model Color {
   itemId    String
   items     Item       @relation(fields: [itemId], references: [id], onDelete: Cascade)
   sizes     Size[]
-  CartItem  CartItem[]
+  OrderItem  OrderItem[]
 
   @@index([itemId])
 }
@@ -155,11 +154,11 @@ model Order {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String
-  status    String
+  status    String  @default("PENDING")
   address   String
   city      String
   zipCode   String
-  items     Item[]
+  items     OrderItem[]
   user      User?    @relation(fields: [userId], references: [id])
 
   @@index([userId])
@@ -170,26 +169,29 @@ model Cart {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   userId    String     @unique
-  items     CartItem[]
+  items     OrderItem[]
   user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model CartItem {
+model OrderItem {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  cartId    String
+  quantity  Int      @default(1)
   itemId    String
   sizeId    String
   colorId   String
-  quantity  Int      @default(1)
-  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId    String?
+  orderId   String?
   item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
   size      Size     @relation(fields: [sizeId], references: [id], onDelete: Cascade)
+  cart      Cart?    @relation(fields: [cartId], references: [id])     
+  order     Order?   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   color     Color    @relation(fields: [colorId], references: [id], onDelete: Cascade)
 
   @@index([cartId])
   @@index([itemId])
   @@index([sizeId])
   @@index([colorId])
+  @@index([orderId])
 }

@@ -61,7 +61,7 @@ export const CartItem = ({
             <button
               type="button"
               className={clsxm('flex items-center justify-center', 'cursor-pointer rounded-full')}
-              onClick={() => removeFromCart({ cartItemId: id })}
+              onClick={() => removeFromCart({ orderItemId: id })}
             >
               <SvgIcon name="Trash" className="h-[14px] w-[14px] fill-primaryBlack" />
             </button>

@@ -2,11 +2,12 @@ import React from 'react';
 import clsxm from '../../../utils/clsxm';
 import { RoundedBox } from '../../box/RoundedBox';
 import { SvgIcon } from '../../icons/SvgIcon';
-import type { OrderType } from '../OrderHistorySection';
 import { BodyText } from '../../typography/Typography';
+import { Order } from '../../../types/types';
+import { formatDate } from '../../../utils/helpers/formatDate';
 
 type HistoryItemProps = {
-  order: OrderType;
+  order: Order;
   showBuyer?: boolean;
   showDate?: boolean;
   className?: string;
@@ -18,6 +19,9 @@ export const HistoryItem = ({
   showDate = true,
   className
 }: HistoryItemProps) => {
+  const { name, price } = order.items[0]?.item ?? {};
+  const date = formatDate(order.createdAt);
+  const buyer = order.user?.name;
   return (
     <RoundedBox
       className={clsxm(
@@ -30,14 +34,14 @@ export const HistoryItem = ({
         <div className="flex items-center gap-2">
           <SvgIcon name="Box" className="w-3 flex-shrink-0 fill-primaryWhite sm:w-4" />
           <BodyText className="w-full overflow-hidden overflow-ellipsis whitespace-nowrap">
-            {order.items[0]?.itemName}
+            {name}
           </BodyText>
         </div>
 
         <div className="grid grid-cols-2 whitespace-pre xs:grid-cols-3">
-          <BodyText>Price: {order.items[0]?.itemPrice}£</BodyText>
-          {showDate && <BodyText>Date: {order.date}</BodyText>}
-          {showBuyer && <BodyText>Buyer: {order.buyer}</BodyText>}
+          <BodyText>Price: {price}£</BodyText>
+          {showDate && <BodyText>Date: {date}</BodyText>}
+          {showBuyer && <BodyText>Buyer: {buyer}</BodyText>}
         </div>
       </div>
       <button type="button" className="cursor-pointer">

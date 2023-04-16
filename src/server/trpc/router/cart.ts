@@ -30,21 +30,21 @@ export const cartRouter = router({
     };
 
     const { id: cartId } = await findOrCreateCart(ctx);
-    const cartItemParams = {
+    const orderItemParams = {
       cartId,
       colorId,
       sizeId,
       itemId
     };
 
-    const cartItem = await ctx.prisma.cartItem.findFirst({
-      where: cartItemParams
+    const orderItem = await ctx.prisma.orderItem.findFirst({
+      where: orderItemParams
     });
 
-    if (cartItem) {
-      await ctx.prisma.cartItem.update({
+    if (orderItem) {
+      await ctx.prisma.orderItem.update({
         where: {
-          id: cartItem.id
+          id: orderItem.id
         },
         data: {
           quantity: {
@@ -53,8 +53,8 @@ export const cartRouter = router({
         }
       });
     } else {
-      await ctx.prisma.cartItem.create({
-        data: cartItemParams
+      await ctx.prisma.orderItem.create({
+        data: orderItemParams
       });
     }
 
@@ -82,37 +82,45 @@ export const cartRouter = router({
   }),
   removeFromCart: protectedProcedure
     .input(RemoveItemFromCartSchema)
-    .mutation(async ({ ctx, input: { cartItemId } }) => {
+    .mutation(async ({ ctx, input: { orderItemId } }) => {
       // TODO: unreserve the item?
       const cart = await ctx.prisma.cart.findUnique({
         where: {
           userId: ctx?.session?.user?.id
+        },
+        select: {
+          id: true,
+          _count: {
+            select: {
+              items: true
+            }
+          }
         }
       });
-
-      const cartItem = await ctx.prisma.cartItem.findUnique({
+      console.log('\n\n', cart?._count.items);
+      const orderItem = await ctx.prisma.orderItem.findUnique({
         where: {
-          id: cartItemId
+          id: orderItemId
         }
       });
 
-      if (!cartItem) {
+      if (!orderItem) {
         throw new TRPCError({
           code: 'BAD_REQUEST'
         });
       }
 
-      if (cartItem.cartId !== cart?.id) {
+      if (orderItem.cartId !== cart?.id) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'You do not have permission to remove this item from the cart'
         });
       }
 
-      if (cartItem?.quantity > 1) {
-        await ctx.prisma.cartItem.update({
+      if (orderItem?.quantity > 1) {
+        await ctx.prisma.orderItem.update({
           where: {
-            id: cartItemId
+            id: orderItemId
           },
           data: {
             quantity: {
@@ -123,11 +131,44 @@ export const cartRouter = router({
         return true;
       }
 
-      await ctx.prisma.cartItem.delete({
+      if (cart?._count.items === 1) {
+        await ctx.prisma.cart.delete({
+          where: {
+            id: cart.id
+          }
+        });
+        return true;
+      }
+
+      await ctx.prisma.orderItem.delete({
         where: {
-          id: cartItemId
+          id: orderItemId
         }
       });
+
       return true;
-    })
+    }),
+  removeCart: protectedProcedure.mutation(async ({ ctx }) => {
+    // TODO: unreserve the item?
+    const cart = await ctx.prisma.cart.findUnique({
+      where: {
+        userId: ctx?.session?.user?.id
+      }
+    });
+
+    if (!cart) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'No cart found'
+      });
+    }
+
+    await ctx.prisma.cart.delete({
+      where: {
+        id: cart.id
+      }
+    });
+
+    return true;
+  })
 });
