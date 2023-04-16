@@ -9,7 +9,7 @@ import { SvgIcon } from '../components/icons/SvgIcon';
 import { NotFound } from '../components/not-found/NotFound';
 import { LinkButton } from '../components/link/LinkButton';
 
-const ItemCreator = () => {
+const CartPage = () => {
   const utils = trpc.useContext();
   const { data: cart } = trpc.cart.getCart.useQuery();
   const { items: cartItems } = cart || {};
@@ -78,7 +78,7 @@ const ItemCreator = () => {
   );
 };
 
-export default ItemCreator;
+export default CartPage;
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const session = await getServerAuthSession(ctx);
