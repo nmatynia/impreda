@@ -4,11 +4,12 @@ import clsxm from '../../../utils/clsxm';
 import { RoundedBox } from '../../box/RoundedBox';
 import { HistoryItem } from '../history-item/HistoryItem';
 import { SvgIcon } from '../../icons/SvgIcon';
-import type { OrderType } from '../OrderHistorySection';
 import { BodyText } from '../../typography/Typography';
+import { Order } from '../../../types/types';
+import { formatDate } from '../../../utils/helpers/formatDate';
 
 type HistoryBundleProps = {
-  order: OrderType;
+  order: Order;
   showBuyer?: boolean;
   className?: string;
 };
@@ -18,19 +19,25 @@ export const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProp
     setOpen(!open);
   };
   const bundleName = useMemo(
-    () => `${order.items[0]?.itemName} and ${order.items.length - 1} more`,
+    () => `${order.items[0]?.item.name} and ${order.items.length - 1} more`,
     [order]
   );
 
   // TODO: Consider making this logic on backend
-  const total = useMemo(() => order.items.reduce((acc, item) => acc + item.itemPrice, 0), [order]);
+  const total = useMemo(
+    () => order.items.reduce((acc, orderItem) => acc + orderItem.item.price, 0),
+    [order]
+  );
+
+  const date = formatDate(order.createdAt);
+  const buyer = order.user?.name;
 
   return (
     <div>
       <RoundedBox
         className={clsxm(
           'flex w-full items-center justify-between',
-          'mb-6 bg-primaryBlack py-5 text-primaryWhite',
+          'bg-primaryBlack py-5 text-primaryWhite',
           className
         )}
       >
@@ -45,9 +52,9 @@ export const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProp
             <BodyText>Price: {total}£</BodyText>
             <BodyText>Items: {order.items.length}</BodyText>
             <BodyText>
-              Date: <span className="whitespace-pre">{order.date}</span>
+              Date: <span className="whitespace-pre">{date}</span>
             </BodyText>
-            {showBuyer && <BodyText>Buyer: {order.buyer}</BodyText>}
+            {showBuyer && <BodyText>Buyer: {buyer}</BodyText>}
           </div>
         </div>
         <div className="ml-2 flex basis-12 gap-2">
@@ -85,7 +92,7 @@ export const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProp
             };
             return (
               <HistoryItem
-                key={item.itemName}
+                key={item.id}
                 order={itemOrder}
                 showDate={false}
                 className="ml-auto w-[90%]"

@@ -7,7 +7,8 @@ import { LinkButton } from '../../components/link/LinkButton';
 
 import { SvgIcon } from '../../components/icons/SvgIcon';
 
-const CheckoutPage = () => {
+const ThankYouPage = () => {
+  // ? TODO: add to checkout page instead
   return (
     <div className={clsxm('mx-auto max-w-3xl px-4')}>
       <RoundedBox className={clsxm('relative my-16 w-full overflow-visible p-0')}>
@@ -34,7 +35,7 @@ const CheckoutPage = () => {
   );
 };
 
-export default CheckoutPage;
+export default ThankYouPage;
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const session = await getServerAuthSession(ctx);

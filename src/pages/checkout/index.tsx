@@ -13,7 +13,6 @@ import {
 import clsxm from '../../utils/clsxm';
 import { getServerAuthSession } from '../../server/common/get-server-auth-session';
 import { trpc } from '../../utils/trpc';
-import { LinkButton } from '../../components/link/LinkButton';
 import { EditUserDetailsForm } from '../../components/forms/EditUserDetailsForm';
 import {
   UserDetailsSchema,

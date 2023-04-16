@@ -1,3 +1,5 @@
+import { Prisma } from '@prisma/client';
+
 export type ItemType = {
   className?: string;
   id: string;
@@ -41,6 +43,15 @@ export type CategoryType = {
   id: string;
   name: string;
 };
+
+export type Order = Prisma.OrderGetPayload<{
+  include: {
+    items: {
+      include: { item: true };
+    };
+    user: true;
+  };
+}>;
 
 export type SexType = 'MALE' | 'FEMALE' | 'UNISEX';
 export type SizeNameType = 'XS' | 'S' | 'M' | 'L' | 'XL';

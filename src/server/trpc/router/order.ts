@@ -13,21 +13,11 @@ export const orderRouter = router({
     });
 
     if (!cart) throw new Error('Cart is empty');
-    console.log(
-      '\n\n',
-      cart.items
-      // cart.items.map(item => ({ id: item.id }))
-    );
-
-    // const itemsIds = new Set();
-    // cart.items.forEach(item => itemsIds.add({ id: item.itemId }));
 
     const uniqueOrderItems = cart.items
       .map(item => item.id)
       .filter((value, index, array) => array.indexOf(value) === index)
       .map(id => ({ id }));
-
-    console.log('\n\n', uniqueOrderItems);
 
     await ctx.prisma.order.create({
       data: {
@@ -52,5 +42,35 @@ export const orderRouter = router({
     });
 
     return true;
+  }),
+  getCurrentUserOrders: protectedProcedure.query(async ({ ctx }) => {
+    const orders = await ctx.prisma.order.findMany({
+      where: {
+        userId: ctx.session.user.id
+      },
+      include: {
+        items: {
+          include: {
+            item: true
+          }
+        },
+        user: true
+      }
+    });
+
+    return orders;
+  }),
+  getAllOrders: adminProcedure.query(async ({ ctx }) => {
+    const orders = await ctx.prisma.order.findMany({
+      include: {
+        items: {
+          include: {
+            item: true
+          }
+        }
+      }
+    });
+
+    return orders;
   })
 });
