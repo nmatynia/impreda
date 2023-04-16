@@ -1,5 +1,6 @@
 export const formatDate = (date: Date): string => {
-  return `${date.getDate()}-${
-    date.getMonth() < 10 ? `0${date.getMonth()}` : date.getMonth()
-  }-${date.getFullYear()}`;
+  const month = date.toLocaleDateString('en-US', { month: 'short' as const });
+  const year = date.getFullYear();
+  const day = date.getDate();
+  return `${day} ${month} ${year}`;
 };

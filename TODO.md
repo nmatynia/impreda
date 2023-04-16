@@ -19,6 +19,7 @@
 - multiselect count is broken after clicking "ESC" on opened menu
 - make item creation go back to default values set from refs
 - item reservation in cart
+- dark mode is on on new-arrivals(404) (?)
 
 ## Pages
 

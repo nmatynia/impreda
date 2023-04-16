@@ -26,8 +26,8 @@ const ThankYouPage = () => {
             </LargeBodyText>
           </div>
           <div className="mt-4 flex justify-start gap-3 self-end">
-            <LinkButton href="/account">Go to Homepage</LinkButton>
-            <LinkButton href="/admin">Go to Account</LinkButton>
+            <LinkButton href="/">Go to Homepage</LinkButton>
+            <LinkButton href="/account">Go to Account</LinkButton>
           </div>
         </div>
       </RoundedBox>

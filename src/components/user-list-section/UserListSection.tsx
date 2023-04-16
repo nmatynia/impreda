@@ -2,7 +2,7 @@ import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { trpc } from '../../utils/trpc';
 import { UserListFilterPanel } from '../filter-panel/UserListFilterPanel';
-import { ListItemSkeleton } from '../list-item-skeleton/ListItemSkeleton';
+import { ListItemSkeleton } from '../skeletons/ListItemSkeleton';
 import { UserListItem } from './user-list-item/UserListItem';
 import { UserDetailsDialog } from './user-details-dialog/UserDetailsDialog';
 

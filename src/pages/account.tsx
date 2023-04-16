@@ -3,12 +3,14 @@ import React from 'react';
 import { OrderHistorySection } from '../components/order-history-section/OrderHistorySection';
 import { UserAccountBox } from '../components/user-account-box/UserAcountBox';
 import { getServerAuthSession } from '../server/common/get-server-auth-session';
+import { trpc } from '../utils/trpc';
 
 const account = () => {
+  const { data: orders } = trpc.order.getCurrentUserOrders.useQuery();
   return (
     <div className="mx-auto max-w-3xl px-4">
       <UserAccountBox />
-      <OrderHistorySection />
+      <OrderHistorySection orders={orders} />
     </div>
   );
 };

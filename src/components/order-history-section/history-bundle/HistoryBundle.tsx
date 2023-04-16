@@ -84,7 +84,7 @@ export const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProp
         leaveFrom="opacity-100 translate-y-0 max-h-[600px]"
         leaveTo="opacity-0 max-h-0"
       >
-        <div className="flex flex-col gap-6" style={{ direction: 'ltr' }}>
+        <div className="mt-6 flex flex-col gap-6" style={{ direction: 'ltr' }}>
           {order.items.map(item => {
             const itemOrder = {
               ...order,

@@ -67,7 +67,8 @@ export const orderRouter = router({
           include: {
             item: true
           }
-        }
+        },
+        user: true
       }
     });
 

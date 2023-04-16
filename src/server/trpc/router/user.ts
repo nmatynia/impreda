@@ -4,6 +4,7 @@ import { UserDetailsSchema } from '../../../components/user-account-box/UserAcou
 
 import { router, publicProcedure, protectedProcedure, adminProcedure } from '../trpc';
 import { UpdateUserByIdDetailsSchema } from '../../../utils/validation';
+import { formatDate } from '../../../utils/helpers/formatDate';
 
 export const userRouter = router({
   getCurrent: protectedProcedure.query(({ ctx }) => {
@@ -71,7 +72,11 @@ export const userRouter = router({
         name: true,
         orders: {
           select: {
-            items: true
+            items: {
+              include: {
+                item: true
+              }
+            }
           }
         },
         joinedAt: true
@@ -84,13 +89,10 @@ export const userRouter = router({
     return users.map(user => {
       const { name, joinedAt, orders, id } = user;
 
-      const joinMonth = joinedAt.toLocaleDateString('en-US', { month: 'short' as const });
-      const joinYear = joinedAt.getFullYear();
-      const joinDay = joinedAt.getDate();
-      const joinDate = `${joinDay} ${joinMonth} ${joinYear}`;
+      const joinDate = formatDate(joinedAt);
 
       const totalSpent = orders.reduce((acc, curr) => {
-        const total = curr.items.reduce((acc, curr) => acc + curr.price, 0);
+        const total = curr.items.reduce((acc, curr) => acc + curr.item.price, 0);
         return acc + total;
       }, 0);
       const totalPurchases = orders.length;
