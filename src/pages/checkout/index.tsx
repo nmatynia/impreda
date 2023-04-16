@@ -79,7 +79,7 @@ const CheckoutPage = () => {
   };
 
   const handleOrder = async () => {
-    await createOrder({ address: 'address', city: 'City', zipCode: 'zipCode' });
+    await createOrder();
     router.push('/checkout/thank-you');
   };
 

@@ -1,4 +1,3 @@
-import { CreateOrderSchema } from '../../../utils/validation';
 import { router, publicProcedure, adminProcedure, protectedProcedure } from '../trpc';
 
 export const orderRouter = router({
