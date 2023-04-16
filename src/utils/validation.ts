@@ -57,7 +57,7 @@ export const AddItemToCartSchema = z.object({
 });
 
 export const RemoveItemFromCartSchema = z.object({
-  cartItemId: z.string()
+  orderItemId: z.string()
 });
 
 // * Orders

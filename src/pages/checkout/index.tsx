@@ -2,6 +2,7 @@ import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
 import { RoundedBox } from '../../components/box/RoundedBox';
 import {
   BodyText,
@@ -21,6 +22,7 @@ import {
 import { Button } from '../../components/button/Button';
 
 const CheckoutPage = () => {
+  const router = useRouter();
   const { data: cart } = trpc.cart.getCart.useQuery();
   const { items: cartItems } = cart || {};
   const total =
@@ -43,9 +45,10 @@ const CheckoutPage = () => {
   });
 
   const { mutateAsync: createOrder } = trpc.order.createOrder.useMutation({
-    // onSuccess: () => {
-    //   utils.order.invalidate();
-    // }
+    onSuccess: () => {
+      utils.order.invalidate();
+      utils.cart.invalidate();
+    }
   });
 
   const methods = useForm<UserDetailsType>({
@@ -65,6 +68,11 @@ const CheckoutPage = () => {
   const onSubmit: SubmitHandler<UserDetailsType> = async (data, e) => {
     e?.preventDefault();
     await updateUser(data);
+  };
+
+  const handleOrder = async () => {
+    await createOrder({ address: 'address', city: 'City', zipCode: 'zipCode' });
+    router.push('/checkout/thank-you');
   };
 
   return (
@@ -122,10 +130,7 @@ const CheckoutPage = () => {
               <LargeBodyText />
               <Bold>Total: £{total}</Bold> <SmallBodyText>+ shipping</SmallBodyText>
             </div>
-            <Button
-              variant="primary"
-              onClick={() => createOrder({ address: 'address', city: 'City', zipCode: 'zipCode' })}
-            >
+            <Button variant="primary" onClick={handleOrder}>
               Order the item
             </Button>
           </div>
