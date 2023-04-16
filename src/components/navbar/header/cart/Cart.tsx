@@ -2,7 +2,7 @@ import React from 'react';
 import clsxm from '../../../../utils/clsxm';
 import type { BoxProps } from '../../../box/Box';
 import { Box } from '../../../box/Box';
-import { Bold, LargeBodyText } from '../../../typography/Typography';
+import { Bold, LargeBodyText, SmallBodyText } from '../../../typography/Typography';
 import { CartItem } from './CartItem';
 import { trpc } from '../../../../utils/trpc';
 import { NotFound } from '../../../not-found/NotFound';
@@ -60,9 +60,12 @@ const CartContent = ({ buttonLink, buttonText }: { buttonLink: string; buttonTex
         )}
       </div>
       <div className="sticky bottom-0 flex items-center justify-between bg-primaryWhite pt-8 pb-8">
-        <LargeBodyText>
-          <Bold>Total: £{total}</Bold>
-        </LargeBodyText>
+        <div className="flex flex-col gap-1">
+          <LargeBodyText>
+            <Bold>Total: £{total}</Bold>
+          </LargeBodyText>
+          <SmallBodyText>+ shipping</SmallBodyText>
+        </div>
         <LinkButton variant="primary" href={buttonLink}>
           {buttonText}
         </LinkButton>

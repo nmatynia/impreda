@@ -19,17 +19,20 @@ import {
   UserDetailsType
 } from '../../components/user-account-box/UserAcountBox';
 import { Button } from '../../components/button/Button';
+import { SvgIcon } from '../../components/icons/SvgIcon';
 
+// TODO: Clean up this code, especially the hardcoded part
 const CheckoutPage = () => {
   const router = useRouter();
+  const utils = trpc.useContext();
+  const [selectedDeliveryOption, setSelectedDeliveryOption] = useState<number>(1);
   const { data: cart } = trpc.cart.getCart.useQuery();
   const { items: cartItems } = cart || {};
+
   const total =
     cartItems?.reduce((acc, cartItem) => acc + cartItem.item.price * cartItem.quantity, 0) ?? 0;
+  const totalWithShipping = total + (selectedDeliveryOption === 1 ? 3.5 : 4.5);
 
-  const [selectedDeliveryOption, setSelectedDeliveryOption] = useState<number>();
-
-  const utils = trpc.useContext();
   const { data: user } = trpc.user.getCurrent.useQuery(undefined, {
     onSuccess: data => {
       if (data) reset(data);
@@ -68,6 +71,12 @@ const CheckoutPage = () => {
     e?.preventDefault();
     await updateUser(data);
   };
+  const [isEditing, setIsEditing] = useState(false);
+  const handleEnableEditing = () => setIsEditing(true);
+  const handleDisableEditing = () => {
+    setIsEditing(false);
+    reset();
+  };
 
   const handleOrder = async () => {
     await createOrder({ address: 'address', city: 'City', zipCode: 'zipCode' });
@@ -80,13 +89,13 @@ const CheckoutPage = () => {
         <div className="flex w-full items-center justify-between border-b-[1px] border-primaryBlack p-8">
           <LargeBodyText>Checkout</LargeBodyText>
         </div>
-
+        <LargeBodyText className="mb-6 mt-16 px-8">Choose Your Shipping Carrier</LargeBodyText>
         {/* This part of code doesn't do anything on the backend also the only place in the codebase */}
-        <div className="mt-6 flex w-full flex-col gap-6 p-4 md:flex-row">
+        <div className="flex w-full flex-col gap-6 px-8 md:flex-row">
           <button
             type="button"
             className={clsxm(
-              'flex w-1/2 cursor-pointer gap-4 border-[1px] p-2',
+              'flex w-full cursor-pointer gap-4 border-[1px] p-2 md:w-1/2',
               'border-primaryBlack text-primaryBlack',
               selectedDeliveryOption === 1 && 'border-none bg-primaryBlack text-primaryWhite'
             )}
@@ -104,7 +113,7 @@ const CheckoutPage = () => {
           <button
             type="button"
             className={clsxm(
-              'flex w-1/2 cursor-pointer gap-4 border-[1px] p-2',
+              'flex w-full cursor-pointer gap-4 border-[1px] p-2 md:w-1/2',
               'border-primaryBlack text-primaryBlack',
               selectedDeliveryOption === 2 && 'border-none bg-primaryBlack text-primaryWhite'
             )}
@@ -120,14 +129,28 @@ const CheckoutPage = () => {
             </div>
           </button>
         </div>
-
-        <EditUserDetailsForm user={user} onSubmit={handleSubmit(onSubmit)} isEditing {...methods} />
+        <div className="mb-6 mt-16 flex items-center gap-5 px-8">
+          <LargeBodyText>User details</LargeBodyText>
+          <button type="button" className="cursor-pointer" onClick={handleEnableEditing}>
+            <SvgIcon name="Edit" className="fill-primaryBlack" />
+          </button>
+        </div>
+        <EditUserDetailsForm
+          user={user}
+          onSubmit={handleSubmit(onSubmit)}
+          className="pt-0"
+          isEditing={isEditing}
+          handleDisableEditing={handleDisableEditing}
+          {...methods}
+        />
 
         <div className="m-7 mb-0 flex flex-col">
           <div className="sticky bottom-0 flex items-center justify-between bg-primaryWhite pt-8 pb-7">
             <div className="flex flex-col gap-1">
-              <LargeBodyText />
-              <Bold>Total: £{total}</Bold> <SmallBodyText>+ shipping</SmallBodyText>
+              <LargeBodyText>
+                <Bold>Total: £{totalWithShipping}</Bold>
+              </LargeBodyText>
+              <SmallBodyText>*shipping included</SmallBodyText>
             </div>
             <Button variant="primary" onClick={handleOrder}>
               Order the item

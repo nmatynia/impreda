@@ -29,9 +29,6 @@ export const UserDetailsDialog = ({
     onSuccess: data => {
       if (data) reset(data);
     },
-    onError: error => {
-      console.error(error);
-    },
     refetchOnWindowFocus: false,
     enabled: !!selectedUserId
   });

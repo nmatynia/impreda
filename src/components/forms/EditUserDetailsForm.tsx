@@ -5,6 +5,7 @@ import { BodyText, Bold } from '../typography/Typography';
 import { InputField } from './InputField';
 import { Form, FormProps } from './Form';
 import { Button } from '../button/Button';
+import clsxm from '../../utils/clsxm';
 
 type EditUserDetailsFormProps = {
   user: User | null | undefined;
@@ -17,10 +18,11 @@ export const EditUserDetailsForm = ({
   isEditing,
   onSubmit,
   handleDisableEditing,
+  className,
   ...methods
 }: EditUserDetailsFormProps) => {
   return (
-    <Form className="flex flex-col gap-7 p-8" onSubmit={onSubmit} {...methods}>
+    <Form className={clsxm('flex flex-col gap-7 p-8', className)} onSubmit={onSubmit} {...methods}>
       <div className="flex flex-col gap-7 sm:flex-row sm:gap-14">
         <div className="flex w-full flex-col gap-7 sm:w-1/2">
           <div>

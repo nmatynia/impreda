@@ -2,7 +2,7 @@ import { CreateOrderSchema } from '../../../utils/validation';
 import { router, publicProcedure, adminProcedure, protectedProcedure } from '../trpc';
 
 export const orderRouter = router({
-  createOrder: protectedProcedure.input(CreateOrderSchema).mutation(async ({ ctx, input }) => {
+  createOrder: protectedProcedure.mutation(async ({ ctx }) => {
     const cart = await ctx.prisma.cart.findUnique({
       where: {
         userId: ctx.session.user.id
@@ -14,11 +14,20 @@ export const orderRouter = router({
 
     if (!cart) throw new Error('Cart is empty');
 
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id: ctx.session.user.id
+      }
+    });
+
+    if (!user) throw new Error('User not found');
+
     const uniqueOrderItems = cart.items
       .map(item => item.id)
       .filter((value, index, array) => array.indexOf(value) === index)
       .map(id => ({ id }));
 
+    // TODO: add address, city, zipCode here, make proper validation in checkout
     await ctx.prisma.order.create({
       data: {
         user: {
@@ -26,9 +35,9 @@ export const orderRouter = router({
             id: ctx.session.user.id
           }
         },
-        address: input.address,
-        city: input.city,
-        zipCode: input.zipCode,
+        address: user.address ?? 'hardcoded address',
+        city: user.city ?? 'hardcoded city',
+        zipCode: user.zipCode ?? 'hardcoded zipCode',
         items: {
           connect: uniqueOrderItems
         }
