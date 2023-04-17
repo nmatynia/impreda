@@ -11,9 +11,9 @@ export const Navbar = () => {
   const navRef = useRef<HTMLDivElement>(null);
 
   return (
-    <nav ref={navRef} className="relative z-10">
+    <nav ref={navRef} className="relative z-10 border-b-[1px] border-primaryBlack">
       <Header handleShowSearch={handleShowSearch} />
-      <ItemHeader />
+      <ItemHeader className="sm:hidden" />
       <SearchHeader isOpen={showSearch} setIsOpen={setShowSearch} navRef={navRef} />
     </nav>
   );
