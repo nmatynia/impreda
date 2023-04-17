@@ -2,11 +2,12 @@ import React from 'react';
 import Link from 'next/link';
 import { websiteName } from '../../../utils/constants';
 import { SvgIcon } from '../../icons/SvgIcon';
-import { LogoText, SmallBodyText } from '../../typography/Typography';
+import { BodyText, LogoText, SmallBodyText } from '../../typography/Typography';
 import { Cart } from './cart/Cart';
 import { ButtonSwitch } from '../../button-switch/ButtonSwitch';
 import { AccountMenu } from './account-menu/AccountMenu';
 import { trpc } from '../../../utils/trpc';
+import { ClothingMenu } from '../item-header/clothing-menu/ClothingMenu';
 
 type HeaderProps = {
   handleShowSearch: () => void;
@@ -16,12 +17,32 @@ export const Header = ({ handleShowSearch }: HeaderProps) => {
   const { data: cart } = trpc.cart.getCart.useQuery();
   const { items: cartItems } = cart || {};
   return (
-    <div className="relative my-5 flex w-full items-center justify-between md:justify-end">
-      <LogoText className="ml-7 select-none sm:ml-14 md:absolute md:top-1/2 md:right-1/2 md:ml-0 md:-translate-y-1/2 md:translate-x-1/2">
-        <Link href="/">{websiteName}</Link>
-      </LogoText>
-      <div className="mr-7 flex items-center gap-6 justify-self-end">
-        <SvgIcon name="Search" className="h-5 w-5 cursor-pointer" onClick={handleShowSearch} />
+    <div className="relative my-5 flex w-full items-center justify-between ">
+      <div className="ml-7 flex items-center gap-10 sm:ml-14">
+        <LogoText className="select-none">
+          <Link href="/">{websiteName}</Link>
+        </LogoText>
+        <div className="hidden items-center gap-6 sm:flex">
+          <ButtonSwitch elementToOpen={open => <ClothingMenu isOpen={open} position="right" />}>
+            <BodyText className="cursor-pointer select-none uppercase hover:underline">
+              Clothing
+            </BodyText>
+          </ButtonSwitch>
+          <Link
+            href="/new-arrivals"
+            className="flex cursor-pointer select-none items-center hover:underline"
+          >
+            <BodyText className="uppercase">New Arrivals</BodyText>
+          </Link>
+        </div>
+      </div>
+      <div className="mr-7 flex items-center gap-6 justify-self-end sm:mr-14">
+        <SvgIcon
+          id="searchButton"
+          name="Search"
+          className="h-5 w-5 cursor-pointer"
+          onClick={handleShowSearch}
+        />
         <ButtonSwitch
           elementToOpen={open => <Cart className="mt-6 md:mt-3" isOpen={open} />}
           className="static md:relative"

@@ -35,10 +35,12 @@ module.exports = {
         rotate: 'rotate 2s linear;'
       },
       spacing: {
-        screenWithoutHeader: 'calc(100vh - 109px)'
+        screenWithoutHeader: 'calc(100vh - 72px)',
+        screenWithoutHeaderMobile: 'calc(100vh - 110px)'
       },
       minHeight: {
-        screenWithoutHeader: 'calc(100vh - 109px)'
+        screenWithoutHeader: 'calc(100vh - 72px)',
+        screenWithoutHeaderMobile: 'calc(100vh - 110px)'
       },
       boxShadow: {
         outline: '0 0 0 1px #000000'

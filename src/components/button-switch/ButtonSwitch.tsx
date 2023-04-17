@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import clsxm from '../../utils/clsxm';
 
 type OpenButtonProps = {
@@ -8,8 +9,8 @@ type OpenButtonProps = {
 };
 export const ButtonSwitch = ({ elementToOpen, children, className }: OpenButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const clickOutsideRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const closeDropdown = (e: MouseEvent) => {
@@ -22,9 +23,22 @@ export const ButtonSwitch = ({ elementToOpen, children, className }: OpenButtonP
     return () => document.body.removeEventListener('mousedown', closeDropdown);
   }, [clickOutsideRef, setIsOpen]);
 
+  // Close the component when the route changes
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setIsOpen(false);
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router, setIsOpen]);
+
   return (
     <div className={clsxm('relative h-fit w-fit', className)} ref={clickOutsideRef}>
-      <button type="button" onClick={() => setIsOpen(!isOpen)}>
+      <button type="button" className="flex items-center" onClick={() => setIsOpen(!isOpen)}>
         {children}
       </button>
       {elementToOpen(isOpen)}
