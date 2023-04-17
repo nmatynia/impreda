@@ -47,7 +47,7 @@ export const Navbar = () => {
     >
       <Header handleShowSearch={handleShowSearch} />
       <ItemHeader className="sm:hidden" />
-      <SearchHeader isOpen={showSearch} setIsOpen={setShowSearch} navRef={navRef} />
+      <SearchHeader isOpen={showSearch} setIsOpen={setShowSearch} />
     </nav>
   );
 };

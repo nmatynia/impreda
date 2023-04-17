@@ -1,4 +1,3 @@
-import type { RefObject } from 'react';
 import React, { useEffect } from 'react';
 import clsxm from '../../utils/clsxm';
 import { SvgIcon } from '../icons/SvgIcon';
@@ -7,22 +6,26 @@ import { SvgIcon } from '../icons/SvgIcon';
 type SearchHeaderProps = {
   isOpen?: boolean;
   setIsOpen: (open: boolean) => void;
-  navRef: RefObject<HTMLElement>;
+  // navRef: RefObject<HTMLElement>;
 };
-export const SearchHeader = ({ isOpen, setIsOpen, navRef }: SearchHeaderProps) => {
+export const SearchHeader = ({ isOpen, setIsOpen }: SearchHeaderProps) => {
+  const ref = React.useRef<HTMLInputElement>(null);
   useEffect(() => {
     const closeDropdown = (e: MouseEvent) => {
-      if (!navRef?.current?.contains(e.target as Node)) {
+      const targetElement = e.target as HTMLElement;
+
+      if (!ref?.current?.contains(targetElement) && targetElement.id !== 'searchButton') {
         setIsOpen(false);
       }
     };
     document.body.addEventListener('mousedown', closeDropdown);
 
     return () => document.body.removeEventListener('mousedown', closeDropdown);
-  }, [navRef, setIsOpen]);
+  }, [ref, setIsOpen]);
 
   return (
     <div
+      ref={ref}
       className={clsxm(
         ' absolute z-10 flex w-full items-center border-y-[1px] border-primaryBlack bg-primaryWhite py-2',
         isOpen || 'hidden'

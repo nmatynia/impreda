@@ -37,7 +37,12 @@ export const Header = ({ handleShowSearch }: HeaderProps) => {
         </div>
       </div>
       <div className="mr-7 flex items-center gap-6 justify-self-end sm:mr-14">
-        <SvgIcon name="Search" className="h-5 w-5 cursor-pointer" onClick={handleShowSearch} />
+        <SvgIcon
+          id="searchButton"
+          name="Search"
+          className="h-5 w-5 cursor-pointer"
+          onClick={handleShowSearch}
+        />
         <ButtonSwitch
           elementToOpen={open => <Cart className="mt-6 md:mt-3" isOpen={open} />}
           className="static md:relative"
