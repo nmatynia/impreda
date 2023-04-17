@@ -23,6 +23,7 @@ type ItemListItem = {
 };
 
 export const ItemListItem = ({ className, item }: ItemListItemProps) => {
+  const itemLink = `/item/${item.id}`;
   return (
     <RoundedBox
       className={clsxm(
@@ -32,12 +33,17 @@ export const ItemListItem = ({ className, item }: ItemListItemProps) => {
       )}
     >
       <div className="flex w-[calc(100%-20px)] basis-full items-center gap-4 overflow-hidden">
-        <div className="relative aspect-square h-[52px] bg-primaryWhite">
+        <Link
+          className="relative aspect-square h-[52px] cursor-pointer bg-primaryWhite"
+          href={itemLink}
+        >
           <Image src={item.images[0]?.url ?? ''} fill className="object-contain" alt="Item Image" />
-        </div>
+        </Link>
         <div className="flex w-[calc(100%-68px)] basis-full flex-col gap-3">
           <BodyText className="w-full overflow-hidden overflow-ellipsis whitespace-nowrap ">
-            {item.brand} {item.name}
+            <Link href={itemLink}>
+              {item.brand} {item.name}
+            </Link>
           </BodyText>
           <div className="grid w-full whitespace-pre xs:grid-cols-2 sm:grid-cols-3">
             <BodyText>Price: {item.price}£</BodyText>
