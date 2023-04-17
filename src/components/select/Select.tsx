@@ -62,7 +62,6 @@ export const Select = React.forwardRef(
               'border-b-[1px] pr-16 pb-2 text-left ',
               'border-gray-400 text-primaryBlack placeholder:text-gray-400',
               'focus-visible:border-b-primaryBlack focus-visible:outline-0',
-              '[&:focus-visible>*>*]:text-primaryBlack',
               'text-xs sm:text-sm'
             )}
           >

@@ -6,12 +6,7 @@
 - transition on Box
 - Nav underline current category that the user is on
 - make the ItemHeader menus hoverable instead of clickable
-- make the Navbar sticky
-- consider making the Navbar transparent (redesign)
-- change the space screenWithoutHeader so it is pixel perfect both on mobile and desktop
-- after rethinking and reimplementing the Navbar have a look at item page at the right section and its spacing
 - item container - if the last item is alone in the row it's alignment is slightly off
-- multiselect count is broken after clicking "ESC" on opened menu
 - make item creation go back to default values set from refs
 - item reservation in cart
 
@@ -26,6 +21,7 @@
 - Toasts on adding/deleting/editing users/items etc.
 - Color picker and adding new colors to DB.
 - Color display in Select
+
 - searchBar enhancement - maybe fuzzy search?
 - give size chart functionality
 - custom cursor (e.g. when hovering on out of stock items)
@@ -38,3 +34,5 @@
 - enhance handeling the states between forms in item-creator, right now it looks hacky and ugly
 - edition of the colors doesnt update existing colors, also it resets quantity (could be solved better)
 - item availibility form - change default value state behaviour
+
+https://trello.com/b/BFajoSeT/impreda
