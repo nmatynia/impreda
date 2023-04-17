@@ -126,7 +126,7 @@ const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
             </div>
           ))}
         </div>
-        <div className="sticky top-0 flex h-fit min-h-screenWithoutHeader w-full items-center justify-center sm:w-1/2">
+        <div className="sticky top-0 flex h-fit w-full items-center justify-center sm:min-h-screenWithoutHeader sm:w-1/2">
           <div className="flex w-[32rem] flex-col p-8">
             <LargeBodyText>
               <Bold>{item?.name}</Bold>

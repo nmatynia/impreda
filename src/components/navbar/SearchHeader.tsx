@@ -24,7 +24,7 @@ export const SearchHeader = ({ isOpen, setIsOpen, navRef }: SearchHeaderProps) =
   return (
     <div
       className={clsxm(
-        ' absolute z-10 flex w-full items-center border-b-[1px] border-primaryBlack bg-primaryWhite py-2',
+        ' absolute z-10 flex w-full items-center border-y-[1px] border-primaryBlack bg-primaryWhite py-2',
         isOpen || 'hidden'
       )}
     >

@@ -16,12 +16,7 @@ export const Layout = ({ children, className }: LayoutProps) => {
         <meta name="description" content="Impreda – fashion shopping app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div
-        className={clsxm(
-          'flex h-screen min-h-screen w-screen flex-col overflow-auto overflow-x-hidden',
-          className
-        )}
-      >
+      <div className={clsxm('flex h-fit min-h-screen flex-col ', className)}>
         <Navbar />
         <main className="z-0 w-full flex-1">{children}</main>
         <Footer />
