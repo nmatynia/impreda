@@ -46,7 +46,7 @@ export const Navbar = () => {
       )}
     >
       <Header handleShowSearch={handleShowSearch} />
-      <ItemHeader className="sm:hidden" />
+      <ItemHeader className={clsxm('sm:hidden', showSearch && 'hidden')} />
       <SearchHeader isOpen={showSearch} setIsOpen={setShowSearch} />
     </nav>
   );

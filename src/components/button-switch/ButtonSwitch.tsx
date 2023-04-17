@@ -38,7 +38,7 @@ export const ButtonSwitch = ({ elementToOpen, children, className }: OpenButtonP
 
   return (
     <div className={clsxm('relative h-fit w-fit', className)} ref={clickOutsideRef}>
-      <button type="button" onClick={() => setIsOpen(!isOpen)}>
+      <button type="button" className="flex items-center" onClick={() => setIsOpen(!isOpen)}>
         {children}
       </button>
       {elementToOpen(isOpen)}
