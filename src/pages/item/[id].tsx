@@ -15,6 +15,8 @@ import { ColorIndicator } from '../../components/color-indicator/ColorIndicator'
 import { trpc } from '../../utils/trpc';
 import { createContextInner } from '../../server/trpc/context';
 import { appRouter } from '../../server/trpc/router/_app';
+import { ItemCard } from '../../components/item-card/ItemCard';
+import { ItemContainer } from '../../components/items-container/ItemContainer';
 
 export async function getStaticProps(context: GetStaticPropsContext<{ id: string }>) {
   const ssg = await createProxySSGHelpers({
@@ -69,6 +71,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { data: item } = trpc.items.getItem.useQuery(id as string);
+
+  const { data: items, isLoading } = trpc.items.getItems.useQuery({});
+
   // TODO selected size and color should have different variant selected
   // add store for clicked color
   // sort sizes on backend
@@ -194,11 +199,11 @@ const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
           <Bold>RELATED ITEMS</Bold>
         </LargeBodyText>
       </div>
-      {/* <ItemContainer>
-        {itemsHolder.map(i => (
+      <ItemContainer>
+        {items?.map(i => (
           <ItemCard {...i} key={i.id} />
         ))}
-      </ItemContainer> */}
+      </ItemContainer>
     </Container>
   );
 };

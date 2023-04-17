@@ -9,7 +9,6 @@ import { ShopFilterPanel } from '../components/filter-panel/ShopFilterPanel';
 import { trpc } from '../utils/trpc';
 import { SexType, SizeNameType } from '../types/types';
 import { ItemsRouter } from '../server/trpc/router/_app';
-import { BodyText, LogoText } from '../components/typography/Typography';
 import { NotFound } from '../components/not-found/NotFound';
 
 const ShopPage = () => {
@@ -20,6 +19,7 @@ const ShopPage = () => {
     color: colorNames
   } = useRouter().query;
 
+  // TODO: enhance this stuff
   const sex = useMemo<SexType | undefined>(() => {
     switch (sexQuery) {
       case 'men': {
@@ -29,7 +29,7 @@ const ShopPage = () => {
         return 'FEMALE';
       }
       default: {
-        return 'UNISEX';
+        return undefined;
       }
     }
   }, [sexQuery]);
