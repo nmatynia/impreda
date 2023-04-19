@@ -6,7 +6,7 @@ import ShopWomenImg from '../../public/images/shop-women.webp';
 import NewArravialsImg from '../../public/images/new-arrivals.webp';
 import { LargeBodyText } from '../components/typography/Typography';
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
   return (
     <main className="flex min-h-full flex-col items-center justify-center bg-primaryBlack">
       <div className="flex h-[1600px] w-full flex-col sm:h-[960px] sm:flex-row">
@@ -51,4 +51,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default HomePage;

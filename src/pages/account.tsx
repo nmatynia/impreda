@@ -5,7 +5,7 @@ import { UserAccountBox } from '../components/user-account-box/UserAcountBox';
 import { getServerAuthSession } from '../server/common/get-server-auth-session';
 import { trpc } from '../utils/trpc';
 
-const account = () => {
+const AccountPage = () => {
   const { data: orders, isLoading: isOrdersLoading } = trpc.order.getCurrentUserOrders.useQuery();
   return (
     <div className="mx-auto max-w-3xl px-4">
@@ -15,7 +15,7 @@ const account = () => {
   );
 };
 
-export default account;
+export default AccountPage;
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const session = await getServerAuthSession(ctx);

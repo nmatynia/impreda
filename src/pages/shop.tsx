@@ -6,7 +6,7 @@ import { trpc } from '../utils/trpc';
 import { SexType, SizeNameType } from '../types/types';
 import ItemCardSection from '../components/item-card-section/ItemCardSection';
 
-const ShopPage = () => {
+const ShoppingPage = () => {
   const {
     gender: sexQuery,
     category: categoryName,
@@ -44,4 +44,4 @@ const ShopPage = () => {
   );
 };
 
-export default ShopPage;
+export default ShoppingPage;

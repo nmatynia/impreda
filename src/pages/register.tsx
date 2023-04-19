@@ -11,8 +11,7 @@ import { Input } from '../components/input/Input';
 import { Checkbox } from '../components/checkbox/Checkbox';
 import { getServerAuthSession } from '../server/common/get-server-auth-session';
 
-// TODO - use form library
-const register = () => {
+const RegisterPage = () => {
   return (
     <Container className="h-full bg-primaryBlack px-0 md:h-fit md:bg-primaryWhite md:px-4">
       <RoundedBox className="flex w-full max-w-[1200px] bg-primaryBlack p-0 text-primaryWhite">
@@ -65,7 +64,7 @@ const register = () => {
   );
 };
 
-export default register;
+export default RegisterPage;
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const session = await getServerAuthSession(ctx);

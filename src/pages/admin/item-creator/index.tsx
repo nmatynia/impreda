@@ -18,7 +18,7 @@ import { getServerAuthSession } from '../../../server/common/get-server-auth-ses
 import { SexType } from '../../../types/types';
 import clsxm from '../../../utils/clsxm';
 
-const ItemCreator = () => {
+const ItemCreatorPage = () => {
   const router = useRouter();
   const { id: itemId } = router.query;
   const isEdit = !!itemId && typeof itemId === 'string';
@@ -275,7 +275,7 @@ const ItemCreator = () => {
   );
 };
 
-export default ItemCreator;
+export default ItemCreatorPage;
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const session = await getServerAuthSession(ctx);

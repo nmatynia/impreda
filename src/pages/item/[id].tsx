@@ -17,6 +17,7 @@ import { createContextInner } from '../../server/trpc/context';
 import { appRouter } from '../../server/trpc/router/_app';
 import { ItemCard } from '../../components/item-card/ItemCard';
 import { ItemContainer } from '../../components/items-container/ItemContainer';
+import ItemCardSection from '../../components/item-card-section/ItemCardSection';
 
 export async function getStaticProps(context: GetStaticPropsContext<{ id: string }>) {
   const ssg = await createProxySSGHelpers({
@@ -69,10 +70,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths, fallback: 'blocking' };
 };
 
-const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const ItemPage = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { data: item } = trpc.items.getItem.useQuery(id as string);
-
-  const { data: items, isLoading } = trpc.items.getItems.useQuery({});
+  const { data: items, isLoading: isOrdersLoading } = trpc.items.getItems.useQuery({});
 
   // TODO selected size and color should have different variant selected
   // add store for clicked color
@@ -202,13 +202,9 @@ const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
           <Bold>RELATED ITEMS</Bold>
         </LargeBodyText>
       </div>
-      <ItemContainer>
-        {items?.map(i => (
-          <ItemCard {...i} key={i.id} />
-        ))}
-      </ItemContainer>
+      <ItemCardSection items={items} isLoading={isOrdersLoading} />
     </Container>
   );
 };
 
-export default Item;
+export default ItemPage;
