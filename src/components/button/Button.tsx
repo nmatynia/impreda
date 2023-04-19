@@ -14,7 +14,7 @@ type ButtonProps = {
 const buttonVariant = {
   primary: 'bg-primaryBlack text-primaryWhite',
   outlined:
-    'border-[1px] border-primaryBlack text-primaryBlack hover:bg-primaryBlack hover:text-primaryWhite'
+    'border-[1px] border-primaryBlack text-primaryBlack hover:bg-primaryBlack hover:text-primaryWhite [&:hover>*]:text-primaryWhite'
 };
 
 const loaderVariant = {
@@ -43,8 +43,8 @@ export const Button = ({
     >
       {isLoading ? (
         <>
-          <Loader className={clsxm('h-[14px] w-[14px]', loaderVariant[variant])} />
-          <div className={isLoading ? 'opacity-0' : ''}>{children}</div>
+          <Loader className={clsxm('top-[6px] h-[14px] w-[14px]', loaderVariant[variant])} />
+          <div className={clsxm('flex gap-2', isLoading ? 'opacity-0' : '')}>{children}</div>
         </>
       ) : (
         children

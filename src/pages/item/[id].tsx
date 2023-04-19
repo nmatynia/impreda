@@ -93,11 +93,13 @@ const ItemPage = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
   }, [filteredSizes]);
 
   const utils = trpc.useContext();
-  const { mutateAsync: addToCart } = trpc.cart.addToCart.useMutation({
-    onSuccess: () => {
-      utils.cart.invalidate();
+  const { mutateAsync: addToCart, isLoading: isAddToCartLoading } = trpc.cart.addToCart.useMutation(
+    {
+      onSuccess: () => {
+        utils.cart.invalidate();
+      }
     }
-  });
+  );
   const handleAddToCart = async () => {
     if (!(selectedSizeId && selectedColorId && item)) {
       return;
@@ -182,6 +184,7 @@ const ItemPage = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
               variant="outlined"
               className="flex items-center gap-2 px-5"
               onClick={handleAddToCart}
+              isLoading={isAddToCartLoading}
             >
               {selectedColorId && selectedSizeId ? (
                 <>
