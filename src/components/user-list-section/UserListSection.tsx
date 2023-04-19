@@ -1,17 +1,21 @@
 import React from 'react';
+import { inferProcedureOutput } from '@trpc/server';
 import clsxm from '../../utils/clsxm';
-import { trpc } from '../../utils/trpc';
 import { UserListFilterPanel } from '../filter-panel/UserListFilterPanel';
-import { ListItemSkeleton } from '../skeletons/ListItemSkeleton';
 import { UserListItem } from './user-list-item/UserListItem';
 import { UserDetailsDialog } from './user-details-dialog/UserDetailsDialog';
+import { UserRouter } from '../../server/trpc/router/_app';
+import { ListSkeleton } from '../skeletons/ListSkeleton';
+import { NotFound } from '../not-found/NotFound';
+
+type User = inferProcedureOutput<UserRouter['getAllUsers']> | undefined;
 
 type UserListSectionProps = {
   className?: string;
+  users: User;
+  isLoading: boolean;
 };
-export const UserListSection = ({ className }: UserListSectionProps) => {
-  const { data: users, isLoading } = trpc.user.getAllUsers.useQuery();
-
+export const UserListSection = ({ users, isLoading, className }: UserListSectionProps) => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [selectedUserId, setSelectedUserId] = React.useState<string | null>(null);
   const handleCloseDialog = () => {
@@ -33,28 +37,48 @@ export const UserListSection = ({ className }: UserListSectionProps) => {
         />
       )}
       <UserListFilterPanel sectionName="User List" />
-      <div className="z-10 my-6 flex flex-col gap-6">
-        {isLoading ? (
-          <>
-            <ListItemSkeleton />
-            <ListItemSkeleton />
-            <ListItemSkeleton />
-          </>
-        ) : (
-          users?.map(({ id, name, joinDate, totalSpent, totalPurchases }) => {
-            return (
-              <UserListItem
-                handlePreviewUser={() => handleOpenDialog(id)}
-                name={name ?? 'Unknown'}
-                joinDate={joinDate}
-                totalSpent={totalSpent}
-                totalPurchases={totalPurchases}
-                key={id}
-              />
-            );
-          })
-        )}
-      </div>
+      <UserListContent users={users} isLoading={isLoading} handleOpenDialog={handleOpenDialog} />
     </section>
+  );
+};
+
+const UserListContent = ({
+  isLoading,
+  users,
+  handleOpenDialog
+}: {
+  isLoading: boolean;
+  users: User;
+  handleOpenDialog: (id: string) => void;
+}) => {
+  if (isLoading) {
+    return <ListSkeleton />;
+  }
+  if (!users) {
+    return (
+      <div className="z-10 my-6 flex flex-col gap-6">
+        <NotFound
+          className="max-w-lg"
+          title="The user list is empty"
+          subtitle="It seems like nobody registered yet."
+        />
+      </div>
+    );
+  }
+  return (
+    <div className="z-10 my-6 flex flex-col gap-6">
+      {users?.map(({ id, name, joinDate, totalSpent, totalPurchases }) => {
+        return (
+          <UserListItem
+            handlePreviewUser={() => handleOpenDialog(id)}
+            name={name ?? 'Unknown'}
+            joinDate={joinDate}
+            totalSpent={totalSpent}
+            totalPurchases={totalPurchases}
+            key={id}
+          />
+        );
+      })}
+    </div>
   );
 };

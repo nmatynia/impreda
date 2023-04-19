@@ -116,7 +116,10 @@ const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
       <div className="relative flex h-fit w-full flex-col sm:flex-row">
         <div className="flex h-fit w-full flex-col gap-20 border-r-[1px] border-primaryBlack bg-primaryWhite py-20 sm:w-1/2">
           {item?.images.map((image, idx) => (
-            <div className="relative sm:h-screenWithoutHeader" key={image.id}>
+            <div
+              className="relative h-screenWithoutHeaderMobile sm:h-screenWithoutHeader"
+              key={image.id}
+            >
               <Image
                 src={image.url ?? ''}
                 alt={`${item?.name} Photo ${idx}`}

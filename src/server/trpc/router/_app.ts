@@ -21,3 +21,4 @@ export const appRouter = router({
 export type AppRouter = typeof appRouter;
 export type ItemsRouter = typeof itemsRouter;
 export type OrderRouter = typeof orderRouter;
+export type UserRouter = typeof userRouter;
