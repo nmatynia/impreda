@@ -13,7 +13,8 @@ type ButtonProps = {
 
 const buttonVariant = {
   primary: 'bg-primaryBlack text-primaryWhite',
-  outlined: 'border-[1px] border-primaryBlack text-primaryBlack'
+  outlined:
+    'border-[1px] border-primaryBlack text-primaryBlack hover:bg-primaryBlack hover:text-primaryWhite'
 };
 
 const loaderVariant = {
