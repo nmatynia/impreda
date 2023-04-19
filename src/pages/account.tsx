@@ -6,11 +6,11 @@ import { getServerAuthSession } from '../server/common/get-server-auth-session';
 import { trpc } from '../utils/trpc';
 
 const account = () => {
-  const { data: orders } = trpc.order.getCurrentUserOrders.useQuery();
+  const { data: orders, isLoading: isOrdersLoading } = trpc.order.getCurrentUserOrders.useQuery();
   return (
     <div className="mx-auto max-w-3xl px-4">
       <UserAccountBox />
-      <OrderHistorySection orders={orders} />
+      <OrderHistorySection orders={orders} isLoading={isOrdersLoading} />
     </div>
   );
 };

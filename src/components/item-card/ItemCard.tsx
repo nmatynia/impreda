@@ -1,10 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import { ColorsType, ImageType, SizesType } from '../../types/types';
+import type { ColorsType, ImageType, SizesType } from '../../types/types';
 import clsxm from '../../utils/clsxm';
 import { ColorIndicator } from '../color-indicator/ColorIndicator';
-import { Loader } from '../loader/Loader';
 import { SizeIndicator } from '../size-indicator/SizeIndicator';
 import { BodyText, Bold } from '../typography/Typography';
 
@@ -116,17 +115,3 @@ export const ItemCard = ({
     </div>
   );
 };
-
-export const ItemCardSkeleton = ({ className }: { className?: string }) => (
-  <div
-    className={clsxm(
-      'relative w-full bg-primaryWhite text-primaryBlack',
-      'box-content border-[1px] border-t-0 border-primaryBlack',
-      className
-    )}
-  >
-    <Loader className="top-1/2 z-20 h-4 w-4 text-primaryBlack" />
-    <div className="aspect-[0.75] w-full opacity-0" />
-    <div className="h-24" />
-  </div>
-);
