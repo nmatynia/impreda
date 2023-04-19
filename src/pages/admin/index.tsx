@@ -8,8 +8,8 @@ import { getServerAuthSession } from '../../server/common/get-server-auth-sessio
 import { trpc } from '../../utils/trpc';
 
 const AdminPage = () => {
-  const { data: orders, isLoading: isOrdersLoading } = trpc.order.getAllOrders.useQuery();
   const { data: items, isLoading: isItemsLoading } = trpc.items.getListItems.useQuery();
+  const { data: orders, isLoading: isOrdersLoading } = trpc.order.getAllOrders.useQuery();
   const { data: users, isLoading: isUsersLoading } = trpc.user.getAllUsers.useQuery();
 
   const isLoading = isOrdersLoading || isItemsLoading || isUsersLoading;

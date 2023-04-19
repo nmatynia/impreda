@@ -77,6 +77,9 @@ export const orderRouter = router({
           }
         },
         user: true
+      },
+      orderBy: {
+        updatedAt: 'desc'
       }
     });
 

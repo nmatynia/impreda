@@ -16,6 +16,8 @@ type HeaderProps = {
 export const Header = ({ handleShowSearch }: HeaderProps) => {
   const { data: cart } = trpc.cart.getCart.useQuery();
   const { items: cartItems } = cart || {};
+  const itemsCount = cartItems?.reduce((acc, item) => acc + item.quantity, 0) || 0;
+
   return (
     <div className="relative my-5 flex w-full items-center justify-between ">
       <div className="ml-7 flex items-center gap-10 sm:ml-14">
@@ -50,7 +52,7 @@ export const Header = ({ handleShowSearch }: HeaderProps) => {
           <div className="relative h-fit w-fit">
             <SvgIcon name="Cart" className="h-5 w-5 cursor-pointer" />
             <div className="absolute top-3 -right-1 flex h-4 w-4 items-center justify-center rounded-full  bg-primaryWhite">
-              <SmallBodyText className="md:text-[10px]">{cartItems?.length ?? '0'}</SmallBodyText>
+              <SmallBodyText className="md:text-[10px]">{itemsCount}</SmallBodyText>
             </div>
           </div>
         </ButtonSwitch>
