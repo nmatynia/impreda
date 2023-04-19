@@ -15,8 +15,6 @@ import { ColorIndicator } from '../../components/color-indicator/ColorIndicator'
 import { trpc } from '../../utils/trpc';
 import { createContextInner } from '../../server/trpc/context';
 import { appRouter } from '../../server/trpc/router/_app';
-import { ItemCard } from '../../components/item-card/ItemCard';
-import { ItemContainer } from '../../components/items-container/ItemContainer';
 import ItemCardSection from '../../components/item-card-section/ItemCardSection';
 
 export async function getStaticProps(context: GetStaticPropsContext<{ id: string }>) {
