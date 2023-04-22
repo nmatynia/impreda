@@ -187,7 +187,7 @@ const ItemCreatorPage = () => {
       return;
     }
     if (isEdit) {
-      const item = await updateItem({
+      const updateParams = {
         id: itemId,
         brand: brand.current,
         name: name.current,
@@ -197,8 +197,9 @@ const ItemCreatorPage = () => {
         fabrics: (fabrics.current as any)[0].key, // TODO temporary
         category: category.current,
         colors: data.colors
-      });
-
+      };
+      console.log({ updateParams });
+      const item = await updateItem(updateParams);
       await uploadToDB(item.itemId);
       handleNextStep();
     } else {

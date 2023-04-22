@@ -7,7 +7,7 @@ import { CreateItemSchema, GetItemsSchema, UpdateItemSchema } from '../../../uti
 import { Context } from '../context';
 
 // You will need other logic for updates cause the colors are doubled now since the old ones are not updated/deleted but a new one is created.
-const createSizeAndImage = async (
+const createSizeAndColor = async (
   ctx: Context,
   colors: z.infer<typeof CreateItemSchema>['colors'],
   itemId: string
@@ -72,15 +72,16 @@ export const itemsRouter = router({
       }
     });
 
-    await createSizeAndImage(ctx, input.colors, item.id);
+    await createSizeAndColor(ctx, input.colors, item.id);
     return {
       itemId: item.id
     };
   }),
   updateItem: adminProcedure.input(UpdateItemSchema).mutation(async ({ ctx, input }) => {
+    const itemId = input.id;
     await ctx.prisma.item.update({
       where: {
-        id: input.id
+        id: itemId
       },
       data: {
         name: input.name,
@@ -96,7 +97,111 @@ export const itemsRouter = router({
         }
       }
     });
-    await createSizeAndImage(ctx, input.colors, input.id);
+
+    const existingColors = await ctx.prisma.color.findMany({
+      where: {
+        items: {
+          id: itemId
+        }
+      },
+      include: {
+        sizes: true
+      }
+    });
+
+    const existingColorsNames = existingColors.map(color => color.name);
+
+    const colorAndSizePromises = input.colors.map(async color => {
+      const colorId = existingColors[existingColorsNames.indexOf(color.name)]?.id;
+      let colorAvailibility = 0;
+      const sizesIds: { id: string }[] = [];
+      if (colorId) {
+        const sizesPromises = color.sizes.map(async size => {
+          const sizeId = existingColors[existingColorsNames.indexOf(color.name)]?.sizes.find(
+            existingSize => existingSize.name === size.name
+          )?.id;
+          if (sizeId) {
+            await ctx.prisma.size.update({
+              where: {
+                id: sizeId
+              },
+              data: {
+                available: Number(size.available)
+              }
+            });
+            sizesIds.push({ id: sizeId });
+          } else {
+            const { id: sizeId } = await ctx.prisma.size.create({
+              data: {
+                name: size.name,
+                available: Number(size.available),
+                items: {
+                  connect: {
+                    id: input.id
+                  }
+                }
+              }
+            });
+            sizesIds.push({ id: sizeId });
+          }
+          colorAvailibility += Number(size.available);
+        });
+        const result = [
+          ...sizesPromises,
+          ctx.prisma.color.update({
+            where: {
+              id: colorId
+            },
+            data: {
+              available: colorAvailibility,
+              sizes: {
+                connect: sizesIds
+              }
+            }
+          })
+        ];
+        Promise.all(result);
+      } else {
+        const sizesIds: { id: string }[] = [];
+        const sizesPromises = color.sizes.map(async size => {
+          const { id: sizeId } = await ctx.prisma.size.create({
+            data: {
+              name: size.name,
+              available: Number(size.available),
+              items: {
+                connect: {
+                  id: input.id
+                }
+              }
+            }
+          });
+          colorAvailibility += Number(size.available);
+          sizesIds.push({ id: sizeId });
+        });
+        const result = [
+          ...sizesPromises,
+          ctx.prisma.color.create({
+            data: {
+              name: color.name,
+              available: colorAvailibility,
+              hex: color.hex,
+              sizes: {
+                connect: sizesIds
+              },
+              items: {
+                connect: {
+                  id: input.id
+                }
+              }
+            }
+          })
+        ];
+        Promise.all(result);
+      }
+    });
+    await Promise.all(colorAndSizePromises);
+
+    // await createSizeAndColor(ctx, input.colors, input.id);
     return {
       itemId: input.id
     };

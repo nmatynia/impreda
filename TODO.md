@@ -2,6 +2,7 @@
 
 ## Components
 
+- Edition of the colors doesnt update existing colors, also it resets quantity (could be solved better)
 - Display errors on fields
 - transition on Box
 - Nav underline current category that the user is on
@@ -26,13 +27,12 @@
 - give size chart functionality
 - custom cursor (e.g. when hovering on out of stock items)
 - display more data in user preview in admin panel
-- perhaps make the previewed image smaller (item-creator)
 - isLoading state in UserDetailsDialog in admin view
 - user list dialog, throws one trpc error after deleting a user (there is one request to fetch user details but the user is no longer existing)
 - additional modal, dropdown to confirm deletion of item/user
 - enhance Loader - /item-creator
 - enhance handeling the states between forms in item-creator, right now it looks hacky and ugly
-- edition of the colors doesnt update existing colors, also it resets quantity (could be solved better)
+-
 - item availibility form - change default value state behaviour
 
 https://trello.com/b/BFajoSeT/impreda
