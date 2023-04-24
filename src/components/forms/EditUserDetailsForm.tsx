@@ -45,9 +45,9 @@ export const EditUserDetailsForm = ({
             </div>
             <div className="flex w-full flex-col gap-7 sm:w-1/2">
               <InputField
-                label="Card Details"
-                placeholder="Enter card details"
-                name="cardDetails"
+                label="Card Number"
+                placeholder="Enter card number"
+                name="cardNumber"
                 className="w-full"
               />
               <InputField
@@ -88,7 +88,7 @@ export const EditUserDetailsForm = ({
             </div>
             <div className="flex w-full flex-col gap-7 sm:w-1/2">
               <div>
-                <BodyText>Card Details:</BodyText>
+                <BodyText>Card Number:</BodyText>
                 <BodyText>
                   <Bold>{user?.cardNumber ?? placeholder}</Bold>
                 </BodyText>

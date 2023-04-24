@@ -2,7 +2,6 @@
 
 ## Components
 
-- Display errors on fields
 - SearchBar logic - maybe fuzzy search?
 - Transition on Box
 
