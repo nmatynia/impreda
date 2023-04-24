@@ -10,7 +10,7 @@ export type TextAreaProps = {
   innerClassName?: string;
   password?: boolean;
   color?: InputColorVariant;
-  isValid?: boolean;
+  isInvalid?: boolean;
   isLoading?: boolean;
 } & InputHTMLAttributes<HTMLTextAreaElement>;
 
@@ -31,7 +31,7 @@ export const TextArea = React.forwardRef(
       className,
       innerClassName,
       color = 'black',
-      isValid = true,
+      isInvalid = false,
       isLoading,
       ...rest
     }: TextAreaProps,
@@ -52,8 +52,9 @@ export const TextArea = React.forwardRef(
             'text-xs sm:text-sm',
             'flex-1 bg-transparent focus-within:outline-none',
             'border-[1px] p-2',
-            !isValid && 'border-b-red-400 text-red-400 placeholder:text-red-400',
             colorVariant[color],
+            isInvalid &&
+              'border-red-500 placeholder:text-red-500 focus-within:placeholder:text-primaryBlack',
             innerClassName
           )}
           ref={ref}

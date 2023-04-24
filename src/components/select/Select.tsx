@@ -16,6 +16,7 @@ export type SelectProps = {
   defaultValue?: OptionType | OptionType[];
   multiple?: boolean;
   isLoading?: boolean;
+  isInvalid?: boolean;
 } & Partial<ControllerRenderProps<FieldValues, string>>;
 
 /**
@@ -36,6 +37,7 @@ export const Select = React.forwardRef(
       name,
       defaultValue,
       multiple,
+      isInvalid = false,
       placeholder,
       isLoading,
       ...rest
@@ -62,16 +64,29 @@ export const Select = React.forwardRef(
               'border-b-[1px] pr-16 pb-2 text-left ',
               'border-gray-400 text-primaryBlack placeholder:text-gray-400',
               'focus-visible:border-b-primaryBlack focus-visible:outline-0',
-              'text-xs sm:text-sm'
+              'text-xs sm:text-sm',
+              isInvalid && 'border-b-red-500 text-red-500'
             )}
           >
             {({ value, open }) => {
               if (multiple) {
                 return (
-                  <ButtonMultipleContent placeholder={placeholder} value={value} isOpen={open} />
+                  <ButtonMultipleContent
+                    placeholder={placeholder}
+                    value={value}
+                    isOpen={open}
+                    isInvalid={isInvalid}
+                  />
                 );
               }
-              return <ButtonSingleContent placeholder={placeholder} value={value} isOpen={open} />;
+              return (
+                <ButtonSingleContent
+                  placeholder={placeholder}
+                  value={value}
+                  isOpen={open}
+                  isInvalid={isInvalid}
+                />
+              );
             }}
           </Listbox.Button>
           <Transition
@@ -124,21 +139,28 @@ export const Select = React.forwardRef(
 const ButtonMultipleContent = ({
   value,
   isOpen,
-  placeholder
+  placeholder,
+  isInvalid
 }: {
   value: OptionType[];
   isOpen: boolean;
   placeholder: string;
+  isInvalid: boolean;
 }) => {
   const displayedValue = value.length > 0 ? value.map(v => v.name).join(', ') : placeholder;
   return (
     <>
       <span className="block truncate">{displayedValue}</span>
       <span className="pointer-events-none absolute inset-y-0 right-0 bottom-2 flex items-center gap-2 pr-2">
-        <div className="flex h-5 w-5 items-center justify-center rounded-md bg-primaryBlack text-xs text-primaryWhite sm:text-sm">
+        <div
+          className={clsxm(
+            'flex h-5 w-5 items-center justify-center rounded-md bg-primaryBlack text-xs text-primaryWhite sm:text-sm',
+            isInvalid && 'bg-red-500'
+          )}
+        >
           {value.length}
         </div>
-        <ChevronIcon isOpen={isOpen} />
+        <ChevronIcon isOpen={isOpen} isInvalid={isInvalid} />
       </span>
     </>
   );
@@ -147,27 +169,30 @@ const ButtonMultipleContent = ({
 const ButtonSingleContent = ({
   value,
   isOpen,
-  placeholder
+  placeholder,
+  isInvalid
 }: {
   value: OptionType;
   isOpen: boolean;
   placeholder: string;
+  isInvalid: boolean;
 }) => (
   <>
     <span className="block truncate">{value?.name ?? placeholder}</span>
     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-      <ChevronIcon isOpen={isOpen} />
+      <ChevronIcon isOpen={isOpen} isInvalid={isInvalid} />
     </span>
   </>
 );
 
-const ChevronIcon = ({ isOpen }: { isOpen: boolean }) => (
+const ChevronIcon = ({ isOpen, isInvalid }: { isOpen: boolean; isInvalid?: boolean }) => (
   <SvgIcon
     name="ChevronDown"
     className={clsxm(
       'h-4 w-4 text-gray-400',
       'transition-all duration-300 ease-in-out',
-      isOpen && 'rotate-180 transform'
+      isOpen && 'rotate-180 transform',
+      isInvalid && 'text-red-500'
     )}
     aria-hidden="true"
   />

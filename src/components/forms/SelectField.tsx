@@ -5,12 +5,18 @@ import { Field } from './Field';
 
 export const SelectField = ({
   name,
+  className,
   ...props
 }: Omit<SelectProps, 'defaultValue'> & { name: string }) => {
   return (
-    <Field name={name}>
+    <Field name={name} className={className}>
       {(field, fieldState, formState) => (
-        <Select {...props} {...field} defaultValue={formState?.defaultValues?.[name]} />
+        <Select
+          {...props}
+          {...field}
+          isInvalid={!!fieldState.error}
+          defaultValue={formState?.defaultValues?.[name]}
+        />
       )}
     </Field>
   );
