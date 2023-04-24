@@ -5,7 +5,10 @@ import clsxm from '../../utils/clsxm';
 type OpenButtonProps = {
   className?: string;
   children: JSX.Element;
-  elementToOpen: (open: boolean) => JSX.Element;
+  elementToOpen: (
+    open: boolean,
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  ) => JSX.Element;
 };
 export const ButtonSwitch = ({ elementToOpen, children, className }: OpenButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,7 +44,7 @@ export const ButtonSwitch = ({ elementToOpen, children, className }: OpenButtonP
       <button type="button" className="flex items-center" onClick={() => setIsOpen(!isOpen)}>
         {children}
       </button>
-      {elementToOpen(isOpen)}
+      {elementToOpen(isOpen, setIsOpen)}
     </div>
   );
 };

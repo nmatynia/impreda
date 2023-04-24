@@ -46,7 +46,9 @@ export const Header = ({ handleShowSearch }: HeaderProps) => {
           onClick={handleShowSearch}
         />
         <ButtonSwitch
-          elementToOpen={open => <Cart className="mt-6 md:mt-3" isOpen={open} />}
+          elementToOpen={(isOpen, setIsOpen) => (
+            <Cart className="mt-6 md:mt-3" isOpen={isOpen} setIsOpen={setIsOpen} />
+          )}
           className="static md:relative"
         >
           <div className="relative h-fit w-fit">
