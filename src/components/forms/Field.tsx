@@ -22,11 +22,11 @@ type FieldProps = {
 // TODO - add error message
 export const Field = ({ name, className, children }: FieldProps) => {
   const { field, fieldState, formState } = useController({ name });
-  console.log(field.name, ' ', fieldState.error);
+  const errorMessage = fieldState.error?.message;
   return (
     <div className={clsxm('flex flex-col gap-1', className)}>
       {children(field, fieldState, formState)}
-      <BodyText className="text-red-500">{fieldState.error?.message}</BodyText>
+      {errorMessage && <BodyText className="text-red-500">{errorMessage}</BodyText>}
     </div>
   );
 };
