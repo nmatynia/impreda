@@ -1,19 +1,19 @@
 import React from 'react';
 import { inferProcedureOutput } from '@trpc/server/dist/core/types';
 import clsxm from '../../utils/clsxm';
-import { trpc } from '../../utils/trpc';
 import { ItemListFilterPanel } from '../filter-panel/ItemListFilterPanel';
 import { ItemListItem } from './item-list-item/ItemListItem';
 import { ItemsRouter } from '../../server/trpc/router/_app';
 import { NotFound } from '../not-found/NotFound';
 import { ListSkeleton } from '../skeletons/ListSkeleton';
 
+type Items = inferProcedureOutput<ItemsRouter['getListItems']> | undefined;
 type ItemListSectionProps = {
+  items: Items;
+  isLoading: boolean;
   className?: string;
 };
-export const ItemListSection = ({ className }: ItemListSectionProps) => {
-  const { data: items, isLoading } = trpc.items.getListItems.useQuery();
-
+export const ItemListSection = ({ items, isLoading, className }: ItemListSectionProps) => {
   return (
     <section className={clsxm('flex flex-col', className)}>
       <ItemListFilterPanel sectionName="Item List" />
@@ -22,13 +22,7 @@ export const ItemListSection = ({ className }: ItemListSectionProps) => {
   );
 };
 
-const ItemListContent = ({
-  isLoading,
-  items
-}: {
-  isLoading: boolean;
-  items: inferProcedureOutput<ItemsRouter['getListItems']> | undefined;
-}) => {
+const ItemListContent = ({ isLoading, items }: { isLoading: boolean; items: Items }) => {
   if (isLoading) {
     return <ListSkeleton />;
   }

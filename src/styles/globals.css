@@ -5,7 +5,7 @@
 @layer base {
   @font-face {
     font-family: 'Roboto Condensed';
-    src: url('../../public/fonts/RobotoCondensed-Regular.ttf');
+    src: url('/fonts/RobotoCondensed-Regular.ttf') format('truetype');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -13,7 +13,7 @@
 
   @font-face {
     font-family: 'Roboto Condensed';
-    src: url('../../public/fonts/RobotoCondensed-Bold.ttf');
+    src: url('/fonts/RobotoCondensed-Bold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
@@ -21,7 +21,7 @@
 
   @font-face {
     font-family: 'Roboto Condensed';
-    src: url('../../public/fonts/RobotoCondensed-Light.ttf');
+    src: url('/fonts/RobotoCondensed-Light.ttf') format('truetype');
     font-weight: light;
     font-style: normal;
     font-display: swap;

@@ -15,8 +15,7 @@ import { ColorIndicator } from '../../components/color-indicator/ColorIndicator'
 import { trpc } from '../../utils/trpc';
 import { createContextInner } from '../../server/trpc/context';
 import { appRouter } from '../../server/trpc/router/_app';
-import { ItemCard } from '../../components/item-card/ItemCard';
-import { ItemContainer } from '../../components/items-container/ItemContainer';
+import ItemCardSection from '../../components/item-card-section/ItemCardSection';
 
 export async function getStaticProps(context: GetStaticPropsContext<{ id: string }>) {
   const ssg = await createProxySSGHelpers({
@@ -69,10 +68,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths, fallback: 'blocking' };
 };
 
-const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const ItemPage = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { data: item } = trpc.items.getItem.useQuery(id as string);
-
-  const { data: items, isLoading } = trpc.items.getItems.useQuery({});
+  const { data: items, isLoading: isOrdersLoading } = trpc.items.getItems.useQuery({});
 
   // TODO selected size and color should have different variant selected
   // add store for clicked color
@@ -95,11 +93,13 @@ const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
   }, [filteredSizes]);
 
   const utils = trpc.useContext();
-  const { mutateAsync: addToCart } = trpc.cart.addToCart.useMutation({
-    onSuccess: () => {
-      utils.cart.invalidate();
+  const { mutateAsync: addToCart, isLoading: isAddToCartLoading } = trpc.cart.addToCart.useMutation(
+    {
+      onSuccess: () => {
+        utils.cart.invalidate();
+      }
     }
-  });
+  );
   const handleAddToCart = async () => {
     if (!(selectedSizeId && selectedColorId && item)) {
       return;
@@ -116,7 +116,10 @@ const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
       <div className="relative flex h-fit w-full flex-col sm:flex-row">
         <div className="flex h-fit w-full flex-col gap-20 border-r-[1px] border-primaryBlack bg-primaryWhite py-20 sm:w-1/2">
           {item?.images.map((image, idx) => (
-            <div className="relative sm:h-screenWithoutHeader" key={image.id}>
+            <div
+              className="relative h-screenWithoutHeaderMobile sm:h-screenWithoutHeader"
+              key={image.id}
+            >
               <Image
                 src={image.url ?? ''}
                 alt={`${item?.name} Photo ${idx}`}
@@ -181,6 +184,7 @@ const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
               variant="outlined"
               className="flex items-center gap-2 px-5"
               onClick={handleAddToCart}
+              isLoading={isAddToCartLoading}
             >
               {selectedColorId && selectedSizeId ? (
                 <>
@@ -199,13 +203,9 @@ const Item = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
           <Bold>RELATED ITEMS</Bold>
         </LargeBodyText>
       </div>
-      <ItemContainer>
-        {items?.map(i => (
-          <ItemCard {...i} key={i.id} />
-        ))}
-      </ItemContainer>
+      <ItemCardSection items={items} isLoading={isOrdersLoading} />
     </Container>
   );
 };
 
-export default Item;
+export default ItemPage;

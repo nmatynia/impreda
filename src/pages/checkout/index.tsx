@@ -70,6 +70,7 @@ const CheckoutPage = () => {
   const onSubmit: SubmitHandler<UserDetailsType> = async (data, e) => {
     e?.preventDefault();
     await updateUser(data);
+    handleDisableEditing();
   };
   const [isEditing, setIsEditing] = useState(false);
   const handleEnableEditing = () => setIsEditing(true);

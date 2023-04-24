@@ -77,9 +77,17 @@ export const orderRouter = router({
           }
         },
         user: true
+      },
+      orderBy: {
+        updatedAt: 'desc'
       }
     });
 
-    return orders;
+    return orders.map(order => ({
+      ...order,
+      items: order.items.flatMap(orderItem =>
+        Array.from({ length: orderItem.quantity }, () => orderItem)
+      )
+    }));
   })
 });

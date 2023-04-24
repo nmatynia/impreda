@@ -18,7 +18,7 @@ import { getServerAuthSession } from '../../../server/common/get-server-auth-ses
 import { SexType } from '../../../types/types';
 import clsxm from '../../../utils/clsxm';
 
-const ItemCreator = () => {
+const ItemCreatorPage = () => {
   const router = useRouter();
   const { id: itemId } = router.query;
   const isEdit = !!itemId && typeof itemId === 'string';
@@ -187,7 +187,7 @@ const ItemCreator = () => {
       return;
     }
     if (isEdit) {
-      const item = await updateItem({
+      const updateParams = {
         id: itemId,
         brand: brand.current,
         name: name.current,
@@ -197,8 +197,9 @@ const ItemCreator = () => {
         fabrics: (fabrics.current as any)[0].key, // TODO temporary
         category: category.current,
         colors: data.colors
-      });
-
+      };
+      console.log({ updateParams });
+      const item = await updateItem(updateParams);
       await uploadToDB(item.itemId);
       handleNextStep();
     } else {
@@ -275,7 +276,7 @@ const ItemCreator = () => {
   );
 };
 
-export default ItemCreator;
+export default ItemCreatorPage;
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const session = await getServerAuthSession(ctx);

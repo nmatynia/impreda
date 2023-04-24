@@ -7,7 +7,7 @@ import { CreateItemSchema, GetItemsSchema, UpdateItemSchema } from '../../../uti
 import { Context } from '../context';
 
 // You will need other logic for updates cause the colors are doubled now since the old ones are not updated/deleted but a new one is created.
-const createSizeAndImage = async (
+const createSizeAndColor = async (
   ctx: Context,
   colors: z.infer<typeof CreateItemSchema>['colors'],
   itemId: string
@@ -72,15 +72,16 @@ export const itemsRouter = router({
       }
     });
 
-    await createSizeAndImage(ctx, input.colors, item.id);
+    await createSizeAndColor(ctx, input.colors, item.id);
     return {
       itemId: item.id
     };
   }),
   updateItem: adminProcedure.input(UpdateItemSchema).mutation(async ({ ctx, input }) => {
+    const itemId = input.id;
     await ctx.prisma.item.update({
       where: {
-        id: input.id
+        id: itemId
       },
       data: {
         name: input.name,
@@ -96,7 +97,129 @@ export const itemsRouter = router({
         }
       }
     });
-    await createSizeAndImage(ctx, input.colors, input.id);
+
+    const existingColors = await ctx.prisma.color.findMany({
+      where: {
+        items: {
+          id: itemId
+        }
+      },
+      include: {
+        sizes: true
+      }
+    });
+
+    const existingColorsNames = existingColors.map(color => color.name);
+    const existingSizesNames = existingColors.flatMap(color => color.sizes.map(size => size.name));
+    const usedSizesNames = input.colors.flatMap(color => color.sizes.map(size => size.name));
+
+    type Color = z.infer<typeof UpdateItemSchema>['colors'][0];
+    type Size = Color['sizes'][0];
+
+    const processColor = async (color: Color) => {
+      const colorId = existingColors[existingColorsNames.indexOf(color.name)]?.id;
+      let colorAvailibility = 0;
+      const sizesIds: { id: string }[] = [];
+
+      const processSize = async (size: Size) => {
+        const sizeId = existingColors[existingColorsNames.indexOf(color.name)]?.sizes.find(
+          existingSize => existingSize.name === size.name
+        )?.id;
+
+        if (sizeId) {
+          await ctx.prisma.size.update({
+            where: {
+              id: sizeId
+            },
+            data: {
+              available: Number(size.available)
+            }
+          });
+          sizesIds.push({ id: sizeId });
+        } else {
+          const { id: sizeId } = await ctx.prisma.size.create({
+            data: {
+              name: size.name,
+              available: Number(size.available),
+              items: {
+                connect: {
+                  id: input.id
+                }
+              }
+            }
+          });
+          sizesIds.push({ id: sizeId });
+        }
+        colorAvailibility += Number(size.available);
+      };
+
+      await Promise.all(color.sizes.map(processSize));
+
+      if (colorId) {
+        await ctx.prisma.color.update({
+          where: {
+            id: colorId
+          },
+          data: {
+            available: colorAvailibility,
+            sizes: {
+              connect: sizesIds
+            }
+          }
+        });
+      } else {
+        await ctx.prisma.color.create({
+          data: {
+            name: color.name,
+            available: colorAvailibility,
+            hex: color.hex,
+            sizes: {
+              connect: sizesIds
+            },
+            items: {
+              connect: {
+                id: input.id
+              }
+            }
+          }
+        });
+      }
+
+      return colorId;
+    };
+
+    const deleteUnusedColors = async (usedColorIds: string[]) => {
+      const unusedColorIds = existingColors
+        .filter(existingColor => !usedColorIds.includes(existingColor.id))
+        .map(unusedColor => unusedColor.id);
+
+      const unusedColorsWithSizes = await ctx.prisma.color.findMany({
+        where: { id: { in: unusedColorIds } },
+        include: { sizes: true }
+      });
+
+      const sizeIdsToDelete = unusedColorsWithSizes.flatMap(color =>
+        color.sizes.map(size => size.id)
+      );
+
+      // Delete sizes connected to the unused colors
+      await ctx.prisma.size.deleteMany({ where: { id: { in: sizeIdsToDelete } } });
+
+      // Delete unused colors
+      await ctx.prisma.color.deleteMany({ where: { id: { in: unusedColorIds } } });
+    };
+
+    const usedColorIds = (await Promise.all(input.colors.map(processColor))).filter(
+      (colorId): colorId is string => colorId !== undefined
+    );
+    await deleteUnusedColors(usedColorIds);
+
+    await Promise.all(
+      existingSizesNames
+        .filter(sizeName => !usedSizesNames.includes(sizeName))
+        .map(filteredSizeName => ctx.prisma.size.deleteMany({ where: { name: filteredSizeName } }))
+    );
+
     return {
       itemId: input.id
     };
