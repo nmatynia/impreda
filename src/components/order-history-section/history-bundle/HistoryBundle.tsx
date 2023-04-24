@@ -37,7 +37,7 @@ export const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProp
       <RoundedBox
         className={clsxm(
           'flex w-full items-center justify-between',
-          'bg-primaryBlack py-5 text-primaryWhite',
+          'shrink-0 bg-primaryBlack py-5 text-primaryWhite',
           className
         )}
       >

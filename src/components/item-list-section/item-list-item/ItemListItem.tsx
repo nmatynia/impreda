@@ -28,7 +28,7 @@ export const ItemListItem = ({ className, item }: ItemListItemProps) => {
     <RoundedBox
       className={clsxm(
         'flex w-full items-center justify-between',
-        'overflow-hidden bg-primaryBlack py-5 text-primaryWhite',
+        'shrink-0 overflow-hidden bg-primaryBlack py-5 text-primaryWhite',
         className
       )}
     >

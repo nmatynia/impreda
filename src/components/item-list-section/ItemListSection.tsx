@@ -38,7 +38,7 @@ const ItemListContent = ({ isLoading, items }: { isLoading: boolean; items: Item
     );
   }
   return (
-    <div className="z-10 my-6 flex flex-col gap-6">
+    <div className="z-10 my-6 flex max-h-[29rem] flex-col gap-6 overflow-y-auto">
       {items.map(item => {
         return <ItemListItem item={item} key={`item-${item.id}`} />;
       })}

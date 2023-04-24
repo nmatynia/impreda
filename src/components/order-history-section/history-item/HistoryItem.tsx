@@ -25,7 +25,7 @@ export const HistoryItem = ({
   return (
     <RoundedBox
       className={clsxm(
-        'flex w-full items-center justify-between',
+        'flex w-full shrink-0 items-center justify-between',
         'bg-primaryBlack py-5 text-primaryWhite',
         className
       )}
