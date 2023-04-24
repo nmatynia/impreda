@@ -45,7 +45,7 @@ export const Input = React.forwardRef(
       return <div className={clsxm('h-14 w-full animate-pulse bg-primaryBlack/50', className)} />;
     }
     return (
-      <div className={clsxm('relative h-14 w-full', className)}>
+      <div className={clsxm('relative flex h-14 w-full flex-col', className)}>
         {label && <BodyText as="label">{label}</BodyText>}
         <input
           placeholder={placeholder}

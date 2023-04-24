@@ -21,73 +21,87 @@ export const EditUserDetailsForm = ({
   className,
   ...methods
 }: EditUserDetailsFormProps) => {
+  const placeholder = '----';
   return (
     <Form className={clsxm('flex flex-col gap-7 p-8', className)} onSubmit={onSubmit} {...methods}>
       <div className="flex flex-col gap-7 sm:flex-row sm:gap-14">
-        <div className="flex w-full flex-col gap-7 sm:w-1/2">
-          <div>
-            <BodyText>Name:</BodyText>
-            {isEditing ? (
-              <InputField placeholder="Enter name" name="name" className="w-full" />
-            ) : (
-              <BodyText>
-                <Bold>{user?.name ?? '----'}</Bold>
-              </BodyText>
-            )}
-          </div>
-          <div>
-            <BodyText>Address:</BodyText>
-            {isEditing ? (
-              <InputField placeholder="Enter address" name="address" className="w-full" />
-            ) : (
-              <BodyText>
-                <Bold>{user?.address ?? '----'}</Bold>
-              </BodyText>
-            )}
-          </div>
-          <div>
-            <BodyText>City:</BodyText>
-            {isEditing ? (
-              <InputField placeholder="Enter city" name="city" className="w-full" />
-            ) : (
-              <BodyText>
-                <Bold>{user?.city ?? '----'}</Bold>
-              </BodyText>
-            )}
-          </div>
-          <div>
-            <BodyText>Zip code:</BodyText>
-            {isEditing ? (
-              <InputField placeholder="Enter zip code" name="zipCode" className="w-full" />
-            ) : (
-              <BodyText>
-                <Bold>{user?.zipCode ?? '----'}</Bold>
-              </BodyText>
-            )}
-          </div>
-        </div>
-        <div className="flex w-full flex-col gap-7 sm:w-1/2">
-          <div>
-            <BodyText>Card Details:</BodyText>
-            {isEditing ? (
-              <InputField placeholder="Enter card details" name="cardDetails" className="w-full" />
-            ) : (
-              <BodyText>
-                <Bold>{user?.cardNumber ?? '----'}</Bold>
-              </BodyText>
-            )}
-          </div>
-          <div>
-            <BodyText>Phone Number:</BodyText>
-            {isEditing ? (
-              <InputField placeholder="Enter phone number" name="phoneNumber" className="w-full" />
-            ) : (
-              <BodyText>
-                <Bold>{user?.phoneNumber ?? '----'}</Bold>
-              </BodyText>
-            )}
-          </div>
-        </div>
+        {isEditing ? (
+          <>
+            <div className="flex w-full flex-col gap-7 sm:w-1/2">
+              <InputField label="Name:" placeholder="Enter name" name="name" className="w-full" />
+              <InputField
+                label="Address:"
+                placeholder="Enter address"
+                name="address"
+                className="w-full"
+              />
+              <InputField label="City:" placeholder="Enter city" name="city" className="w-full" />
+              <InputField
+                label="Zip Code:"
+                placeholder="Enter zip code"
+                name="zipCode"
+                className="w-full"
+              />
+            </div>
+            <div className="flex w-full flex-col gap-7 sm:w-1/2">
+              <InputField
+                label="Card Details"
+                placeholder="Enter card details"
+                name="cardDetails"
+                className="w-full"
+              />
+              <InputField
+                label="Phone Number:"
+                placeholder="Enter phone number"
+                name="phoneNumber"
+                className="w-full"
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex w-full flex-col gap-7 sm:w-1/2">
+              <div>
+                <BodyText>Name:</BodyText>
+                <BodyText>
+                  <Bold>{user?.name ?? placeholder}</Bold>
+                </BodyText>
+              </div>
+              <div>
+                <BodyText>Address:</BodyText>
+                <BodyText>
+                  <Bold>{user?.address ?? placeholder}</Bold>
+                </BodyText>
+              </div>
+              <div>
+                <BodyText>City:</BodyText>
+                <BodyText>
+                  <Bold>{user?.city ?? placeholder}</Bold>
+                </BodyText>
+              </div>
+              <div>
+                <BodyText>Zip code:</BodyText>
+                <BodyText>
+                  <Bold>{user?.zipCode ?? placeholder}</Bold>
+                </BodyText>
+              </div>
+            </div>
+            <div className="flex w-full flex-col gap-7 sm:w-1/2">
+              <div>
+                <BodyText>Card Details:</BodyText>
+                <BodyText>
+                  <Bold>{user?.cardNumber ?? placeholder}</Bold>
+                </BodyText>
+              </div>
+              <div>
+                <BodyText>Phone Number:</BodyText>
+                <BodyText>
+                  <Bold>{user?.phoneNumber ?? placeholder}</Bold>
+                </BodyText>
+              </div>
+            </div>
+          </>
+        )}
       </div>
       {isEditing && (
         // Prevents clicking Cancel button on enter in the form
