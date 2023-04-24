@@ -4,5 +4,9 @@ import { TextArea } from '../text-area/TextArea';
 import { Field } from './Field';
 
 export const TextAreaField = ({ name, ...props }: TextAreaProps & { name: string }) => {
-  return <Field name={name}>{field => <TextArea {...props} {...field} />}</Field>;
+  return (
+    <Field name={name}>
+      {(field, fieldState) => <TextArea isInvalid={!!fieldState.error} {...props} {...field} />}
+    </Field>
+  );
 };

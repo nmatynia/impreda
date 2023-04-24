@@ -12,7 +12,7 @@ export type InputProps = {
   innerClassName?: string;
   password?: boolean;
   color?: InputColorVariant;
-  isValid?: boolean;
+  isInvalid?: boolean;
   isLoading?: boolean;
 } & InputHTMLAttributes<HTMLInputElement>;
 
@@ -34,7 +34,7 @@ export const Input = React.forwardRef(
       className,
       innerClassName,
       color = 'black',
-      isValid = true,
+      isInvalid = false,
       isLoading,
       type,
       ...rest
@@ -42,10 +42,10 @@ export const Input = React.forwardRef(
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     if (isLoading) {
-      return <div className={clsxm('h-14 w-80 animate-pulse bg-primaryBlack/50', className)} />;
+      return <div className={clsxm('h-14 w-full animate-pulse bg-primaryBlack/50', className)} />;
     }
     return (
-      <div className={clsxm('relative h-14 w-80', className)}>
+      <div className={clsxm('relative flex h-14 w-full flex-col', className)}>
         {label && <BodyText as="label">{label}</BodyText>}
         <input
           placeholder={placeholder}
@@ -56,9 +56,10 @@ export const Input = React.forwardRef(
             'text-xs sm:text-sm',
             'flex-1 bg-transparent focus-within:outline-none',
             'border-b-[1px] pb-2',
-            !isValid && 'border-b-red-400 text-red-400 placeholder:text-red-400',
             colorVariant[color],
             styles.input,
+            isInvalid &&
+              'border-b-red-500 text-red-500 placeholder:text-red-500 focus-within:placeholder:text-primaryBlack [&:focus-within~svg]:text-primaryBlack',
             innerClassName
           )}
           ref={ref}
@@ -68,9 +69,18 @@ export const Input = React.forwardRef(
           <>
             <SvgIcon
               name="ChevronDown"
-              className="absolute bottom-5 right-[2.5px] -z-10 h-2 w-2 rotate-180"
+              className={clsxm(
+                'absolute bottom-5 right-[2.5px] -z-10 h-3 w-3 rotate-180',
+                isInvalid && 'text-red-500'
+              )}
             />
-            <SvgIcon name="ChevronDown" className="absolute bottom-2 right-[2.5px] -z-10 h-2 w-2" />
+            <SvgIcon
+              name="ChevronDown"
+              className={clsxm(
+                'absolute bottom-2 right-[2.5px] -z-10 h-3 w-3',
+                isInvalid && 'text-red-500'
+              )}
+            />
           </>
         )}
       </div>
