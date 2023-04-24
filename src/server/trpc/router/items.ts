@@ -110,60 +110,33 @@ export const itemsRouter = router({
     });
 
     const existingColorsNames = existingColors.map(color => color.name);
+    const existingSizesNames = existingColors.flatMap(color => color.sizes.map(size => size.name));
+    const usedSizesNames = input.colors.flatMap(color => color.sizes.map(size => size.name));
 
-    const colorAndSizePromises = input.colors.map(async color => {
+    type Color = z.infer<typeof UpdateItemSchema>['colors'][0];
+    type Size = Color['sizes'][0];
+
+    const processColor = async (color: Color) => {
       const colorId = existingColors[existingColorsNames.indexOf(color.name)]?.id;
       let colorAvailibility = 0;
       const sizesIds: { id: string }[] = [];
-      if (colorId) {
-        const sizesPromises = color.sizes.map(async size => {
-          const sizeId = existingColors[existingColorsNames.indexOf(color.name)]?.sizes.find(
-            existingSize => existingSize.name === size.name
-          )?.id;
-          if (sizeId) {
-            await ctx.prisma.size.update({
-              where: {
-                id: sizeId
-              },
-              data: {
-                available: Number(size.available)
-              }
-            });
-            sizesIds.push({ id: sizeId });
-          } else {
-            const { id: sizeId } = await ctx.prisma.size.create({
-              data: {
-                name: size.name,
-                available: Number(size.available),
-                items: {
-                  connect: {
-                    id: input.id
-                  }
-                }
-              }
-            });
-            sizesIds.push({ id: sizeId });
-          }
-          colorAvailibility += Number(size.available);
-        });
-        const result = [
-          ...sizesPromises,
-          ctx.prisma.color.update({
+
+      const processSize = async (size: Size) => {
+        const sizeId = existingColors[existingColorsNames.indexOf(color.name)]?.sizes.find(
+          existingSize => existingSize.name === size.name
+        )?.id;
+
+        if (sizeId) {
+          await ctx.prisma.size.update({
             where: {
-              id: colorId
+              id: sizeId
             },
             data: {
-              available: colorAvailibility,
-              sizes: {
-                connect: sizesIds
-              }
+              available: Number(size.available)
             }
-          })
-        ];
-        Promise.all(result);
-      } else {
-        const sizesIds: { id: string }[] = [];
-        const sizesPromises = color.sizes.map(async size => {
+          });
+          sizesIds.push({ id: sizeId });
+        } else {
           const { id: sizeId } = await ctx.prisma.size.create({
             data: {
               name: size.name,
@@ -175,33 +148,78 @@ export const itemsRouter = router({
               }
             }
           });
-          colorAvailibility += Number(size.available);
           sizesIds.push({ id: sizeId });
+        }
+        colorAvailibility += Number(size.available);
+      };
+
+      await Promise.all(color.sizes.map(processSize));
+
+      if (colorId) {
+        await ctx.prisma.color.update({
+          where: {
+            id: colorId
+          },
+          data: {
+            available: colorAvailibility,
+            sizes: {
+              connect: sizesIds
+            }
+          }
         });
-        const result = [
-          ...sizesPromises,
-          ctx.prisma.color.create({
-            data: {
-              name: color.name,
-              available: colorAvailibility,
-              hex: color.hex,
-              sizes: {
-                connect: sizesIds
-              },
-              items: {
-                connect: {
-                  id: input.id
-                }
+      } else {
+        await ctx.prisma.color.create({
+          data: {
+            name: color.name,
+            available: colorAvailibility,
+            hex: color.hex,
+            sizes: {
+              connect: sizesIds
+            },
+            items: {
+              connect: {
+                id: input.id
               }
             }
-          })
-        ];
-        Promise.all(result);
+          }
+        });
       }
-    });
-    await Promise.all(colorAndSizePromises);
 
-    // await createSizeAndColor(ctx, input.colors, input.id);
+      return colorId;
+    };
+
+    const deleteUnusedColors = async (usedColorIds: string[]) => {
+      const unusedColorIds = existingColors
+        .filter(existingColor => !usedColorIds.includes(existingColor.id))
+        .map(unusedColor => unusedColor.id);
+
+      const unusedColorsWithSizes = await ctx.prisma.color.findMany({
+        where: { id: { in: unusedColorIds } },
+        include: { sizes: true }
+      });
+
+      const sizeIdsToDelete = unusedColorsWithSizes.flatMap(color =>
+        color.sizes.map(size => size.id)
+      );
+
+      // Delete sizes connected to the unused colors
+      await ctx.prisma.size.deleteMany({ where: { id: { in: sizeIdsToDelete } } });
+
+      // Delete unused colors
+      await ctx.prisma.color.deleteMany({ where: { id: { in: unusedColorIds } } });
+    };
+
+    const usedColorIds = (await Promise.all(input.colors.map(processColor))).filter(
+      (colorId): colorId is string => colorId !== undefined
+    );
+    await deleteUnusedColors(usedColorIds);
+
+    await Promise.all(
+      existingSizesNames
+        .filter(sizeName => !usedSizesNames.includes(sizeName))
+        .map(filteredSizeName => ctx.prisma.size.deleteMany({ where: { name: filteredSizeName } }))
+    );
+
     return {
       itemId: input.id
     };
