@@ -133,7 +133,7 @@ const SearchBarSuggestions = ({
       <NotFound
         title="We couldn't find any matches for your search"
         subtitle="Please try again with a different keyword or phrase."
-        innerClassName="text-left items-start"
+        innerClassName="text-left items-start p-4 md:px-8 md:py-20"
         className="m-0 max-w-max justify-start"
       />
     );
