@@ -8,11 +8,10 @@ import { trpc } from '../../utils/trpc';
 import { BodyText, Bold } from '../typography/Typography';
 import { NotFound } from '../not-found/NotFound';
 import { ItemsRouter } from '../../server/trpc/router/_app';
+import { useDebounce } from '../../utils/helpers/useDebounce';
 
 // ?  https://github.com/jeancroy/FuzzySearch
 // TODO: Add animation on search bar open
-// TODO: Change width so on desktop it doesnt have horizontal scroll
-// TODO: Add debounce
 
 type SearchHeaderProps = {
   isOpen?: boolean;
@@ -21,6 +20,19 @@ type SearchHeaderProps = {
 
 export const SearchHeader = ({ isOpen, setIsOpen }: SearchHeaderProps) => {
   const ref = React.useRef<HTMLInputElement>(null);
+  const [searchText, setSearchText] = useState<string>();
+  const debouncedSearchText = useDebounce(searchText, 200);
+  const isFetchingEnabled = !!debouncedSearchText && debouncedSearchText.length > 2;
+
+  const { data: items, isFetching: isLoading } = trpc.items.getItemsByName.useQuery(
+    debouncedSearchText,
+    {
+      enabled: isFetchingEnabled
+    }
+  );
+
+  const isItemsExist = !!items && items.length > 0;
+
   useEffect(() => {
     const closeDropdown = (e: MouseEvent) => {
       const targetElement = e.target as HTMLElement;
@@ -33,40 +45,39 @@ export const SearchHeader = ({ isOpen, setIsOpen }: SearchHeaderProps) => {
 
     return () => document.body.removeEventListener('mousedown', closeDropdown);
   }, [ref, setIsOpen]);
-  const [searchText, setSearchText] = useState<string>();
-  const isFetchingEnabled = !!searchText && searchText?.length > 2;
-
-  const { data: items, isFetching: isLoading } = trpc.items.getItemsByName.useQuery(searchText, {
-    enabled: isFetchingEnabled
-  });
-  const isItemsExist = !!items && items.length > 0;
 
   return (
     <div
       ref={ref}
       className={clsxm(
-        'z-10 flex w-full border-t-[1px] border-primaryBlack bg-primaryWhite py-4',
+        'z-10 flex w-full border-t-[1px] border-primaryBlack bg-primaryWhite py-4 transition-all',
         isOpen || 'hidden'
       )}
     >
-      <div className="mx-auto flex w-screen max-w-[62.125rem] flex-col gap-4  overflow-hidden px-4">
-        <div className="flex items-center gap-4">
-          <SvgIcon name="Search" className="h-4 w-4 " />
-          <input
-            type="text"
-            className="flex-1 text-xs uppercase focus-within:outline-none sm:text-sm"
-            placeholder="Search Products"
-            value={searchText}
-            onChange={e => setSearchText(e.target.value)}
+      <div className="w-full px-4 ">
+        <div className="mx-auto flex w-full max-w-[62.125rem] flex-col gap-4 overflow-hidden ">
+          <div className="flex items-center gap-4">
+            <SvgIcon name="Search" className="h-4 w-4 " />
+            <input
+              type="text"
+              className="flex-1 text-xs uppercase focus-within:outline-none sm:text-sm"
+              placeholder="Search Products"
+              value={searchText}
+              onChange={e => setSearchText(e.target.value)}
+            />
+            <SvgIcon
+              name="Cross"
+              className="h-4 w-4 cursor-pointer"
+              onClick={() => setSearchText('')}
+            />
+          </div>
+          <SearchBarSuggestions
+            items={items}
+            isItemsExist={isItemsExist}
+            isLoading={isLoading}
+            isFetchingEnabled={isFetchingEnabled}
           />
-          <SvgIcon name="Cross" className="h-4 w-4" onClick={() => setSearchText(undefined)} />
         </div>
-        <SearchBarSuggestions
-          items={items}
-          isItemsExist={isItemsExist}
-          isLoading={isLoading}
-          isFetchingEnabled={isFetchingEnabled}
-        />
       </div>
     </div>
   );
@@ -97,25 +108,20 @@ const SearchBarSuggestions = ({
   if (isItemsExist) {
     return (
       <div className="flex gap-4 overflow-x-auto">
-        {items?.map(item => (
+        {items?.map(({ id, brand, name, images }) => (
           <Link
-            key={item.id}
-            href={`/item/${item.id}`}
+            key={id}
+            href={`/item/${id}`}
             className="flex flex-col items-center gap-2 border-[1px] border-primaryBlack p-3"
           >
             <div className="relative aspect-[0.75] w-40">
-              <Image
-                src={item.images[0]?.url ?? ''}
-                fill
-                alt={item.name}
-                className="object-contain"
-              />
+              <Image src={images[0]?.url ?? ''} fill alt={name} className="object-contain" />
             </div>
             <div className="gap-1 text-center">
               <BodyText>
-                <Bold>{item.brand}</Bold>
+                <Bold>{brand}</Bold>
               </BodyText>
-              <BodyText>{item.name}</BodyText>
+              <BodyText>{name}</BodyText>
             </div>
           </Link>
         ))}
@@ -126,7 +132,9 @@ const SearchBarSuggestions = ({
     return (
       <NotFound
         title="We couldn't find any matches for your search"
-        subtitle="Please try again with a different keyword or phrase. "
+        subtitle="Please try again with a different keyword or phrase."
+        innerClassName="text-left items-start"
+        className="m-0 max-w-max justify-start"
       />
     );
 
@@ -134,5 +142,5 @@ const SearchBarSuggestions = ({
 };
 
 const SearchBarItemSkeleton = () => (
-  <div className={clsxm('h-[17.917rem] w-[11.583rem] animate-pulse bg-primaryBlack/20')} />
+  <div className={clsxm('h-[17.917rem] w-[11.583rem] shrink-0 animate-pulse bg-primaryBlack/20')} />
 );

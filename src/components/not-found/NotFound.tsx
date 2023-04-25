@@ -6,14 +6,17 @@ type NotFoundProps = {
   title: string;
   subtitle?: string;
   className?: string;
+  innerClassName?: string;
 };
 
-export const NotFound = ({ title, subtitle, className }: NotFoundProps) => {
+export const NotFound = ({ title, subtitle, className, innerClassName }: NotFoundProps) => {
   return (
     <div
       className={clsxm('col-span-full mx-auto flex min-h-max max-w-md  justify-center', className)}
     >
-      <div className="flex flex-col items-center gap-5 px-8 py-20 text-center">
+      <div
+        className={clsxm('flex flex-col items-center gap-5 px-8 py-20 text-center', innerClassName)}
+      >
         <LogoText>{title}</LogoText>
         {subtitle && <BodyText>{subtitle}</BodyText>}
       </div>

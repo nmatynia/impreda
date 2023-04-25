@@ -2,9 +2,6 @@
 
 ## Components
 
-- SearchBar - Add animation on search bar open
-- SearchBar - Change width so on desktop it doesnt have horizontal scroll
-- SearchBar - Add debounce
 - Nav underline current category that the user is on
 - Make the ItemHeader menus hoverable instead of clickable
 - Transition on Box
@@ -30,5 +27,6 @@
 - Give size chart functionality
 - enhance Loader - /item-creator
 - enhance handeling the states between forms in item-creator, right now it looks hacky and ugly
+- SearchBar - Add animation on search bar open
 
 https://trello.com/b/BFajoSeT/impreda
