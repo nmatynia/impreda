@@ -225,7 +225,6 @@ export const itemsRouter = router({
     };
   }),
   getListItems: publicProcedure.query(async ({ ctx }) => {
-    // TODO: Get rid of this hack and user _count
     // TODO enhance that with filters
     const items = await ctx.prisma.item.findMany({
       select: {
@@ -401,5 +400,34 @@ export const itemsRouter = router({
     });
 
     return true;
-  })
+  }),
+  getItemsByName: publicProcedure
+    .input(z.string().or(z.undefined()))
+    .query(async ({ ctx, input: searchText }) => {
+      const items = await ctx.prisma.item.findMany({
+        where: {
+          OR: [
+            {
+              name: {
+                contains: searchText
+              }
+            },
+            {
+              brand: {
+                contains: searchText
+              }
+            }
+          ]
+        },
+        take: 5,
+        select: {
+          id: true,
+          brand: true,
+          name: true,
+          price: true,
+          images: true
+        }
+      });
+      return items;
+    })
 });

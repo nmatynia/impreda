@@ -2,11 +2,12 @@
 
 ## Components
 
-- SearchBar logic - maybe fuzzy search?
-- Transition on Box
-
+- SearchBar - Add animation on search bar open
+- SearchBar - Change width so on desktop it doesnt have horizontal scroll
+- SearchBar - Add debounce
 - Nav underline current category that the user is on
 - Make the ItemHeader menus hoverable instead of clickable
+- Transition on Box
 
 - Item availibility form - change default value state behaviour
 - Make item creation go back to default values set from refs
