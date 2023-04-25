@@ -9,7 +9,7 @@ export const ItemHeader = ({ className }: { className: string }) => {
   return (
     <div
       className={clsxm(
-        'flex w-full items-center justify-around border-t-[1px] border-primaryBlack py-2',
+        'flex h-12 w-full items-center justify-around border-t-[1px] border-primaryBlack',
         className
       )}
     >

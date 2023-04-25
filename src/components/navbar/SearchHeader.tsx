@@ -32,6 +32,13 @@ export const SearchHeader = ({ isOpen, setIsOpen }: SearchHeaderProps) => {
   );
 
   const isItemsExist = !!items && items.length > 0;
+  const handleClearSearch = () => {
+    if (searchText === '') {
+      setIsOpen(false);
+    } else {
+      setSearchText('');
+    }
+  };
 
   useEffect(() => {
     const closeDropdown = (e: MouseEvent) => {
@@ -65,11 +72,7 @@ export const SearchHeader = ({ isOpen, setIsOpen }: SearchHeaderProps) => {
               value={searchText}
               onChange={e => setSearchText(e.target.value)}
             />
-            <SvgIcon
-              name="Cross"
-              className="h-4 w-4 cursor-pointer"
-              onClick={() => setSearchText('')}
-            />
+            <SvgIcon name="Cross" className="h-4 w-4 cursor-pointer" onClick={handleClearSearch} />
           </div>
           <SearchBarSuggestions
             items={items}
