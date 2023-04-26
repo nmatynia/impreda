@@ -25,7 +25,10 @@ export const Header = ({ handleShowSearch }: HeaderProps) => {
           <Link href="/">{websiteName}</Link>
         </LogoText>
         <div className="hidden items-center gap-6 sm:flex">
-          <ButtonSwitch elementToOpen={open => <ClothingMenu isOpen={open} position="right" />}>
+          <ButtonSwitch
+            isHoverable
+            elementToOpen={open => <ClothingMenu isOpen={open} position="right" />}
+          >
             <BodyText className="cursor-pointer select-none uppercase hover:underline">
               Clothing
             </BodyText>

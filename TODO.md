@@ -2,13 +2,12 @@
 
 ## Components
 
-- Nav underline current category that the user is on
-- Make the ItemHeader menus hoverable instead of clickable
-- Transition on Box
-
+- Image edition
 - Item availibility form - change default value state behaviour
-- Make item creation go back to default values set from refs
 - Item reservation in cart
+
+- Make item creation go back to default values set from refs
+- Transition on Box
 - Item container - if the last item is alone in the row it's alignment is slightly off
 
 ## Low Priority

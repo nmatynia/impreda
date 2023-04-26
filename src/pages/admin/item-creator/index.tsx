@@ -198,7 +198,6 @@ const ItemCreatorPage = () => {
         category: category.current,
         colors: data.colors
       };
-      console.log({ updateParams });
       const item = await updateItem(updateParams);
       await uploadToDB(item.itemId);
       handleNextStep();

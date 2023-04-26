@@ -97,7 +97,6 @@ export const cartRouter = router({
           }
         }
       });
-      console.log('\n\n', cart?._count.items);
       const orderItem = await ctx.prisma.orderItem.findUnique({
         where: {
           id: orderItemId
