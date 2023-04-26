@@ -76,6 +76,7 @@ const ItemPage = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
   const { data: item } = trpc.items.getItem.useQuery(id as string);
   const { data: items, isLoading: isOrdersLoading } = trpc.items.getItems.useQuery({});
+  const { mutateAsync: incrementViewCount } = trpc.items.incrementItemViewCount.useMutation();
 
   // TODO selected size and color should have different variant selected
   // add store for clicked color
@@ -92,10 +93,6 @@ const ItemPage = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [selectedSizeId, setSelectedSizeId] = React.useState<string | undefined>(
     filteredSizes?.filter(size => size.available > 0)?.[0]?.id
   );
-
-  useEffect(() => {
-    setSelectedSizeId(filteredSizes?.[0]?.id);
-  }, [filteredSizes]);
 
   const utils = trpc.useContext();
   const { mutateAsync: addToCart, isLoading: isAddToCartLoading } = trpc.cart.addToCart.useMutation(
@@ -121,6 +118,14 @@ const ItemPage = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
     });
   };
 
+  useEffect(() => {
+    setSelectedSizeId(filteredSizes?.[0]?.id);
+  }, [filteredSizes]);
+
+  useEffect(() => {
+    incrementViewCount(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <Container fullSize className="overflow-visible">
       <div className="relative flex h-fit w-full flex-col sm:flex-row">

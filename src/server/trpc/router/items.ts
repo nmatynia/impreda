@@ -429,5 +429,19 @@ export const itemsRouter = router({
         }
       });
       return items;
+    }),
+  incrementItemViewCount: publicProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input: itemId }) => {
+      await ctx.prisma.item.update({
+        where: {
+          id: itemId
+        },
+        data: {
+          views: {
+            increment: 1
+          }
+        }
+      });
     })
 });
