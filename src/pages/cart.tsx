@@ -24,7 +24,7 @@ const CartPage = () => {
 
   const total =
     cartItems?.reduce((acc, cartItem) => acc + cartItem.item.price * cartItem.quantity, 0) ?? 0;
-
+  const isCartNotEmpty = cartItems && cartItems.length > 0;
   return (
     <div className={clsxm('mx-auto max-w-3xl px-4')}>
       <RoundedBox className={clsxm('relative my-16 w-full overflow-visible p-0')}>
@@ -41,7 +41,7 @@ const CartPage = () => {
           )}
         </div>
         <div className="m-7 mb-0 flex flex-col">
-          {cartItems && cartItems.length > 0 ? (
+          {isCartNotEmpty ? (
             cartItems?.map(cartItem => (
               <CartItem
                 key={cartItem.id}
@@ -68,7 +68,11 @@ const CartPage = () => {
               <LargeBodyText />
               <Bold>Total: £{total}</Bold> <SmallBodyText>+ shipping</SmallBodyText>
             </div>
-            <LinkButton variant="primary" href="/checkout">
+            <LinkButton
+              variant={isCartNotEmpty ? 'primary' : 'outlined'}
+              href="/checkout"
+              className={isCartNotEmpty ? '' : 'cursor-not-allowed'}
+            >
               Checkout
             </LinkButton>
           </div>
@@ -83,7 +87,7 @@ export default CartPage;
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const session = await getServerAuthSession(ctx);
   if (!session) {
-    return { redirect: { destination: '/login' }, props: {} };
+    return { redirect: { destination: '/login?callbackUrl=/cart' }, props: {} };
   }
 
   return {

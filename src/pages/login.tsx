@@ -3,6 +3,7 @@ import React from 'react';
 import { signIn } from 'next-auth/react';
 import type { GetServerSideProps } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { RoundedBox } from '../components/box/RoundedBox';
 import { BigHeading, BodyText, LargeBodyText, LogoText } from '../components/typography/Typography';
 import LoginThumbnail from '../../public/images/login-thumbnail.webp';
@@ -12,6 +13,9 @@ import { Input } from '../components/input/Input';
 import { getServerAuthSession } from '../server/common/get-server-auth-session';
 
 const LoginPage = () => {
+  const router = useRouter();
+  const { callbackUrl: callbackUrlQuery } = router.query;
+  const callbackUrl = typeof callbackUrlQuery === 'string' ? callbackUrlQuery : '/';
   return (
     <Container className="h-full bg-primaryBlack px-0 md:h-fit md:bg-primaryWhite md:px-4">
       <RoundedBox className="flex w-full max-w-[1200px] bg-primaryBlack p-0 text-primaryWhite">
@@ -36,7 +40,7 @@ const LoginPage = () => {
               className="w-full whitespace-nowrap border-primaryWhite text-primaryWhite sm:w-fit"
               onClick={() =>
                 signIn('google', {
-                  callbackUrl: '/'
+                  callbackUrl
                 })
               }
             >

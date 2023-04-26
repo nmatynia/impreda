@@ -5,6 +5,8 @@ import superjson from 'superjson';
 import { TRPCError } from '@trpc/server';
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import { PrismaClient } from '@prisma/client';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import { Container } from '../../components/container/Container';
 import { BodyText, Bold, LargeBodyText } from '../../components/typography/Typography';
 import { Dot } from '../../components/dot/Dot';
@@ -69,6 +71,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const ItemPage = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { data: session } = useSession();
+  const isLoggedIn = !!session;
+  const router = useRouter();
   const { data: item } = trpc.items.getItem.useQuery(id as string);
   const { data: items, isLoading: isOrdersLoading } = trpc.items.getItems.useQuery({});
 
@@ -102,6 +107,11 @@ const ItemPage = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
   );
   const handleAddToCart = async () => {
     if (!(selectedSizeId && selectedColorId && item)) {
+      return;
+    }
+    if (!isLoggedIn) {
+      const callbackUrl = router.asPath;
+      router.push(`/login?callbackUrl=${callbackUrl}`);
       return;
     }
     await addToCart({

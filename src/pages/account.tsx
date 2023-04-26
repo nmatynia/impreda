@@ -20,7 +20,7 @@ export default AccountPage;
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const session = await getServerAuthSession(ctx);
   if (!session) {
-    return { redirect: { destination: '/login' }, props: {} };
+    return { redirect: { destination: '/login?callbackUrl=/account' }, props: {} };
   }
 
   return {

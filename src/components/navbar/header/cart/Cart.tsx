@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSession } from 'next-auth/react';
 import clsxm from '../../../../utils/clsxm';
 import type { BoxProps } from '../../../box/Box';
 import { Box } from '../../../box/Box';
@@ -27,15 +28,18 @@ export const Cart = ({ className, ...props }: CartProps) => {
 };
 
 const CartContent = ({ buttonLink, buttonText }: { buttonLink: string; buttonText: string }) => {
+  const { data: session } = useSession();
+  const isLoggedIn = !!session;
   const { data: cart } = trpc.cart.getCart.useQuery();
   const { items: cartItems } = cart || {};
 
+  const isCartNotEmpty = cartItems && cartItems.length > 0;
   const total =
     cartItems?.reduce((acc, cartItem) => acc + cartItem.item.price * cartItem.quantity, 0) ?? 0;
   return (
     <div className="flex flex-col justify-between ">
       <div className="mr-2">
-        {cartItems && cartItems.length > 0 ? (
+        {isCartNotEmpty ? (
           cartItems?.map(cartItem => (
             <CartItem
               key={cartItem.id}
@@ -53,8 +57,16 @@ const CartContent = ({ buttonLink, buttonText }: { buttonLink: string; buttonTex
           ))
         ) : (
           <NotFound
-            title="It seems your shopping cart is empty at the moment."
-            subtitle="Visit our shopping page to explore our amazing item selection and fill your cart with your desired items"
+            title={
+              isLoggedIn
+                ? 'It seems your shopping cart is empty at the moment.'
+                : "It seems you haven't logged in yet."
+            }
+            subtitle={
+              isLoggedIn
+                ? 'Visit our shopping page to explore our amazing item selection and fill your cart with your desired items'
+                : 'Login to your account to start shopping.'
+            }
             className="border-b-[1px] border-primaryBlack"
           />
         )}
@@ -66,8 +78,9 @@ const CartContent = ({ buttonLink, buttonText }: { buttonLink: string; buttonTex
           </LargeBodyText>
           <SmallBodyText>+ shipping</SmallBodyText>
         </div>
-        <LinkButton variant="primary" href={buttonLink}>
-          {buttonText}
+
+        <LinkButton variant="primary" href={isLoggedIn ? '/cart' : '/login'}>
+          {isLoggedIn ? 'Go to cart' : 'Login'}
         </LinkButton>
       </div>
     </div>
