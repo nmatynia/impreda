@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import clsxm from '../../utils/clsxm';
 import { Box } from '../box/Box';
 import { ButtonSwitch } from '../button-switch/ButtonSwitch';
@@ -12,20 +12,19 @@ type FilterSectionProps = {
 };
 export const ShopFilterPanel = ({ sectionName = 'Filters', className }: FilterSectionProps) => {
   return (
-    <Box
-      className={clsxm(
-        'flex w-full items-center justify-between overflow-visible border-t-0',
-        className
-      )}
-    >
-      <LargeBodyText>{sectionName}</LargeBodyText>
-      <div className="relative cursor-pointer">
-        <ButtonSwitch
-          elementToOpen={open => <FilterMenu className="absolute top-9 right-1/2" isOpen={open} />}
-        >
+    <div className="flex h-fit w-full flex-col">
+      <Box
+        className={clsxm(
+          'flex w-full items-center justify-between overflow-visible border-t-0',
+          className
+        )}
+      >
+        <LargeBodyText>{sectionName}</LargeBodyText>
+        <div className="relative cursor-pointer">
           <SvgIcon name="Filter" className="fill-primaryBlack" />
-        </ButtonSwitch>
-      </div>
-    </Box>
+        </div>
+      </Box>
+      <FilterMenu className="" />
+    </div>
   );
 };
