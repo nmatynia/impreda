@@ -13,7 +13,7 @@ const ShoppingPage = () => {
     size: sizesNames,
     color: colorNames
   } = useRouter().query;
-
+  console.log(categoryName);
   // TODO: enhance this stuff
   const sex = useMemo<SexType | undefined>(() => {
     switch (sexQuery) {

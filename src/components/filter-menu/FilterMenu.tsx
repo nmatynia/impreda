@@ -5,6 +5,7 @@ import { Box } from '../box/Box';
 import { Button } from '../button/Button';
 import { FilterButton } from '../filter-button/FilterButton';
 import { BodyText } from '../typography/Typography';
+import { Select } from '../select/Select';
 
 type FilterMenuProps = {
   className?: string;
@@ -12,6 +13,11 @@ type FilterMenuProps = {
 };
 
 export const FilterMenu = ({ className, isOpen }: FilterMenuProps) => {
+  const [sortBy, setSortBy] = React.useState<string | null>(null);
+  const [gender, setGender] = React.useState<string | null>(null);
+  const [color, setColor] = React.useState<string | null>(null);
+  const [size, setSize] = React.useState<string | null>(null);
+  const [fabric, setFabric] = React.useState<string | null>(null);
   return (
     <Transition
       show={isOpen}
@@ -21,8 +27,52 @@ export const FilterMenu = ({ className, isOpen }: FilterMenuProps) => {
     >
       <Box className={clsxm('flex w-fit flex-col gap-6 shadow-lg', className)}>
         <div className="flex gap-6">
-          <FilterButton filterName="Sort by" />
-          <FilterButton filterName="Brand" />
+          <Select
+            onChange={setSortBy}
+            value={sortBy}
+            label="Sort by"
+            name="sortBy"
+            placeholder="Select"
+            options={[
+              {
+                key: '1',
+                name: 'Price: Low to High'
+              },
+              {
+                key: '2',
+                name: 'Price: High to Low'
+              },
+              {
+                key: '3',
+                name: 'Newest'
+              },
+              {
+                key: '4',
+                name: 'Oldest'
+              }
+            ]}
+          />
+          <Select
+            onChange={setGender}
+            value={gender}
+            label="Gender"
+            name="gender"
+            placeholder="Select"
+            options={[
+              {
+                key: '1',
+                name: 'Men'
+              },
+              {
+                key: '2',
+                name: 'Women'
+              },
+              {
+                key: '3',
+                name: 'Unisex'
+              }
+            ]}
+          />
         </div>
 
         <div className="flex gap-6">
