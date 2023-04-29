@@ -71,10 +71,12 @@ export const SelectFreeForm = React.forwardRef(
           <div className={clsxm('flex w-full gap-3', className)}>
             {options.map(option => (
               <Button
+                className="flex items-center gap-1 px-4 "
                 key={option.key}
                 variant={selectedButtonVariant(option)}
                 onClick={() => handleClickOnOption(option)}
               >
+                {multiple && <SvgIcon name="Plus" className="h-3 w-3" />}
                 <SmallBodyText>{option.name}</SmallBodyText>
               </Button>
             ))}

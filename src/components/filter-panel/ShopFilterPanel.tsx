@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import clsxm from '../../utils/clsxm';
 import { Box } from '../box/Box';
-import { ButtonSwitch } from '../button-switch/ButtonSwitch';
 import { FilterMenu } from '../filter-menu/FilterMenu';
 import { SvgIcon } from '../icons/SvgIcon';
 import { LargeBodyText } from '../typography/Typography';

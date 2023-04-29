@@ -5,7 +5,13 @@ import clsxm from '../../utils/clsxm';
 import { Button } from '../button/Button';
 import { SmallBodyText } from '../typography/Typography';
 import { OptionType, SelectFreeForm, isOptionArray } from '../select-free-from/SelectFreeForm';
-import { colorOptions, sexOptions, sortByOptions } from '../../utils/constants';
+import {
+  colorOptions,
+  fabricOptions,
+  sexOptions,
+  sizeOptions,
+  sortByOptions
+} from '../../utils/constants';
 
 type FilterMenuProps = {
   className?: string;
@@ -16,22 +22,40 @@ export const FilterMenu = ({ className }: FilterMenuProps) => {
   const {
     sortBy: defaultSortByValue,
     gender: defaultGenderValue,
-    color: defaultColorValue
+    color: defaultColorValue,
+    size: defaultSizeValue,
+    fabric: defaultFabricValue
   } = router.query;
-  console.log(defaultGenderValue);
 
   const isOpen = true;
 
   useEffect(() => {
-    // TODO handle if somebody is so smart to provide array there
-    console.log('TEST!!!!');
-    if (defaultGenderValue)
-      setGender(
-        (defaultGenderValue as string | undefined)
-          ?.split(',')
-          .map(key => sexOptions.find(option => option.key === key) as OptionType)
-      );
-  }, [defaultGenderValue]);
+    if (!router.isReady) return;
+
+    const buildDefaultSelectedOptions = (
+      defaultValue: string | string[] | undefined,
+      options: OptionType[]
+    ) => {
+      if (!defaultValue || Array.isArray(defaultValue)) {
+        return undefined;
+      }
+      return defaultValue
+        ?.split(',')
+        .map(value => options.find(option => option.key === value) as OptionType);
+    };
+    setGender(buildDefaultSelectedOptions(defaultGenderValue, sexOptions));
+    setColor(buildDefaultSelectedOptions(defaultColorValue, colorOptions));
+    setSortBy(buildDefaultSelectedOptions(defaultSortByValue, sortByOptions));
+    setSize(buildDefaultSelectedOptions(defaultSizeValue, sizeOptions));
+    setFabric(buildDefaultSelectedOptions(defaultFabricValue, fabricOptions));
+  }, [
+    router.isReady,
+    defaultColorValue,
+    defaultFabricValue,
+    defaultGenderValue,
+    defaultSizeValue,
+    defaultSortByValue
+  ]);
 
   const [sortBy, setSortBy] = React.useState<OptionType | OptionType[] | undefined>(undefined);
   const handleSortByFilter = (value: OptionType | OptionType[]) => {
@@ -61,37 +85,32 @@ export const FilterMenu = ({ className }: FilterMenuProps) => {
     setColor(undefined);
     setSize(undefined);
     setFabric(undefined);
-    router.push(`/shop`);
   };
+
   useEffect(() => {
-    // TODO enhance this stuff with additional undefined checks
-    if (!sortBy && !gender && !color && !size && !fabric) {
-      return;
+    if (!router.isReady) return;
+    const buildQuery = (key: string, value: OptionType | OptionType[] | undefined) => {
+      if (!value) {
+        return '';
+      }
+      if (isOptionArray(value)) {
+        return `${key}=${value.map(item => item.key).join(',')}&`;
+      }
+      return `${key}=${value.key}&`;
+    };
+
+    const query =
+      buildQuery('sortBy', sortBy) +
+      buildQuery('gender', gender) +
+      buildQuery('color', color) +
+      buildQuery('size', size) +
+      buildQuery('fabric', fabric);
+
+    if (query) {
+      router.push(`/shop?${query}`);
+    } else {
+      router.push(`/shop`);
     }
-    const sortByQuery = isOptionArray(sortBy)
-      ? `sortBy=${sortBy.map(item => item.key).join(',')}&`
-      : sortBy?.key && `sortBy=${sortBy.key}&`;
-
-    const genderQuery = isOptionArray(gender)
-      ? `gender=${gender.map(item => item.key).join(',')}&`
-      : gender?.key && `gender=${gender.key}&`;
-
-    const colorQuery = isOptionArray(color)
-      ? `color=${color.map(item => item.key).join(',')}&`
-      : color?.key && `color=${color.key}&`;
-
-    const sizeQuery = isOptionArray(size)
-      ? `size=${size.map(item => item.key).join(',')}&`
-      : size?.key && `size=${size.key}&`;
-
-    const fabricQuery = isOptionArray(fabric)
-      ? `fabric=${fabric.map(item => item.key).join(',')}&`
-      : fabric?.key && `fabric=${fabric.key}&`;
-
-    const query = `${sortByQuery || ''}${genderQuery || ''}${colorQuery || ''}${sizeQuery || ''}${
-      fabricQuery || ''
-    }`;
-    router.push(`/shop?${query}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortBy, gender, color, size, fabric]);
 
@@ -108,36 +127,44 @@ export const FilterMenu = ({ className }: FilterMenuProps) => {
           className
         )}
       >
-        <div className="flex gap-6">
-          <SelectFreeForm
-            onChange={handleSortByFilter}
-            value={sortBy}
-            label="Sort by"
-            name="sortBy"
-            options={sortByOptions}
-          />
-        </div>
+        <SelectFreeForm
+          onChange={handleSortByFilter}
+          value={sortBy}
+          label="Sort by"
+          name="sortBy"
+          options={sortByOptions}
+        />
 
-        <div className="flex gap-6">
-          <SelectFreeForm
-            onChange={handleColorFilter}
-            value={color}
-            label="Color"
-            name="color"
-            options={colorOptions}
-          />
-        </div>
+        <SelectFreeForm
+          onChange={handleColorFilter}
+          value={color}
+          label="Color"
+          name="color"
+          options={colorOptions}
+        />
+        <SelectFreeForm
+          onChange={handleSizeFilter}
+          value={size}
+          label="Size"
+          name="size"
+          options={sizeOptions}
+        />
 
-        <div className="flex gap-6">
-          <SelectFreeForm
-            multiple
-            onChange={handleGenderFilter}
-            value={gender}
-            label="Gender"
-            name="gender"
-            options={sexOptions}
-          />
-        </div>
+        <SelectFreeForm
+          multiple
+          onChange={handleGenderFilter}
+          value={gender}
+          label="Gender"
+          name="gender"
+          options={sexOptions}
+        />
+        <SelectFreeForm
+          onChange={handleFabricFilter}
+          value={fabric}
+          label="Fabric"
+          name="fabric"
+          options={fabricOptions}
+        />
         <Button variant="primary" className="mt-4 bg-red-500" onClick={handleResetFilters}>
           <SmallBodyText>Reset filters</SmallBodyText>
         </Button>

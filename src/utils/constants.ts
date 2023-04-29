@@ -1,6 +1,7 @@
 export const websiteName = 'Impreda';
 export const authorName = 'Norbert Matynia';
 
+// TODO change to CONSTANT_CASE
 export const sizeOptions = [
   { name: 'XS', key: 'XS' },
   { name: 'S', key: 'S' },
