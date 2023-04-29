@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
 // * Items
-
+export const SizeNameSchema = z.enum(['XS', 'S', 'M', 'L', 'XL']);
+export const SexSchema = z.enum(['MALE', 'FEMALE', 'UNISEX']);
 export const CreateItemSchema = z.object({
   name: z.string(),
   brand: z.string(),
@@ -16,7 +17,7 @@ export const CreateItemSchema = z.object({
       hex: z.string(),
       sizes: z.array(
         z.object({
-          name: z.enum(['XS', 'S', 'M', 'L', 'XL']),
+          name: SizeNameSchema,
           available: z.string()
         })
       )
@@ -26,15 +27,16 @@ export const CreateItemSchema = z.object({
 
 export const UpdateItemSchema = CreateItemSchema.extend({ id: z.string() });
 
-export const GetItemsSchema = z
-  .object({
-    sex: z.enum(['MALE', 'FEMALE', 'UNISEX']).optional(),
-    colorsNames: z.array(z.string()).optional(),
-    sizesNames: z.array(z.enum(['XS', 'S', 'M', 'L', 'XL'])).optional(),
-    categoryName: z.string().optional()
-    // TODO: Price range, sort by(views, saves , cheapest, most expensive, latest), brand,
-  })
-  .optional();
+export const FilterItemsSchema = z.object({
+  sortBy: z.string().optional(),
+  sexNames: z.array(z.string()).optional(),
+  colorNames: z.array(z.string()).optional(),
+  sizeNames: z.array(SizeNameSchema).or(z.undefined()),
+  fabricNames: z.array(z.string()).optional(),
+  categoryNames: z.array(z.string()).optional()
+});
+
+export const GetItemsSchema = FilterItemsSchema.optional();
 
 // * Users
 

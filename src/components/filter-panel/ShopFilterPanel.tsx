@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { Box } from '../box/Box';
 import { FilterMenu } from '../filter-menu/FilterMenu';

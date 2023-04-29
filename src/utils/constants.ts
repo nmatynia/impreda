@@ -45,8 +45,9 @@ export const fabricOptions = [
 ];
 
 export const sortByOptions = [
-  { name: 'Price: Low to High', key: '1' },
-  { name: 'Price: High to Low', key: '2' },
-  { name: 'Newest', key: '3' },
-  { name: 'Oldest', key: '4' }
+  { name: 'Popularity', key: 'popularity' },
+  { name: 'Price: Low to High', key: 'priceAsc' },
+  { name: 'Price: High to Low', key: 'priceDesc' },
+  { name: 'Newest', key: 'newest' },
+  { name: 'Oldest', key: 'oldest' }
 ];

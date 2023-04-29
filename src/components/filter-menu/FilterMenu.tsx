@@ -18,44 +18,19 @@ type FilterMenuProps = {
 };
 
 export const FilterMenu = ({ className }: FilterMenuProps) => {
+  // TODO Handle incorrect keys
+  // TODO Add category filter
   const router = useRouter();
   const {
     sortBy: defaultSortByValue,
     gender: defaultGenderValue,
     color: defaultColorValue,
     size: defaultSizeValue,
-    fabric: defaultFabricValue
+    fabric: defaultFabricValue,
+    category: defaultCategoryValue
   } = router.query;
 
   const isOpen = true;
-
-  useEffect(() => {
-    if (!router.isReady) return;
-
-    const buildDefaultSelectedOptions = (
-      defaultValue: string | string[] | undefined,
-      options: OptionType[]
-    ) => {
-      if (!defaultValue || Array.isArray(defaultValue)) {
-        return undefined;
-      }
-      return defaultValue
-        ?.split(',')
-        .map(value => options.find(option => option.key === value) as OptionType);
-    };
-    setGender(buildDefaultSelectedOptions(defaultGenderValue, sexOptions));
-    setColor(buildDefaultSelectedOptions(defaultColorValue, colorOptions));
-    setSortBy(buildDefaultSelectedOptions(defaultSortByValue, sortByOptions));
-    setSize(buildDefaultSelectedOptions(defaultSizeValue, sizeOptions));
-    setFabric(buildDefaultSelectedOptions(defaultFabricValue, fabricOptions));
-  }, [
-    router.isReady,
-    defaultColorValue,
-    defaultFabricValue,
-    defaultGenderValue,
-    defaultSizeValue,
-    defaultSortByValue
-  ]);
 
   const [sortBy, setSortBy] = React.useState<OptionType | OptionType[] | undefined>(undefined);
   const handleSortByFilter = (value: OptionType | OptionType[]) => {
@@ -86,6 +61,34 @@ export const FilterMenu = ({ className }: FilterMenuProps) => {
     setSize(undefined);
     setFabric(undefined);
   };
+
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    const buildDefaultSelectedOptions = (
+      defaultValue: string | string[] | undefined,
+      options: OptionType[]
+    ) => {
+      if (!defaultValue || Array.isArray(defaultValue)) {
+        return undefined;
+      }
+      return defaultValue
+        ?.split(',')
+        .map(value => options.find(option => option.key === value) as OptionType);
+    };
+    setGender(buildDefaultSelectedOptions(defaultGenderValue, sexOptions));
+    setColor(buildDefaultSelectedOptions(defaultColorValue, colorOptions));
+    setSortBy(buildDefaultSelectedOptions(defaultSortByValue, sortByOptions));
+    setSize(buildDefaultSelectedOptions(defaultSizeValue, sizeOptions));
+    setFabric(buildDefaultSelectedOptions(defaultFabricValue, fabricOptions));
+  }, [
+    router.isReady,
+    defaultColorValue,
+    defaultFabricValue,
+    defaultGenderValue,
+    defaultSizeValue,
+    defaultSortByValue
+  ]);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -140,6 +143,7 @@ export const FilterMenu = ({ className }: FilterMenuProps) => {
           value={color}
           label="Color"
           name="color"
+          multiple
           options={colorOptions}
         />
         <SelectFreeForm
@@ -147,6 +151,7 @@ export const FilterMenu = ({ className }: FilterMenuProps) => {
           value={size}
           label="Size"
           name="size"
+          multiple
           options={sizeOptions}
         />
 
@@ -163,6 +168,7 @@ export const FilterMenu = ({ className }: FilterMenuProps) => {
           value={fabric}
           label="Fabric"
           name="fabric"
+          multiple
           options={fabricOptions}
         />
         <Button variant="primary" className="mt-4 bg-red-500" onClick={handleResetFilters}>
