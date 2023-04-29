@@ -34,7 +34,7 @@ export const Header = ({ handleShowSearch }: HeaderProps) => {
             </BodyText>
           </ButtonSwitch>
           <Link
-            href="/new-arrivals"
+            href="/shop?sortBy=newest "
             className="flex cursor-pointer select-none items-center hover:underline"
           >
             <BodyText className="uppercase">New Arrivals</BodyText>

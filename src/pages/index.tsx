@@ -11,7 +11,7 @@ const HomePage: NextPage = () => {
     <main className="flex min-h-full flex-col items-center justify-center bg-primaryBlack">
       <div className="flex h-[1600px] w-full flex-col sm:h-[960px] sm:flex-row">
         <div className="relative h-full cursor-pointer  sm:w-1/2">
-          <Link href="/shop?gender=men">
+          <Link href="/shop?gender=MALE">
             <LargeBodyText className="absolute right-0 z-10 m-10 text-4xl font-bold">
               MEN
             </LargeBodyText>
@@ -25,7 +25,7 @@ const HomePage: NextPage = () => {
           </Link>
         </div>
         <div className="relative h-full cursor-pointer sm:w-1/2">
-          <Link href="/shop?gender=women">
+          <Link href="/shop?gender=FEMALE">
             <LargeBodyText className="absolute right-0 z-10 m-10 text-4xl font-bold text-primaryWhite">
               WOMEN
             </LargeBodyText>

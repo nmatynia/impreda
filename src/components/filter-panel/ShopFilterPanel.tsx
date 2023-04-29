@@ -1,7 +1,7 @@
 import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { Box } from '../box/Box';
-import { FilterMenu } from '../filter-menu/FilterMenu';
+import { ShopFilterMenu } from '../filter-menu/ShopFilterMenu';
 import { SvgIcon } from '../icons/SvgIcon';
 import { LargeBodyText } from '../typography/Typography';
 
@@ -23,7 +23,7 @@ export const ShopFilterPanel = ({ sectionName = 'Filters', className }: FilterSe
           <SvgIcon name="Filter" className="fill-primaryBlack" />
         </div>
       </Box>
-      <FilterMenu className="" />
+      <ShopFilterMenu />
     </div>
   );
 };

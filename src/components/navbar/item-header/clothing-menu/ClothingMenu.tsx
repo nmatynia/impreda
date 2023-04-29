@@ -12,28 +12,28 @@ type ClothingMenuProps = {
 
 // TODO: Underline current category that the user is on
 export const ClothingMenu = ({ ...props }: ClothingMenuProps) => {
-  const [sex, setSex] = useState<'men' | 'women'>('men');
+  const [sex, setSex] = useState<'MALE' | 'FEMALE'>('MALE');
   const { data: categories } = trpc.categories.getAllCategories.useQuery();
 
   return (
     <Box className={clsxm('absolute flex flex-col')} {...props}>
       <div className="grid grid-cols-2 gap-x-16 gap-y-1 normal-case">
-        <button type="button" onClick={() => setSex('men')} className="mb-4 text-left">
+        <button type="button" onClick={() => setSex('MALE')} className="mb-4 text-left">
           <BodyText
             className={clsxm(
               'cursor-pointer hover:underline',
-              sex === 'men' && 'font-semibold underline'
+              sex === 'MALE' && 'font-semibold underline'
             )}
           >
             Men
           </BodyText>
         </button>
 
-        <button type="button" onClick={() => setSex('women')} className="mb-4 text-left">
+        <button type="button" onClick={() => setSex('FEMALE')} className="mb-4 text-left">
           <BodyText
             className={clsxm(
               'cursor-pointer hover:underline',
-              sex === 'women' && 'font-semibold underline'
+              sex === 'FEMALE' && 'font-semibold underline'
             )}
           >
             Women
