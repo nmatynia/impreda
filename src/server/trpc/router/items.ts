@@ -11,7 +11,7 @@ import {
   UpdateItemSchema
 } from '../../../utils/validation';
 import { Context } from '../context';
-// You will need other logic for updates cause the colors are doubled now since the old ones are not updated/deleted but a new one is created.
+
 const createSizeAndColor = async (
   ctx: Context,
   colors: z.infer<typeof CreateItemSchema>['colors'],

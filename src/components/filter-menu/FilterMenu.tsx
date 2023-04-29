@@ -74,7 +74,8 @@ export const FilterMenu = ({ className }: FilterMenuProps) => {
       }
       return defaultValue
         ?.split(',')
-        .map(value => options.find(option => option.key === value) as OptionType);
+        .map(value => options.find(option => option.key === value) as OptionType)
+        .filter(value => value !== undefined);
     };
     setGender(buildDefaultSelectedOptions(defaultGenderValue, sexOptions));
     setColor(buildDefaultSelectedOptions(defaultColorValue, colorOptions));

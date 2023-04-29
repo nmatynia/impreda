@@ -1,12 +1,9 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
-import { z } from 'zod';
 import { Container } from '../components/container/Container';
 import { ShopFilterPanel } from '../components/filter-panel/ShopFilterPanel';
 import { trpc } from '../utils/trpc';
-import { SexType } from '../types/types';
 import ItemCardSection from '../components/item-card-section/ItemCardSection';
-import { SexSchema } from '../utils/validation';
 
 const ShoppingPage = () => {
   const router = useRouter();
