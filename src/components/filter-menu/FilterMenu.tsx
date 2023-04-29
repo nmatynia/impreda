@@ -2,12 +2,10 @@ import { Transition } from '@headlessui/react';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import clsxm from '../../utils/clsxm';
-import { Box } from '../box/Box';
 import { Button } from '../button/Button';
-import { FilterButton } from '../filter-button/FilterButton';
-import { BodyText } from '../typography/Typography';
-import { Select } from '../select/Select';
+import { SmallBodyText } from '../typography/Typography';
 import { OptionType, SelectFreeForm, isOptionArray } from '../select-free-from/SelectFreeForm';
+import { colorOptions, sexOptions, sortByOptions } from '../../utils/constants';
 
 type FilterMenuProps = {
   className?: string;
@@ -15,7 +13,26 @@ type FilterMenuProps = {
 
 export const FilterMenu = ({ className }: FilterMenuProps) => {
   const router = useRouter();
+  const {
+    sortBy: defaultSortByValue,
+    gender: defaultGenderValue,
+    color: defaultColorValue
+  } = router.query;
+  console.log(defaultGenderValue);
+
   const isOpen = true;
+
+  useEffect(() => {
+    // TODO handle if somebody is so smart to provide array there
+    console.log('TEST!!!!');
+    if (defaultGenderValue)
+      setGender(
+        (defaultGenderValue as string | undefined)
+          ?.split(',')
+          .map(key => sexOptions.find(option => option.key === key) as OptionType)
+      );
+  }, [defaultGenderValue]);
+
   const [sortBy, setSortBy] = React.useState<OptionType | OptionType[] | undefined>(undefined);
   const handleSortByFilter = (value: OptionType | OptionType[]) => {
     setSortBy(value);
@@ -38,7 +55,16 @@ export const FilterMenu = ({ className }: FilterMenuProps) => {
     setFabric(value);
   };
 
+  const handleResetFilters = () => {
+    setSortBy(undefined);
+    setGender(undefined);
+    setColor(undefined);
+    setSize(undefined);
+    setFabric(undefined);
+    router.push(`/shop`);
+  };
   useEffect(() => {
+    // TODO enhance this stuff with additional undefined checks
     if (!sortBy && !gender && !color && !size && !fabric) {
       return;
     }
@@ -62,11 +88,13 @@ export const FilterMenu = ({ className }: FilterMenuProps) => {
       ? `fabric=${fabric.map(item => item.key).join(',')}&`
       : fabric?.key && `fabric=${fabric.key}&`;
 
-    const query = `${sortByQuery || ''}${genderQuery || ''}${colorQuery || ''}${
-      sizeQuery || ''
-    } || ${fabricQuery || ''}`;
+    const query = `${sortByQuery || ''}${genderQuery || ''}${colorQuery || ''}${sizeQuery || ''}${
+      fabricQuery || ''
+    }`;
     router.push(`/shop?${query}`);
-  }, [sortBy, gender, color, size, fabric, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortBy, gender, color, size, fabric]);
+
   return (
     <Transition
       show={isOpen}
@@ -82,103 +110,21 @@ export const FilterMenu = ({ className }: FilterMenuProps) => {
       >
         <div className="flex gap-6">
           <SelectFreeForm
-            multiple
             onChange={handleSortByFilter}
             value={sortBy}
             label="Sort by"
             name="sortBy"
-            options={[
-              {
-                key: '1',
-                name: 'Price: Low to High'
-              },
-              {
-                key: '2',
-                name: 'Price: High to Low'
-              },
-              {
-                key: '3',
-                name: 'Newest'
-              },
-              {
-                key: '4',
-                name: 'Oldest'
-              }
-            ]}
+            options={sortByOptions}
           />
-          {/* <Select
-            onChange={setSortBy}
-            value={sortBy}
-            label="Sort by"
-            name="sortBy"
-            placeholder="Select"
-            options={[
-              {
-                key: '1',
-                name: 'Price: Low to High'
-              },
-              {
-                key: '2',
-                name: 'Price: High to Low'
-              },
-              {
-                key: '3',
-                name: 'Newest'
-              },
-              {
-                key: '4',
-                name: 'Oldest'
-              }
-            ]}
-          />
-          <Select
-            onChange={setGender}
-            value={gender}
-            label="Gender"
-            name="gender"
-            placeholder="Select"
-            options={[
-              {
-                key: '1',
-                name: 'Men'
-              },
-              {
-                key: '2',
-                name: 'Women'
-              },
-              {
-                key: '3',
-                name: 'Unisex'
-              }
-            ]}
-          /> */}
         </div>
 
         <div className="flex gap-6">
           <SelectFreeForm
-            multiple
-            onChange={handleGenderFilter}
-            value={gender}
-            label="Sort by"
-            name="sortBy"
-            options={[
-              {
-                key: '1',
-                name: 'Price: Low to High'
-              },
-              {
-                key: '2',
-                name: 'Price: High to Low'
-              },
-              {
-                key: '3',
-                name: 'Newest'
-              },
-              {
-                key: '4',
-                name: 'Oldest'
-              }
-            ]}
+            onChange={handleColorFilter}
+            value={color}
+            label="Color"
+            name="color"
+            options={colorOptions}
           />
         </div>
 
@@ -189,24 +135,11 @@ export const FilterMenu = ({ className }: FilterMenuProps) => {
             value={gender}
             label="Gender"
             name="gender"
-            options={[
-              {
-                key: 'men',
-                name: 'Men'
-              },
-              {
-                key: 'women',
-                name: 'Women'
-              },
-              {
-                key: 'unisex',
-                name: 'Unisex'
-              }
-            ]}
+            options={sexOptions}
           />
         </div>
-        <Button variant="primary" className="mt-4">
-          <BodyText>Reset filters</BodyText>
+        <Button variant="primary" className="mt-4 bg-red-500" onClick={handleResetFilters}>
+          <SmallBodyText>Reset filters</SmallBodyText>
         </Button>
       </div>
     </Transition>

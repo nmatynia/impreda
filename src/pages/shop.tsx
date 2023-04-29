@@ -7,20 +7,21 @@ import { SexType, SizeNameType } from '../types/types';
 import ItemCardSection from '../components/item-card-section/ItemCardSection';
 
 const ShoppingPage = () => {
+  const router = useRouter();
   const {
     gender: sexQuery,
     category: categoryName,
     size: sizesNames,
     color: colorNames
-  } = useRouter().query;
-  console.log(categoryName);
-  // TODO: enhance this stuff
+  } = router.query;
+
+  // TODO: change this stuff
   const sex = useMemo<SexType | undefined>(() => {
     switch (sexQuery) {
-      case 'men': {
+      case 'MALE': {
         return 'MALE';
       }
-      case 'women': {
+      case 'FEMALE': {
         return 'FEMALE';
       }
       default: {

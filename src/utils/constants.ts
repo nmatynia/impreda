@@ -42,3 +42,10 @@ export const fabricOptions = [
   { name: 'Canvas', key: 'canvas' },
   { name: 'Velvet', key: 'velvet' }
 ];
+
+export const sortByOptions = [
+  { name: 'Price: Low to High', key: '1' },
+  { name: 'Price: High to Low', key: '2' },
+  { name: 'Newest', key: '3' },
+  { name: 'Oldest', key: '4' }
+];
