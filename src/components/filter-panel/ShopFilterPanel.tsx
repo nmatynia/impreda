@@ -10,6 +10,10 @@ type FilterSectionProps = {
   className?: string;
 };
 export const ShopFilterPanel = ({ sectionName = 'Filters', className }: FilterSectionProps) => {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const handleToggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
   return (
     <div className="flex h-fit w-full flex-col">
       <Box
@@ -19,11 +23,11 @@ export const ShopFilterPanel = ({ sectionName = 'Filters', className }: FilterSe
         )}
       >
         <LargeBodyText>{sectionName}</LargeBodyText>
-        <div className="relative cursor-pointer">
+        <button className="relative cursor-pointer" onClick={handleToggleMenu} type="button">
           <SvgIcon name="Filter" className="fill-primaryBlack" />
-        </div>
+        </button>
       </Box>
-      <ShopFilterMenu />
+      <ShopFilterMenu isOpen={isMenuOpen} />
     </div>
   );
 };

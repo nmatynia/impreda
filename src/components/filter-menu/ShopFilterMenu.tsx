@@ -15,9 +15,10 @@ import {
 
 type ShopFilterMenuProps = {
   className?: string;
+  isOpen: boolean;
 };
 
-export const ShopFilterMenu = ({ className }: ShopFilterMenuProps) => {
+export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
   // TODO Handle incorrect keys
   // TODO Add category filter
   const router = useRouter();
@@ -29,8 +30,6 @@ export const ShopFilterMenu = ({ className }: ShopFilterMenuProps) => {
     fabric: defaultFabricValue,
     category: defaultCategoryValue
   } = router.query;
-
-  const isOpen = true;
 
   const [sortBy, setSortBy] = React.useState<OptionType | OptionType[] | undefined>(undefined);
   const handleSortByFilter = (value: OptionType | OptionType[]) => {
@@ -121,9 +120,13 @@ export const ShopFilterMenu = ({ className }: ShopFilterMenuProps) => {
   return (
     <Transition
       show={isOpen}
-      leave="transition-all duration-300"
-      leaveFrom="opacity-100"
-      leaveTo="opacity-0"
+      className="overflow-hidden"
+      leave="transition-all duration-1000"
+      leaveFrom="opacity-100 max-h-[1000px]"
+      leaveTo="opacity-0 max-h-0"
+      enter="transition-all duration-1000"
+      enterFrom="opacity-0 max-h-0"
+      enterTo="opacity-100 max-h-[1000px]"
     >
       <div
         className={clsxm(
