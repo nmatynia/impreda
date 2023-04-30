@@ -298,12 +298,14 @@ export const itemsRouter = router({
         },
         fabrics: {
           in: fabricNames
+        },
+        category: {
+          some: {
+            name: {
+              in: categoryNames
+            }
+          }
         }
-        // category: {
-        //   some: {
-        //     name: categoryNames
-        //   }
-        // },
       },
       select: {
         id: true,

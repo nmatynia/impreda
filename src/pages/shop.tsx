@@ -22,8 +22,8 @@ const ShoppingPage = () => {
       ? (sizeNames?.split(',') as ['XS' | 'S' | 'M' | 'L' | 'XL'])
       : undefined,
     sortBy: !Array.isArray(sortBy) ? sortBy : undefined,
-    fabricNames: !Array.isArray(fabricNames) ? fabricNames?.split(',') : undefined
-    // categoryNames: categoryName as string | undefined,
+    fabricNames: !Array.isArray(fabricNames) ? fabricNames?.split(',') : undefined,
+    categoryNames: !Array.isArray(categoryName) ? categoryName?.split(',') : undefined
   });
 
   return (

@@ -1,5 +1,5 @@
 import { Transition } from '@headlessui/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import clsxm from '../../utils/clsxm';
 import { Button } from '../button/Button';
@@ -12,6 +12,7 @@ import {
   sizeOptions,
   sortByOptions
 } from '../../utils/constants';
+import { trpc } from '../../utils/trpc';
 
 type ShopFilterMenuProps = {
   className?: string;
@@ -19,8 +20,6 @@ type ShopFilterMenuProps = {
 };
 
 export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
-  // TODO Handle incorrect keys
-  // TODO Add category filter
   const router = useRouter();
   const {
     sortBy: defaultSortByValue,
@@ -30,6 +29,16 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
     fabric: defaultFabricValue,
     category: defaultCategoryValue
   } = router.query;
+
+  const { data: categories } = trpc.categories.getAllCategories.useQuery();
+  const categoryOptions: OptionType[] = useMemo(
+    () =>
+      categories?.map(category => ({
+        name: category.name,
+        key: category.name.toLowerCase()
+      })) ?? [],
+    [categories]
+  );
 
   const [sortBy, setSortBy] = React.useState<OptionType | OptionType[] | undefined>(undefined);
   const handleSortByFilter = (value: OptionType | OptionType[]) => {
@@ -52,12 +61,17 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
   const handleFabricFilter = (value: OptionType | OptionType[]) => {
     setFabric(value);
   };
+  const [category, setCategory] = React.useState<OptionType | OptionType[] | undefined>(undefined);
+  const handleCategoryFilter = (value: OptionType | OptionType[]) => {
+    setCategory(value);
+  };
 
   const handleResetFilters = () => {
     setSortBy(undefined);
     setGender(undefined);
     setColor(undefined);
     setSize(undefined);
+    setCategory(undefined);
     setFabric(undefined);
   };
 
@@ -81,12 +95,15 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
     setSortBy(buildDefaultSelectedOptions(defaultSortByValue, sortByOptions));
     setSize(buildDefaultSelectedOptions(defaultSizeValue, sizeOptions));
     setFabric(buildDefaultSelectedOptions(defaultFabricValue, fabricOptions));
+    setCategory(buildDefaultSelectedOptions(defaultCategoryValue, categoryOptions));
   }, [
     router.isReady,
+    categoryOptions,
     defaultColorValue,
     defaultFabricValue,
     defaultGenderValue,
     defaultSizeValue,
+    defaultCategoryValue,
     defaultSortByValue
   ]);
 
@@ -107,6 +124,7 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
       buildQuery('gender', gender) +
       buildQuery('color', color) +
       buildQuery('size', size) +
+      buildQuery('category', category) +
       buildQuery('fabric', fabric);
 
     if (query) {
@@ -115,7 +133,7 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
       router.push(`/shop`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortBy, gender, color, size, fabric]);
+  }, [sortBy, gender, color, size, fabric, category]);
 
   return (
     <Transition
@@ -168,6 +186,14 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
           options={sexOptions}
         />
         <SelectFreeForm
+          multiple
+          onChange={handleCategoryFilter}
+          value={category}
+          label="Category"
+          name="category"
+          options={categoryOptions}
+        />
+        <SelectFreeForm
           onChange={handleFabricFilter}
           value={fabric}
           label="Fabric"
@@ -175,7 +201,11 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
           multiple
           options={fabricOptions}
         />
-        <Button variant="primary" className="mt-4 bg-red-500" onClick={handleResetFilters}>
+        <Button
+          variant="primary"
+          className="mt-4 border-none bg-red-500 hover:bg-red-600"
+          onClick={handleResetFilters}
+        >
           <SmallBodyText>Reset filters</SmallBodyText>
         </Button>
       </div>
