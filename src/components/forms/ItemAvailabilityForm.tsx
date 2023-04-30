@@ -49,6 +49,11 @@ export const ItemAvailabilityForm = ({
   onSubmit,
   handlePreviousStep
 }: ItemAvailabilityProps) => {
+  const defaultValuesProper = defaultValues?.colors.filter(defaultColor =>
+    colors.find(color => color.name === defaultColor.name)
+  );
+  console.log({ colors, defaultValues, defaultValuesProper });
+
   const methods = useForm<ItemAvailabilityType>({
     resolver: zodResolver(ItemAvailabilitySchema),
     defaultValues
@@ -56,8 +61,12 @@ export const ItemAvailabilityForm = ({
   const {
     handleSubmit,
     control,
-    formState: { isSubmitting }
+    getValues,
+    formState: { isSubmitting, defaultValues: defaultValuesState }
   } = methods;
+
+  // console.log({ defaultValuesState });
+  // console.log(getValues());
 
   const { fields: colorFields, replace } = useFieldArray({
     control,
@@ -82,7 +91,12 @@ export const ItemAvailabilityForm = ({
                   {color.name}
                 </BodyText>
               </div>
-              <SizeField control={control} sizeIndex={index} sizes={sizes} />
+              <SizeField
+                control={control}
+                sizeIndex={index}
+                sizes={sizes}
+                defaultValues={defaultValues?.colors.find(({ key }) => key === color.key)?.sizes}
+              />
             </div>
           );
         })}
@@ -102,11 +116,13 @@ export const ItemAvailabilityForm = ({
 const SizeField = ({
   control,
   sizeIndex,
-  sizes
+  sizes,
+  defaultValues
 }: {
   control: Control<ItemAvailabilityType>;
   sizeIndex: number;
   sizes: OptionType<ItemAvailabilityType['colors'][0]['sizes']>;
+  defaultValues?: ItemAvailabilityType['colors'][0]['sizes'];
 }) => {
   const { fields: sizeFields, replace } = useFieldArray({
     control,
@@ -114,8 +130,12 @@ const SizeField = ({
   });
 
   useEffect(() => {
-    replace(sizes);
-  }, [replace, sizes]);
+    replace(
+      sizes.map(
+        size => defaultValues?.find(defaultValue => defaultValue.name === size.name) ?? size
+      )
+    );
+  }, [replace, defaultValues, sizes]);
 
   return (
     <ul className="flex flex-col gap-4">
