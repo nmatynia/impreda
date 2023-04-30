@@ -156,7 +156,7 @@ const SizeField = ({
       {sizeFields.map((size, index) => {
         return (
           <li className="grid grid-cols-6 px-5" key={size.id}>
-            <BodyText className="col-span-1">
+            <BodyText className="col-span-1 flex items-center">
               <Bold>{size.name}</Bold>
             </BodyText>
             <div className="col-span-5">
