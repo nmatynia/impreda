@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import type { Control, SubmitHandler } from 'react-hook-form';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -44,14 +44,29 @@ type ItemAvailabilityProps = {
 export const ItemAvailabilityForm = ({
   sizes,
   colors,
-  defaultValues,
+  defaultValues: initialValues,
   isEdit,
   onSubmit,
   handlePreviousStep
 }: ItemAvailabilityProps) => {
+  const defaultValues: ItemAvailabilityType | undefined = useMemo(
+    () =>
+      initialValues && {
+        colors: initialValues.colors
+          .filter(defaultColor => colors.find(color => color.name === defaultColor.name))
+          .map(defaultColor => ({ ...defaultColor, key: defaultColor.key.toLowerCase() }))
+      },
+    [initialValues, colors]
+  );
+
   const methods = useForm<ItemAvailabilityType>({
     resolver: zodResolver(ItemAvailabilitySchema),
-    defaultValues
+    defaultValues: {
+      colors: colors.map(color => {
+        const defaultColor = defaultValues?.colors.find(({ key }) => key === color.key);
+        return { ...color, sizes: defaultColor?.sizes || [] };
+      })
+    }
   });
   const {
     handleSubmit,
@@ -65,8 +80,13 @@ export const ItemAvailabilityForm = ({
   });
 
   useEffect(() => {
-    replace(colors.map(color => ({ ...color, sizes: [] })));
-  }, [replace, colors]);
+    replace(
+      colors.map(color => {
+        const defaultColor = defaultValues?.colors.find(({ key }) => key === color.key);
+        return { ...color, sizes: defaultColor?.sizes || [] };
+      })
+    );
+  }, [replace, colors, defaultValues]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} {...methods}>
@@ -82,7 +102,12 @@ export const ItemAvailabilityForm = ({
                   {color.name}
                 </BodyText>
               </div>
-              <SizeField control={control} sizeIndex={index} sizes={sizes} />
+              <SizeField
+                control={control}
+                sizeIndex={index}
+                sizes={sizes}
+                defaultValues={defaultValues?.colors.find(({ key }) => key === color.key)?.sizes}
+              />
             </div>
           );
         })}
@@ -102,11 +127,13 @@ export const ItemAvailabilityForm = ({
 const SizeField = ({
   control,
   sizeIndex,
-  sizes
+  sizes,
+  defaultValues
 }: {
   control: Control<ItemAvailabilityType>;
   sizeIndex: number;
   sizes: OptionType<ItemAvailabilityType['colors'][0]['sizes']>;
+  defaultValues?: ItemAvailabilityType['colors'][0]['sizes'];
 }) => {
   const { fields: sizeFields, replace } = useFieldArray({
     control,
@@ -114,15 +141,22 @@ const SizeField = ({
   });
 
   useEffect(() => {
-    replace(sizes);
-  }, [replace, sizes]);
+    replace(
+      sizes.map(size => {
+        const defaultValue = defaultValues?.find(defaultSize => defaultSize.name === size.name);
+        return defaultValue
+          ? { ...size, available: defaultValue.available }
+          : { ...size, available: '' };
+      })
+    );
+  }, [replace, defaultValues, sizes]);
 
   return (
     <ul className="flex flex-col gap-4">
       {sizeFields.map((size, index) => {
         return (
           <li className="grid grid-cols-6 px-5" key={size.id}>
-            <BodyText className="col-span-1">
+            <BodyText className="col-span-1 flex items-center">
               <Bold>{size.name}</Bold>
             </BodyText>
             <div className="col-span-5">
