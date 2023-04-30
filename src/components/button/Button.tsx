@@ -12,7 +12,7 @@ type ButtonProps = {
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const buttonVariant = {
-  primary: 'bg-primaryBlack text-primaryWhite',
+  primary: 'bg-primaryBlack text-primaryWhite border-[1px] border-primaryBlack',
   outlined:
     'border-[1px] border-primaryBlack text-primaryBlack hover:bg-primaryBlack hover:text-primaryWhite [&:hover>*]:text-primaryWhite'
 };

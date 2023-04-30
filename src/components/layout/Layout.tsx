@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import React, { Fragment } from 'react';
+import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { Footer } from '../footer/Footer';
 import { Navbar } from '../navbar/Navbar';

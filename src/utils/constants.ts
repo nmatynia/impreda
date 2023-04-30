@@ -1,6 +1,7 @@
 export const websiteName = 'Impreda';
 export const authorName = 'Norbert Matynia';
 
+// TODO change to CONSTANT_CASE
 export const sizeOptions = [
   { name: 'XS', key: 'XS' },
   { name: 'S', key: 'S' },
@@ -41,4 +42,12 @@ export const fabricOptions = [
   { name: 'Denim', key: 'denim' },
   { name: 'Canvas', key: 'canvas' },
   { name: 'Velvet', key: 'velvet' }
+];
+
+export const sortByOptions = [
+  { name: 'Popularity', key: 'popularity' },
+  { name: 'Price: Low to High', key: 'priceAsc' },
+  { name: 'Price: High to Low', key: 'priceDesc' },
+  { name: 'Newest', key: 'newest' },
+  { name: 'Oldest', key: 'oldest' }
 ];

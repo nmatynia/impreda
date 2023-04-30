@@ -18,7 +18,8 @@ import {
   BsBoxes,
   BsBoxSeam,
   BsPersonGear,
-  BsTrash
+  BsTrash,
+  BsPlus
 } from 'react-icons/bs';
 import { FaShoppingBag } from 'react-icons/fa';
 import { HiOutlineSearch } from 'react-icons/hi';
@@ -48,7 +49,8 @@ const iconMap = {
   Box: BsBoxSeam,
   Boxes: BsBoxes,
   PersonGear: BsPersonGear,
-  Trash: BsTrash
+  Trash: BsTrash,
+  Plus: BsPlus
 };
 
 export type IconName = keyof typeof iconMap;

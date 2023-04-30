@@ -2,11 +2,16 @@ import aws from 'aws-sdk';
 import { z } from 'zod';
 
 import { TRPCError } from '@trpc/server';
+import { Prisma } from '@prisma/client';
 import { router, publicProcedure, adminProcedure } from '../trpc';
-import { CreateItemSchema, GetItemsSchema, UpdateItemSchema } from '../../../utils/validation';
+import {
+  CreateItemSchema,
+  GetItemsSchema,
+  SexSchema,
+  UpdateItemSchema
+} from '../../../utils/validation';
 import { Context } from '../context';
 
-// You will need other logic for updates cause the colors are doubled now since the old ones are not updated/deleted but a new one is created.
 const createSizeAndColor = async (
   ctx: Context,
   colors: z.infer<typeof CreateItemSchema>['colors'],
@@ -225,7 +230,6 @@ export const itemsRouter = router({
     };
   }),
   getListItems: publicProcedure.query(async ({ ctx }) => {
-    // TODO enhance that with filters
     const items = await ctx.prisma.item.findMany({
       select: {
         id: true,
@@ -251,26 +255,54 @@ export const itemsRouter = router({
     }));
   }),
   getItems: publicProcedure.input(GetItemsSchema).query(async ({ ctx, input }) => {
-    const { sex, sizesNames, categoryName, colorsNames } = input ?? {};
+    const { sexNames, sizeNames, categoryNames, colorNames, sortBy, fabricNames } = input ?? {};
+
+    const orderByFn = () => {
+      switch (sortBy) {
+        case 'newest':
+          return { createdAt: Prisma.SortOrder.desc };
+        case 'oldest':
+          return { createdAt: Prisma.SortOrder.asc };
+        case 'priceAsc':
+          return { price: Prisma.SortOrder.asc };
+        case 'priceDesc':
+          return { price: Prisma.SortOrder.desc };
+        case 'popularity':
+          return { views: Prisma.SortOrder.desc };
+        default:
+          return { createdAt: Prisma.SortOrder.desc };
+      }
+    };
+    const orderBy = orderByFn();
+    const parsedSexNames = z.array(SexSchema).safeParse(sexNames).success
+      ? (sexNames as z.infer<typeof SexSchema>[])
+      : undefined;
     const items = await ctx.prisma.item.findMany({
       where: {
-        sex,
+        sex: {
+          in: parsedSexNames
+        },
         sizes: {
-          every: {
+          some: {
             name: {
-              in: sizesNames
+              in: sizeNames
             }
           }
         },
-        category: {
+        colors: {
           some: {
-            name: categoryName
+            name: {
+              in: colorNames
+            }
           }
         },
-        colors: {
-          every: {
+        fabrics: {
+          in: fabricNames
+        },
+        category: {
+          some: {
             name: {
-              in: colorsNames
+              in: categoryNames
             }
           }
         }
@@ -283,7 +315,8 @@ export const itemsRouter = router({
         colors: true,
         price: true,
         images: true
-      }
+      },
+      orderBy
     });
 
     return items.map(item => {

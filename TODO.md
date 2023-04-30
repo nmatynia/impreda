@@ -6,6 +6,8 @@
 - Item availibility form - change default value state behaviour
 - Item reservation in cart
 
+- sizes and gender lowercase in url (?)
+- Photo carousel on mobile on item page
 - Make item creation go back to default values set from refs
 - Transition on Box
 - Item container - if the last item is alone in the row it's alignment is slightly off

@@ -1,39 +1,29 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import { Container } from '../components/container/Container';
 import { ShopFilterPanel } from '../components/filter-panel/ShopFilterPanel';
 import { trpc } from '../utils/trpc';
-import { SexType, SizeNameType } from '../types/types';
 import ItemCardSection from '../components/item-card-section/ItemCardSection';
 
 const ShoppingPage = () => {
+  const router = useRouter();
   const {
-    gender: sexQuery,
-    category: categoryName,
-    size: sizesNames,
-    color: colorNames
-  } = useRouter().query;
-
-  // TODO: enhance this stuff
-  const sex = useMemo<SexType | undefined>(() => {
-    switch (sexQuery) {
-      case 'men': {
-        return 'MALE';
-      }
-      case 'women': {
-        return 'FEMALE';
-      }
-      default: {
-        return undefined;
-      }
-    }
-  }, [sexQuery]);
-
+    gender: sexNames,
+    size: sizeNames,
+    color: colorName,
+    sortBy,
+    fabric: fabricNames,
+    category: categoryName
+  } = router.query;
   const { data: items, isLoading } = trpc.items.getItems.useQuery({
-    sex,
-    categoryName: categoryName as string | undefined,
-    sizesNames: sizesNames as SizeNameType[] | undefined,
-    colorsNames: colorNames as string[]
+    sexNames: !Array.isArray(sexNames) ? sexNames?.split(',') : undefined,
+    colorNames: !Array.isArray(colorName) ? colorName?.split(',') : undefined,
+    sizeNames: !Array.isArray(sizeNames)
+      ? (sizeNames?.split(',') as ['XS' | 'S' | 'M' | 'L' | 'XL'])
+      : undefined,
+    sortBy: !Array.isArray(sortBy) ? sortBy : undefined,
+    fabricNames: !Array.isArray(fabricNames) ? fabricNames?.split(',') : undefined,
+    categoryNames: !Array.isArray(categoryName) ? categoryName?.split(',') : undefined
   });
 
   return (
