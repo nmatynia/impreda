@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import type { Control, SubmitHandler } from 'react-hook-form';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -44,29 +44,35 @@ type ItemAvailabilityProps = {
 export const ItemAvailabilityForm = ({
   sizes,
   colors,
-  defaultValues,
+  defaultValues: initialValues,
   isEdit,
   onSubmit,
   handlePreviousStep
 }: ItemAvailabilityProps) => {
-  const defaultValuesProper = defaultValues?.colors.filter(defaultColor =>
-    colors.find(color => color.name === defaultColor.name)
+  const defaultValues: ItemAvailabilityType | undefined = useMemo(
+    () =>
+      initialValues && {
+        colors: initialValues.colors
+          .filter(defaultColor => colors.find(color => color.name === defaultColor.name))
+          .map(defaultColor => ({ ...defaultColor, key: defaultColor.key.toLowerCase() }))
+      },
+    [initialValues, colors]
   );
-  console.log({ colors, defaultValues, defaultValuesProper });
 
   const methods = useForm<ItemAvailabilityType>({
     resolver: zodResolver(ItemAvailabilitySchema),
-    defaultValues
+    defaultValues: {
+      colors: colors.map(color => {
+        const defaultColor = defaultValues?.colors.find(({ key }) => key === color.key);
+        return { ...color, sizes: defaultColor?.sizes || [] };
+      })
+    }
   });
   const {
     handleSubmit,
     control,
-    getValues,
-    formState: { isSubmitting, defaultValues: defaultValuesState }
+    formState: { isSubmitting }
   } = methods;
-
-  // console.log({ defaultValuesState });
-  // console.log(getValues());
 
   const { fields: colorFields, replace } = useFieldArray({
     control,
@@ -74,8 +80,13 @@ export const ItemAvailabilityForm = ({
   });
 
   useEffect(() => {
-    replace(colors.map(color => ({ ...color, sizes: [] })));
-  }, [replace, colors]);
+    replace(
+      colors.map(color => {
+        const defaultColor = defaultValues?.colors.find(({ key }) => key === color.key);
+        return { ...color, sizes: defaultColor?.sizes || [] };
+      })
+    );
+  }, [replace, colors, defaultValues]);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} {...methods}>
@@ -131,9 +142,12 @@ const SizeField = ({
 
   useEffect(() => {
     replace(
-      sizes.map(
-        size => defaultValues?.find(defaultValue => defaultValue.name === size.name) ?? size
-      )
+      sizes.map(size => {
+        const defaultValue = defaultValues?.find(defaultSize => defaultSize.name === size.name);
+        return defaultValue
+          ? { ...size, available: defaultValue.available }
+          : { ...size, available: '' };
+      })
     );
   }, [replace, defaultValues, sizes]);
 
