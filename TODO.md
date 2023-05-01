@@ -11,12 +11,11 @@
 
 - custom scroll (e.g. cart)
 - enhance Loader - /item-creator
-- Give size chart functionality
 
 - Toasts on adding/deleting/editing users/items etc.
+- Additional modal, dropdown to confirm deletion of item/user
 - Color picker and adding new colors to DB.
 - Color display in Select
-- Additional modal, dropdown to confirm deletion of item/user
 
 - isLoading state in UserDetailsDialog in admin view
 - user list dialog, throws one trpc error after deleting a user (there is one request to fetch user details but the user is no longer existing)

@@ -4,7 +4,7 @@ import fs from 'fs';
 import url from 'url';
 import { TRPCError } from '@trpc/server';
 import type { SexType, SizeNameType } from '../src/types/types';
-import { colorOptions } from '../src/utils/constants';
+import { COLOR_OPTIONS } from '../src/utils/constants';
 
 const categoryList: string[] = [
   'Dresses',
@@ -138,7 +138,7 @@ const seedItems = async () => {
 
     await Promise.all(
       item.colors.map(async colorName => {
-        const colorData = colorOptions.find(color => color.key === colorName);
+        const colorData = COLOR_OPTIONS.find(color => color.key === colorName);
         if (!colorData) return;
         const color = await prisma.color.create({
           data: {

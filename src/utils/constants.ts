@@ -1,8 +1,7 @@
-export const websiteName = 'Impreda';
-export const authorName = 'Norbert Matynia';
+export const WEBSITE_NAME = 'Impreda';
+export const AUTHOR_NAME = 'Norbert Matynia';
 
-// TODO change to CONSTANT_CASE
-export const sizeOptions = [
+export const SIZE_OPTIONS = [
   { name: 'XS', key: 'XS' },
   { name: 'S', key: 'S' },
   { name: 'M', key: 'M' },
@@ -11,13 +10,13 @@ export const sizeOptions = [
   { name: 'XXL', key: 'XXL' }
 ];
 
-export const sexOptions = [
+export const SEX_OPTIONS = [
   { name: 'Male', key: 'MALE' },
   { name: 'Female', key: 'FEMALE' },
   { name: 'Unisex', key: 'UNISEX' }
 ];
 
-export const colorOptions = [
+export const COLOR_OPTIONS = [
   { name: 'Red', key: 'red', hex: '#FF0000' },
   { name: 'Blue', key: 'blue', hex: '#323ea8' },
   { name: 'Green', key: 'green', hex: '#00c469' },
@@ -31,9 +30,10 @@ export const colorOptions = [
   { name: 'Grey', key: 'grey', hex: '#919191' }
 ];
 
-export const fabricOptions = [
+export const FABRIC_OPTIONS = [
   { name: 'Cotton', key: 'cotton' },
   { name: 'Silk', key: 'silk' },
+  { name: 'Leather', key: 'leather' },
   { name: 'Wool', key: 'wool' },
   { name: 'Linen', key: 'linen' },
   { name: 'Polyester', key: 'polyester' },
@@ -44,7 +44,7 @@ export const fabricOptions = [
   { name: 'Velvet', key: 'velvet' }
 ];
 
-export const sortByOptions = [
+export const SORT_OPTIONS = [
   { name: 'Popularity', key: 'popularity' },
   { name: 'Price: Low to High', key: 'priceAsc' },
   { name: 'Price: High to Low', key: 'priceDesc' },

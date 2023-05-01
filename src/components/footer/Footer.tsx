@@ -1,6 +1,6 @@
 import React from 'react';
 import clsxm from '../../utils/clsxm';
-import { authorName, websiteName } from '../../utils/constants';
+import { AUTHOR_NAME, WEBSITE_NAME } from '../../utils/constants';
 import { Dot } from '../dot/Dot';
 import { LargeBodyText, LogoText } from '../typography/Typography';
 
@@ -16,10 +16,10 @@ export const Footer = ({ className }: FooterProps) => {
       )}
     >
       <LogoText className="font-primary text-base font-black tracking-paragraph">
-        {websiteName}
+        {WEBSITE_NAME}
       </LogoText>
       <Dot className="bg-primaryWhite" />
-      <LargeBodyText className="font-light">{authorName} </LargeBodyText>
+      <LargeBodyText className="font-light">{AUTHOR_NAME} </LargeBodyText>
     </footer>
   );
 };

@@ -6,11 +6,11 @@ import { Button } from '../button/Button';
 import { SmallBodyText } from '../typography/Typography';
 import { OptionType, SelectFreeForm, isOptionArray } from '../select-free-from/SelectFreeForm';
 import {
-  colorOptions,
-  fabricOptions,
-  sexOptions,
-  sizeOptions,
-  sortByOptions
+  COLOR_OPTIONS,
+  FABRIC_OPTIONS,
+  SEX_OPTIONS,
+  SIZE_OPTIONS,
+  SORT_OPTIONS
 } from '../../utils/constants';
 import { trpc } from '../../utils/trpc';
 
@@ -90,11 +90,11 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
         .map(value => options.find(option => option.key === value) as OptionType)
         .filter(value => value !== undefined);
     };
-    setGender(buildDefaultSelectedOptions(defaultGenderValue, sexOptions));
-    setColor(buildDefaultSelectedOptions(defaultColorValue, colorOptions));
-    setSortBy(buildDefaultSelectedOptions(defaultSortByValue, sortByOptions));
-    setSize(buildDefaultSelectedOptions(defaultSizeValue, sizeOptions));
-    setFabric(buildDefaultSelectedOptions(defaultFabricValue, fabricOptions));
+    setGender(buildDefaultSelectedOptions(defaultGenderValue, SEX_OPTIONS));
+    setColor(buildDefaultSelectedOptions(defaultColorValue, COLOR_OPTIONS));
+    setSortBy(buildDefaultSelectedOptions(defaultSortByValue, SORT_OPTIONS));
+    setSize(buildDefaultSelectedOptions(defaultSizeValue, SIZE_OPTIONS));
+    setFabric(buildDefaultSelectedOptions(defaultFabricValue, FABRIC_OPTIONS));
     setCategory(buildDefaultSelectedOptions(defaultCategoryValue, categoryOptions));
   }, [
     router.isReady,
@@ -157,7 +157,7 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
           value={sortBy}
           label="Sort by"
           name="sortBy"
-          options={sortByOptions}
+          options={SORT_OPTIONS}
         />
 
         <SelectFreeForm
@@ -166,7 +166,7 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
           label="Color"
           name="color"
           multiple
-          options={colorOptions}
+          options={COLOR_OPTIONS}
         />
         <SelectFreeForm
           onChange={handleSizeFilter}
@@ -174,7 +174,7 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
           label="Size"
           name="size"
           multiple
-          options={sizeOptions}
+          options={SIZE_OPTIONS}
         />
 
         <SelectFreeForm
@@ -183,7 +183,7 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
           value={gender}
           label="Gender"
           name="gender"
-          options={sexOptions}
+          options={SEX_OPTIONS}
         />
         <SelectFreeForm
           multiple
@@ -199,7 +199,7 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
           label="Fabric"
           name="fabric"
           multiple
-          options={fabricOptions}
+          options={FABRIC_OPTIONS}
         />
         <Button
           variant="primary"

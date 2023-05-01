@@ -12,7 +12,7 @@ import { InputField } from './InputField';
 import { SelectField } from './SelectField';
 import { TextAreaField } from './TextAreaField';
 import { LinkButton } from '../link/LinkButton';
-import { colorOptions, fabricOptions, sexOptions, sizeOptions } from '../../utils/constants';
+import { COLOR_OPTIONS, FABRIC_OPTIONS, SEX_OPTIONS, SIZE_OPTIONS } from '../../utils/constants';
 
 export const ItemDetailsSchema = z.object({
   name: z.string(),
@@ -97,7 +97,7 @@ export const ItemInfoForm = ({
             name="sex"
             label="Sex"
             className="z-50 w-full md:w-1/2"
-            options={sexOptions}
+            options={SEX_OPTIONS}
             isLoading={isLoading}
           />
         </div>
@@ -121,7 +121,7 @@ export const ItemInfoForm = ({
           name="sizes"
           label="Sizes:"
           className="z-30 w-full"
-          options={sizeOptions}
+          options={SIZE_OPTIONS}
           isLoading={isLoading}
           multiple
         />
@@ -130,7 +130,7 @@ export const ItemInfoForm = ({
           name="colors"
           label="Colors:"
           className="z-20 w-full"
-          options={colorOptions}
+          options={COLOR_OPTIONS}
           isLoading={isLoading}
           multiple
         />
@@ -139,7 +139,7 @@ export const ItemInfoForm = ({
           name="fabrics"
           label="Fabrics:"
           className="z-10 w-full"
-          options={fabricOptions}
+          options={FABRIC_OPTIONS}
           isLoading={isLoading}
           multiple
         />

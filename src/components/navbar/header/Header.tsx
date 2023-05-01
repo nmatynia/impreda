@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { websiteName } from '../../../utils/constants';
+import { WEBSITE_NAME } from '../../../utils/constants';
 import { SvgIcon } from '../../icons/SvgIcon';
 import { BodyText, LogoText, SmallBodyText } from '../../typography/Typography';
 import { Cart } from './cart/Cart';
@@ -22,7 +22,7 @@ export const Header = ({ handleShowSearch }: HeaderProps) => {
     <div className="relative my-5 flex w-full items-center justify-between ">
       <div className="ml-7 flex items-center gap-10 sm:ml-14">
         <LogoText className="select-none">
-          <Link href="/">{websiteName}</Link>
+          <Link href="/">{WEBSITE_NAME}</Link>
         </LogoText>
         <div className="hidden items-center gap-6 sm:flex">
           <ButtonSwitch
