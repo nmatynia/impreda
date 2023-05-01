@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import React from 'react';
+import { Transition } from '@headlessui/react';
 import clsxm from '../../utils/clsxm';
 
 type PositionVariant = 'left' | 'center' | 'right';
@@ -17,15 +18,25 @@ export type BoxProps = {
 };
 export const Box = ({ className, children, isOpen = true, position = 'left' }: BoxProps) => {
   return (
-    <div
-      className={clsxm(
-        'z-20 w-max overflow-hidden border-[1px] border-primaryBlack bg-primaryWhite p-8',
-        className,
-        isOpen || 'hidden',
-        positionVariant[position]
-      )}
+    <Transition
+      show={isOpen}
+      className="z-20"
+      leave="transition-all duration-200"
+      leaveFrom="opactiy-100"
+      leaveTo="opacity-0"
+      enter="transition-all duration-200"
+      enterFrom="opacity-0"
+      enterTo="opactiy-100"
     >
-      {children}
-    </div>
+      <div
+        className={clsxm(
+          'z-20 w-max overflow-hidden border-[1px] border-primaryBlack bg-primaryWhite p-8',
+          className,
+          positionVariant[position]
+        )}
+      >
+        {children}
+      </div>
+    </Transition>
   );
 };

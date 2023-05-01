@@ -2,15 +2,16 @@
 
 ## Components
 
-- Image edition
-- Item reservation in cart
-
-- sizes and gender lowercase in url (?)
 - Photo carousel on mobile on item page
-- Transition on Box
-- Item container - if the last item is alone in the row it's alignment is slightly off
+- Item reservation in cart
+- Image edition
+- sizes and gender lowercase in url (?)
 
 ## Low Priority
+
+- custom scroll (e.g. cart)
+- enhance Loader - /item-creator
+- Give size chart functionality
 
 - Toasts on adding/deleting/editing users/items etc.
 - Color picker and adding new colors to DB.
@@ -22,9 +23,6 @@
 - user list dialog, throws one trpc error after deleting a user (there is one request to fetch user details but the user is no longer existing)
 
 - custom scroll (e.g. cart)
-- custom cursor (e.g. when hovering on out of stock items)
-- Give size chart functionality
 - enhance Loader - /item-creator
-- enhance handeling the states between forms in item-creator, right now it looks hacky and ugly
 
 https://trello.com/b/BFajoSeT/impreda
