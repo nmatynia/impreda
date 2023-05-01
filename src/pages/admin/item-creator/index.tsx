@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
@@ -18,6 +18,7 @@ import { getServerAuthSession } from '../../../server/common/get-server-auth-ses
 import { SexType } from '../../../types/types';
 import clsxm from '../../../utils/clsxm';
 
+// TODO: Handle multiple fabrics
 const ItemCreatorPage = () => {
   const router = useRouter();
   const { id: itemId } = router.query;
@@ -32,37 +33,36 @@ const ItemCreatorPage = () => {
       setItemInfoFormDefaultValues(
         itemData
           ? {
-              brand: brand.current ?? itemData.brand,
-              name: name.current ?? itemData.name,
-              description: description.current ?? itemData.description,
+              brand: brand || itemData.brand,
+              name: name || itemData.name,
+              description: description || itemData.description,
               category: categoryOptions?.find(
-                categoryOption =>
-                  categoryOption.key === (category.current ?? itemData?.category?.[0]?.id)
+                categoryOption => categoryOption.key === (category || itemData?.category?.[0]?.id)
               ) as ItemDetailsType['category'],
               sizes:
-                sizes.current ??
+                sizes ||
                 [...new Set(itemData.sizes.map(size => size.name))].map(sizeName => ({
                   key: sizeName,
                   name: sizeName
                 })),
               colors:
-                colors.current ??
+                colors ||
                 itemData.colors.map(color => ({
                   key: color.name.toLowerCase(),
                   name: color.name,
                   hex: color.hex
                 })),
-              fabrics: fabrics.current ?? [
+              fabrics: fabrics || [
                 {
                   key: itemData.fabrics,
                   name: itemData.fabrics.slice(0, 1).toUpperCase() + itemData.fabrics.slice(1)
                 }
-              ], // TODO: redo it to support multiple fabrics
-              sex: sex.current ?? {
+              ],
+              sex: sex || {
                 name: itemData.sex.slice(0, 1) + itemData.sex.slice(1).toLowerCase(),
                 key: itemData.sex
               },
-              price: price.current?.toString() ?? itemData.price.toString()
+              price: price?.toString() || itemData.price.toString()
             }
           : undefined
       );
@@ -88,18 +88,20 @@ const ItemCreatorPage = () => {
 
   const [step, setStep] = React.useState<number>(1);
   const handleNextStep = () => setStep(step + 1);
-  const handlePreviousStep = () => setStep(step - 1);
+  const handlePreviousStep = async () => {
+    setStep(step - 1);
+  };
   const [colorSizeDirty, setColorSizeDirty] = useState<boolean>(false);
   const [images, setImages] = useState<ImageType[]>([]);
-  const brand = React.useRef<string>();
-  const name = React.useRef<string>();
-  const price = React.useRef<number>();
-  const description = React.useRef<string>();
-  const sex = React.useRef<OptionType<{ key: SexType }>>();
-  const sizes = React.useRef<OptionType[]>();
-  const colors = React.useRef<OptionType[]>();
-  const fabrics = React.useRef<OptionType[]>();
-  const category = React.useRef<string>();
+  const [brand, setBrand] = useState<string>();
+  const [name, setName] = useState<string>();
+  const [price, setPrice] = useState<number>();
+  const [description, setDescription] = useState<string>();
+  const [sex, setSex] = useState<OptionType<{ key: SexType }>>();
+  const [sizes, setSizes] = useState<OptionType[]>();
+  const [colors, setColors] = useState<OptionType[]>();
+  const [fabrics, setFabrics] = useState<OptionType[]>();
+  const [category, setCategory] = useState<string>();
 
   const utils = trpc.useContext();
 
@@ -124,17 +126,16 @@ const ItemCreatorPage = () => {
   const { mutateAsync: createItem } = trpc.items.createItem.useMutation();
   const { mutateAsync: updateItem } = trpc.items.updateItem.useMutation();
 
-  const uploadToDB = async (itemId: string) => {
-    const requests: Promise<Response>[] = [];
-    // eslint-disable-next-line no-restricted-syntax
-    for (const image of images) {
+  const uploadImage = async (itemId: string) => {
+    const requests = images.map(async image => {
       if (!image.file) return;
       const filename = encodeURIComponent(image.file.name ?? '');
-      // eslint-disable-next-line no-await-in-loop, @typescript-eslint/no-explicit-any
-      const { url, fields }: { url: string; fields: any } = await createPresignedUrl({
-        filename,
-        itemId
-      });
+
+      const { url, fields }: { url: string; fields: AWS.S3.PresignedPost.Fields } =
+        await createPresignedUrl({
+          filename,
+          itemId
+        });
 
       const data = {
         ...fields,
@@ -142,81 +143,104 @@ const ItemCreatorPage = () => {
         file: image.file
       };
       const formData = new FormData();
-      // eslint-disable-next-line no-restricted-syntax
-      for (const name in data) {
-        formData.append(name, data[name]);
-      }
-      requests.push(
-        fetch(url, {
-          method: 'POST',
-          body: formData,
-          mode: 'no-cors'
-        })
-      );
-    }
+
+      Object.entries(data).forEach(([name, value]) => {
+        formData.append(name, value as string | Blob);
+      });
+
+      fetch(url, {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors'
+      });
+    });
     await Promise.all(requests);
   };
 
   const handleSubmitItemInfoForm: SubmitHandler<ItemDetailsType> = async (data, e) => {
     e?.preventDefault();
-    brand.current = data.brand;
-    name.current = data.name;
-    price.current = Number(data.price);
-    sex.current = data.sex;
-    sizes.current = data.sizes;
-    colors.current = data.colors;
-    fabrics.current = data.fabrics;
-    description.current = data.description;
-    category.current = data.category.key;
+    setBrand(data.brand);
+    setName(data.name);
+    setPrice(Number(data.price));
+    setSex(data.sex);
+    setSizes(data.sizes);
+    setColors(data.colors);
+    setFabrics(data.fabrics);
+    setDescription(data.description);
+    setCategory(data.category.key);
     handleNextStep();
   };
 
   const handleSubmitItemAvailabilityForm: SubmitHandler<ItemAvailabilityType> = async (data, e) => {
     e?.preventDefault();
-    if (
-      !(
-        brand.current &&
-        name.current &&
-        price.current &&
-        sex.current &&
-        description.current &&
-        fabrics.current &&
-        category.current
-      )
-    ) {
+    if (!(brand && name && price && sex && description && fabrics && category)) {
       return;
     }
     if (isEdit) {
       const updateParams = {
         id: itemId,
-        brand: brand.current,
-        name: name.current,
-        price: price.current,
-        sex: sex.current.key,
-        description: description.current,
-        fabrics: (fabrics.current as any)[0].key, // TODO temporary
-        category: category.current,
+        brand,
+        name,
+        price,
+        sex: sex.key,
+        description,
+        fabrics: (fabrics as any)[0].key,
+        category,
         colors: data.colors
       };
       const item = await updateItem(updateParams);
-      await uploadToDB(item.itemId);
+      await uploadImage(item.itemId);
       handleNextStep();
     } else {
       const item = await createItem({
-        brand: brand.current,
-        name: name.current,
-        price: price.current,
-        sex: sex.current.key,
-        description: description.current,
-        fabrics: (fabrics.current as any)[0].key, // TODO temporary
-        category: category.current,
+        brand,
+        name,
+        price,
+        sex: sex.key,
+        description,
+        fabrics: (fabrics as any)[0].key,
+        category,
         colors: data.colors
       });
 
-      await uploadToDB(item.itemId);
+      await uploadImage(item.itemId);
       handleNextStep();
     }
   };
+
+  useEffect(() => {
+    if (
+      !(
+        brand &&
+        category &&
+        categoryOptions &&
+        colors &&
+        description &&
+        fabrics &&
+        name &&
+        price &&
+        sex &&
+        sizes
+      )
+    ) {
+      return;
+    }
+
+    setItemInfoFormDefaultValues({
+      brand,
+      name,
+      description,
+      category: categoryOptions?.find(
+        categoryOption => categoryOption.key === category
+      ) as ItemDetailsType['category'],
+      sizes,
+      colors,
+      fabrics,
+      sex,
+      price: price?.toString()
+    });
+  }, [brand, category, categoryOptions, colors, description, fabrics, name, price, sex, sizes]);
+
   return (
     <div className={clsxm('mx-auto max-w-3xl px-4', isDeleting && ' cursor-progress')}>
       <RoundedBox
@@ -244,10 +268,10 @@ const ItemCreatorPage = () => {
             isLoading={isEdit && isLoadingDetails}
           />
         )}
-        {step === 2 && colors.current && sizes.current && (
+        {step === 2 && colors && sizes && (
           <ItemAvailabilityForm
-            sizes={sizes.current as OptionType<ItemAvailabilityType['colors'][0]['sizes']>}
-            colors={colors.current as OptionType<ItemAvailabilityType['colors']>}
+            sizes={sizes as OptionType<ItemAvailabilityType['colors'][0]['sizes']>}
+            colors={colors as OptionType<ItemAvailabilityType['colors']>}
             defaultValues={itemAvailabilityFormDefaultValues}
             onSubmit={handleSubmitItemAvailabilityForm}
             handlePreviousStep={handlePreviousStep}
