@@ -241,7 +241,7 @@ export const itemsRouter = router({
         savedBy: true
       },
       orderBy: {
-        updatedAt: 'desc'
+        createdAt: 'desc'
       }
     });
     return items.map(item => ({
