@@ -18,6 +18,7 @@ import { getServerAuthSession } from '../../../server/common/get-server-auth-ses
 import { SexType } from '../../../types/types';
 import clsxm from '../../../utils/clsxm';
 
+// TODO: Handle multiple fabrics
 const ItemCreatorPage = () => {
   const router = useRouter();
   const { id: itemId } = router.query;
@@ -56,7 +57,7 @@ const ItemCreatorPage = () => {
                   key: itemData.fabrics,
                   name: itemData.fabrics.slice(0, 1).toUpperCase() + itemData.fabrics.slice(1)
                 }
-              ], // TODO: redo it to support multiple fabrics
+              ],
               sex: sex || {
                 name: itemData.sex.slice(0, 1) + itemData.sex.slice(1).toLowerCase(),
                 key: itemData.sex
@@ -129,11 +130,12 @@ const ItemCreatorPage = () => {
     const requests = images.map(async image => {
       if (!image.file) return;
       const filename = encodeURIComponent(image.file.name ?? '');
-      // eslint-disable-next-line no-await-in-loop, @typescript-eslint/no-explicit-any
-      const { url, fields }: { url: string; fields: any } = await createPresignedUrl({
-        filename,
-        itemId
-      });
+
+      const { url, fields }: { url: string; fields: AWS.S3.PresignedPost.Fields } =
+        await createPresignedUrl({
+          filename,
+          itemId
+        });
 
       const data = {
         ...fields,
@@ -182,7 +184,7 @@ const ItemCreatorPage = () => {
         price,
         sex: sex.key,
         description,
-        fabrics: (fabrics as any)[0].key, // TODO temporary
+        fabrics: (fabrics as any)[0].key,
         category,
         colors: data.colors
       };
@@ -196,7 +198,7 @@ const ItemCreatorPage = () => {
         price,
         sex: sex.key,
         description,
-        fabrics: (fabrics as any)[0].key, // TODO temporary
+        fabrics: (fabrics as any)[0].key,
         category,
         colors: data.colors
       });
@@ -239,7 +241,6 @@ const ItemCreatorPage = () => {
     });
   }, [brand, category, categoryOptions, colors, description, fabrics, name, price, sex, sizes]);
 
-  console.log(price);
   return (
     <div className={clsxm('mx-auto max-w-3xl px-4', isDeleting && ' cursor-progress')}>
       <RoundedBox
