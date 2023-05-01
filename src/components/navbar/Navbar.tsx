@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Header } from './header/Header';
 import { ItemHeader } from './item-header/ItemHeader';
 import { SearchHeader } from './SearchHeader';
 import clsxm from '../../utils/clsxm';
 
 export const Navbar = () => {
+  const router = useRouter();
   const [showSearch, setShowSearch] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isTop, setIsTop] = useState(true);
@@ -13,6 +15,17 @@ export const Navbar = () => {
   const handleShowSearch = () => {
     setShowSearch(!showSearch);
   };
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setShowSearch(false);
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router, setShowSearch]);
 
   useEffect(() => {
     let lastScrollTop = 0;
@@ -46,7 +59,7 @@ export const Navbar = () => {
       )}
     >
       <Header handleShowSearch={handleShowSearch} />
-      <ItemHeader className={clsxm('sm:hidden', showSearch && 'hidden')} />
+      <ItemHeader className={clsxm('sm:hidden')} />
       <SearchHeader isOpen={showSearch} setIsOpen={setShowSearch} />
     </nav>
   );

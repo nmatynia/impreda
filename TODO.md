@@ -3,7 +3,6 @@
 ## Components
 
 - Image edition
-- Item availibility form - change default value state behaviour
 - Item reservation in cart
 
 - sizes and gender lowercase in url (?)
@@ -28,6 +27,5 @@
 - Give size chart functionality
 - enhance Loader - /item-creator
 - enhance handeling the states between forms in item-creator, right now it looks hacky and ugly
-- SearchBar - Add animation on search bar open
 
 https://trello.com/b/BFajoSeT/impreda

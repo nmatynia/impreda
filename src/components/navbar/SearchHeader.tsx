@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { inferProcedureOutput } from '@trpc/server/dist/core/types';
+import { Transition } from '@headlessui/react';
 import clsxm from '../../utils/clsxm';
 import { SvgIcon } from '../icons/SvgIcon';
 import { trpc } from '../../utils/trpc';
@@ -54,35 +55,49 @@ export const SearchHeader = ({ isOpen, setIsOpen }: SearchHeaderProps) => {
   }, [ref, setIsOpen]);
 
   return (
-    <div
-      ref={ref}
-      className={clsxm(
-        'z-10 flex w-full border-t-[1px] border-primaryBlack bg-primaryWhite py-4 transition-all',
-        isOpen || 'hidden'
-      )}
+    <Transition
+      show={isOpen}
+      className="overflow-hidden"
+      leave="transition-all duration-1000"
+      leaveFrom="max-h-[800px]"
+      leaveTo=" max-h-0"
+      enter="transition-all duration-1000"
+      enterFrom=" max-h-0"
+      enterTo="max-h-[800px]"
     >
-      <div className="w-full px-4 ">
-        <div className="mx-auto flex w-full max-w-[62.125rem] flex-col gap-4 overflow-hidden ">
-          <div className="flex items-center gap-4">
-            <SvgIcon name="Search" className="h-4 w-4 " />
-            <input
-              type="text"
-              className="flex-1 text-xs uppercase focus-within:outline-none sm:text-sm"
-              placeholder="Search Products"
-              value={searchText}
-              onChange={e => setSearchText(e.target.value)}
+      <div
+        ref={ref}
+        className={clsxm(
+          'z-10 flex w-full border-t-[1px] border-primaryBlack bg-primaryWhite py-4 transition-all'
+        )}
+      >
+        <div className="w-full px-4 ">
+          <div className="mx-auto flex w-full max-w-[62.125rem] flex-col gap-4 overflow-hidden ">
+            <div className="flex items-center gap-4">
+              <SvgIcon name="Search" className="h-4 w-4 " />
+              <input
+                type="text"
+                className="flex-1 text-xs uppercase focus-within:outline-none sm:text-sm"
+                placeholder="Search Products"
+                value={searchText}
+                onChange={e => setSearchText(e.target.value)}
+              />
+              <SvgIcon
+                name="Cross"
+                className="h-4 w-4 cursor-pointer"
+                onClick={handleClearSearch}
+              />
+            </div>
+            <SearchBarSuggestions
+              items={items}
+              isItemsExist={isItemsExist}
+              isLoading={isLoading}
+              isFetchingEnabled={isFetchingEnabled}
             />
-            <SvgIcon name="Cross" className="h-4 w-4 cursor-pointer" onClick={handleClearSearch} />
           </div>
-          <SearchBarSuggestions
-            items={items}
-            isItemsExist={isItemsExist}
-            isLoading={isLoading}
-            isFetchingEnabled={isFetchingEnabled}
-          />
         </div>
       </div>
-    </div>
+    </Transition>
   );
 };
 
