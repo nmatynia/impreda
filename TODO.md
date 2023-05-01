@@ -18,7 +18,6 @@
 - Color display in Select
 - Additional modal, dropdown to confirm deletion of item/user
 
-- display more data in user preview in admin panel
 - isLoading state in UserDetailsDialog in admin view
 - user list dialog, throws one trpc error after deleting a user (there is one request to fetch user details but the user is no longer existing)
 

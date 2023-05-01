@@ -6,6 +6,7 @@ import { InputField } from './InputField';
 import { Form, FormProps } from './Form';
 import { Button } from '../button/Button';
 import clsxm from '../../utils/clsxm';
+import { formatDate } from '../../utils/helpers/formatDate';
 
 type EditUserDetailsFormProps = {
   user: User | null | undefined;
@@ -56,6 +57,18 @@ export const EditUserDetailsForm = ({
                 name="phoneNumber"
                 className="w-full"
               />
+              <div>
+                <BodyText>Email:</BodyText>
+                <BodyText>
+                  <Bold>{user?.email ?? placeholder}</Bold>
+                </BodyText>
+              </div>
+              <div>
+                <BodyText>Joined at:</BodyText>
+                <BodyText>
+                  <Bold>{user?.joinedAt ? formatDate(user.joinedAt) : placeholder}</Bold>
+                </BodyText>
+              </div>
             </div>
           </>
         ) : (
@@ -97,6 +110,18 @@ export const EditUserDetailsForm = ({
                 <BodyText>Phone Number:</BodyText>
                 <BodyText>
                   <Bold>{user?.phoneNumber ?? placeholder}</Bold>
+                </BodyText>
+              </div>
+              <div>
+                <BodyText>Email:</BodyText>
+                <BodyText>
+                  <Bold>{user?.email ?? placeholder}</Bold>
+                </BodyText>
+              </div>
+              <div>
+                <BodyText>Joined at:</BodyText>
+                <BodyText>
+                  <Bold>{user?.joinedAt ? formatDate(user.joinedAt) : placeholder}</Bold>
                 </BodyText>
               </div>
             </div>
