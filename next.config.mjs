@@ -1,8 +1,14 @@
 // @ts-check
-/**
- * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.
- * This is especially useful for Docker builds.
- */
+const withBundleAnalyzer =
+  process.env.ANALYZE === 'true'
+    ? // eslint-disable-next-line import/no-extraneous-dependencies
+      (await import('@next/bundle-analyzer')).default({
+        enabled: true
+      })
+    : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      config => config;
+
 // eslint-disable-next-line no-unused-expressions
 !process.env.SKIP_ENV_VALIDATION && (await import('./src/env/server.mjs'));
 
@@ -26,5 +32,5 @@ const config = {
     ]
   }
 };
-// TODO: Add port property to remotePatterns (?)
-export default config;
+
+export default withBundleAnalyzer(config);
