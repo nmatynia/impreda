@@ -30,7 +30,9 @@ export const Cart = ({ className, ...props }: CartProps) => {
 const CartContent = () => {
   const { data: session } = useSession();
   const isLoggedIn = !!session;
-  const { data: cart } = trpc.cart.getCart.useQuery();
+  const { data: cart } = trpc.cart.getCart.useQuery(undefined, {
+    enabled: isLoggedIn
+  });
   const { items: cartItems } = cart || {};
 
   const isCartNotEmpty = cartItems && cartItems.length > 0;

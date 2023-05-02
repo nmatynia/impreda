@@ -78,6 +78,7 @@ export const ItemCard = ({
         className="relative z-10 flex aspect-[0.75] w-full select-none flex-col justify-between p-6"
       >
         <Image
+          priority
           src={images[0]?.url ?? ''} // TODO: Add holder img
           alt={name}
           fill
@@ -107,8 +108,8 @@ export const ItemCard = ({
           ))}
         </div>
         <div className="flex gap-2">
-          {colors.map(color => (
-            <ColorIndicator key={color.name} {...color} />
+          {colors.map(({ name, available, hex }) => (
+            <ColorIndicator key={name} available={available} hex={hex} name={name} />
           ))}
         </div>
       </div>
