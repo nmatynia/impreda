@@ -34,10 +34,16 @@ export const ItemListItem = ({ className, item }: ItemListItemProps) => {
     >
       <div className="flex w-[calc(100%-20px)] basis-full items-center gap-4 overflow-hidden">
         <Link
-          className="relative aspect-square h-[52px] cursor-pointer bg-primaryWhite"
+          className="relative aspect-square h-[3.25rem] cursor-pointer bg-primaryWhite"
           href={itemLink}
         >
-          <Image src={item.images[0]?.url ?? ''} fill className="object-contain" alt="Item Image" />
+          <Image
+            src={item.images[0]?.url ?? ''}
+            fill
+            sizes="3.25rem"
+            className="object-contain"
+            alt="Item Image"
+          />
         </Link>
         <div className="flex w-[calc(100%-68px)] basis-full flex-col gap-3">
           <BodyText className="w-full overflow-hidden overflow-ellipsis whitespace-nowrap ">

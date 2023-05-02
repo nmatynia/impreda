@@ -18,7 +18,6 @@ import { trpc } from '../../utils/trpc';
 import { createContextInner } from '../../server/trpc/context';
 import { appRouter } from '../../server/trpc/router/_app';
 import ItemCardSection from '../../components/item-card-section/ItemCardSection';
-import { DialogModal } from '../../components/dialog/DialogModal';
 import { SizeChartDialog } from '../../components/size-chart-dialog/SizeChartDialog';
 
 export async function getStaticProps(context: GetStaticPropsContext<{ id: string }>) {
@@ -141,8 +140,10 @@ const ItemPage = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
                 <Image
                   src={image.url ?? ''}
                   alt={`${item?.name} Photo ${idx}`}
+                  sizes="(min-width: 640px) 50vw, 100vw"
                   fill
                   className="object-contain"
+                  priority
                 />
               </div>
             ))}
@@ -172,26 +173,29 @@ const ItemPage = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
               </div>
               <div className="mt-5" />
               <div className="flex gap-2">
-                {item?.colors.map(color => (
+                {item?.colors.map(({ name, id, hex, available }) => (
                   <ColorIndicator
-                    {...color}
+                    key={id}
                     className="w-6"
-                    key={color.name}
-                    selected={color.id === selectedColorId}
-                    onClick={() => setSelectedColorId(color.id)}
+                    name={name}
+                    available={available}
+                    hex={hex}
+                    selected={id === selectedColorId}
+                    onClick={() => setSelectedColorId(id)}
                   />
                 ))}
               </div>
               <div className="mt-5" />
               <div className="flex items-center justify-between">
                 <div className="flex gap-2">
-                  {filteredSizes?.map(size => (
+                  {filteredSizes?.map(({ available, name, id }) => (
                     <SizeIndicator
+                      key={id}
+                      name={name}
+                      available={available}
                       variant="outlined"
-                      {...size}
-                      key={size.name}
-                      selected={size.id === selectedSizeId}
-                      onClick={() => setSelectedSizeId(size.id)}
+                      selected={id === selectedSizeId}
+                      onClick={() => setSelectedSizeId(id)}
                     />
                   ))}
                 </div>

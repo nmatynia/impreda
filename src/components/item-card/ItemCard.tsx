@@ -107,8 +107,8 @@ export const ItemCard = ({
           ))}
         </div>
         <div className="flex gap-2">
-          {colors.map(color => (
-            <ColorIndicator key={color.name} {...color} />
+          {colors.map(({ name, available, hex }) => (
+            <ColorIndicator key={name} available={available} hex={hex} name={name} />
           ))}
         </div>
       </div>

@@ -56,6 +56,7 @@ export const ButtonSwitch = ({
     >
       <button
         type="button"
+        aria-label="Account menu"
         className="flex items-center"
         onClick={() => !isHoverable && setIsOpen(!isOpen)}
       >
