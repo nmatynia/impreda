@@ -8,7 +8,7 @@ export const CreateItemSchema = z.object({
   brand: z.string(),
   price: z.number(),
   sex: z.enum(['MALE', 'FEMALE', 'UNISEX']),
-  description: z.string(),
+  description: z.string().optional(),
   fabrics: z.string(),
   category: z.string(),
   colors: z.array(

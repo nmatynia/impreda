@@ -27,7 +27,6 @@ import clsxm from '../../utils/clsxm';
 
 export type SvgIconComponent = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
-// TODO: Optimize fonts
 const iconMap = {
   Search: HiOutlineSearch,
   Cart: FaShoppingBag,

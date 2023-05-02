@@ -70,7 +70,7 @@ const CartPage = () => {
             </div>
             <LinkButton
               variant={isCartNotEmpty ? 'primary' : 'outlined'}
-              href="/checkout"
+              href={isCartNotEmpty ? '/checkout' : ''}
               className={isCartNotEmpty ? '' : 'cursor-not-allowed'}
             >
               Checkout

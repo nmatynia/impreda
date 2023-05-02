@@ -54,7 +54,11 @@ export const ButtonSwitch = ({
           }
         : {})}
     >
-      <button type="button" className="flex items-center" onClick={() => setIsOpen(!isOpen)}>
+      <button
+        type="button"
+        className="flex items-center"
+        onClick={() => !isHoverable && setIsOpen(!isOpen)}
+      >
         {children}
       </button>
       {elementToOpen(isOpen)}

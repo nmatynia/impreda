@@ -15,11 +15,11 @@ import { LinkButton } from '../link/LinkButton';
 import { COLOR_OPTIONS, FABRIC_OPTIONS, SEX_OPTIONS, SIZE_OPTIONS } from '../../utils/constants';
 
 export const ItemDetailsSchema = z.object({
-  name: z.string(),
-  brand: z.string(),
-  price: z.string(), // TODO - make this a number
+  name: z.string().trim().min(1, { message: 'Required' }),
+  brand: z.string().trim().min(1, { message: 'Required' }),
+  price: z.string().trim().min(1, { message: 'Required' }), // TODO - make this a number
   sex: z.object({ key: z.enum(['MALE', 'FEMALE', 'UNISEX']), name: z.string() }),
-  description: z.string(),
+  description: z.string().optional(),
   category: z.object({ key: z.string(), name: z.string() }),
   sizes: z.array(z.object({ key: z.string(), name: z.string() })),
   colors: z.array(z.object({ key: z.string(), name: z.string(), hex: z.string().optional() })),
@@ -53,7 +53,7 @@ export const ItemInfoForm = ({
   });
   const { data: categoryOptions } = trpc.categories.getAllCategories.useQuery();
   const { handleSubmit, formState, reset } = methods;
-
+  console.log(formState.errors);
   useEffect(() => {
     if (!isLoading) reset(defaultValues);
   }, [isLoading, defaultValues, reset]);

@@ -22,7 +22,7 @@ export const ItemAvailabilitySchema = z.object({
           z.object({
             key: z.string(),
             name: z.enum(['XS', 'S', 'M', 'L', 'XL']),
-            available: z.string()
+            available: z.string().trim().min(1, { message: 'Required' })
           })
         )
         .default([])
