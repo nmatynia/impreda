@@ -1,7 +1,6 @@
 import Image from 'next/image';
-import React from 'react';
-import { signIn } from 'next-auth/react';
-import type { GetServerSideProps } from 'next';
+import React, { useEffect } from 'react';
+import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { RoundedBox } from '../components/box/RoundedBox';
@@ -10,10 +9,17 @@ import LoginThumbnail from '../../public/images/login-thumbnail.webp';
 import { Container } from '../components/container/Container';
 import { Button } from '../components/button/Button';
 import { Input } from '../components/input/Input';
-import { getServerAuthSession } from '../server/common/get-server-auth-session';
 
 const LoginPage = () => {
+  const { status } = useSession();
   const router = useRouter();
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/');
+    }
+  }, [status, router]);
+
   const { callbackUrl: callbackUrlQuery } = router.query;
   const callbackUrl = typeof callbackUrlQuery === 'string' ? callbackUrlQuery : '/';
   return (
@@ -70,13 +76,13 @@ const LoginPage = () => {
 
 export default LoginPage;
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  const session = await getServerAuthSession(ctx);
-  if (session) {
-    return { redirect: { destination: '/' }, props: {} };
-  }
+// export const getServerSideProps: GetServerSideProps = async ctx => {
+//   const session = await getServerAuthSession(ctx);
+//   if (session) {
+//     return { redirect: { destination: '/' }, props: {} };
+//   }
 
-  return {
-    props: {}
-  };
-};
+//   return {
+//     props: {}
+//   };
+// };
