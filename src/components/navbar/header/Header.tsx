@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import { WEBSITE_NAME } from '../../../utils/constants';
 import { SvgIcon } from '../../icons/SvgIcon';
 import { BodyText, LogoText, SmallBodyText } from '../../typography/Typography';
@@ -14,7 +15,11 @@ type HeaderProps = {
 };
 
 export const Header = ({ handleShowSearch }: HeaderProps) => {
-  const { data: cart } = trpc.cart.getCart.useQuery();
+  const { data: session } = useSession();
+  const isLoggedIn = !!session;
+  const { data: cart } = trpc.cart.getCart.useQuery(undefined, {
+    enabled: isLoggedIn
+  });
   const { items: cartItems } = cart || {};
   const itemsCount = cartItems?.reduce((acc, item) => acc + item.quantity, 0) || 0;
 
