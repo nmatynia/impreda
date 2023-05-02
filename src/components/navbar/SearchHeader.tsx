@@ -11,9 +11,6 @@ import { NotFound } from '../not-found/NotFound';
 import { ItemsRouter } from '../../server/trpc/router/_app';
 import { useDebounce } from '../../utils/helpers/useDebounce';
 
-// ?  https://github.com/jeancroy/FuzzySearch
-// TODO: Add animation on search bar open
-
 type SearchHeaderProps = {
   isOpen?: boolean;
   setIsOpen: (open: boolean) => void;

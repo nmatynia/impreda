@@ -1,4 +1,4 @@
-import React, { Fragment, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import type {
   ControllerFieldState,
   ControllerRenderProps,
@@ -19,7 +19,6 @@ type FieldProps = {
   className?: string;
 };
 
-// TODO - add error message
 export const Field = ({ name, className, children }: FieldProps) => {
   const { field, fieldState, formState } = useController({ name });
   const errorMessage = fieldState.error?.message;

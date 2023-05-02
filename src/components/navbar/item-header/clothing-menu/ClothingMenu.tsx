@@ -10,7 +10,6 @@ type ClothingMenuProps = {
   className?: string;
 } & BoxProps;
 
-// TODO: Underline current category that the user is on
 export const ClothingMenu = ({ ...props }: ClothingMenuProps) => {
   const [sex, setSex] = useState<'MALE' | 'FEMALE'>('MALE');
   const { data: categories } = trpc.categories.getAllCategories.useQuery(true);

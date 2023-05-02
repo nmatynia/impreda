@@ -80,8 +80,6 @@ const ItemPage = ({ id }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { data: items, isLoading: isOrdersLoading } = trpc.items.getItems.useQuery({});
   const { mutateAsync: incrementViewCount } = trpc.items.incrementItemViewCount.useMutation();
 
-  // TODO selected size and color should have different variant selected
-  // add store for clicked color
   // sort sizes on backend
   // reserve item for a user?
   const [selectedColorId, setSelectedColorId] = React.useState<string | undefined>(

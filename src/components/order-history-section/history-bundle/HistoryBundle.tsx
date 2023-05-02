@@ -23,7 +23,6 @@ export const HistoryBundle = ({ order, showBuyer, className }: HistoryBundleProp
     [order]
   );
 
-  // TODO: Consider making this logic on backend
   const total = useMemo(
     () => order.items.reduce((acc, orderItem) => acc + orderItem.item.price, 0),
     [order]
