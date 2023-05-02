@@ -15,8 +15,8 @@ export type SelectFreeFormProps = {
   label: string;
   options: OptionType[];
   multiple?: boolean;
-  value: OptionType & OptionType[];
-  onChange: (value: OptionType & OptionType[]) => void;
+  value: OptionType | OptionType[] | undefined;
+  onChange: (value: OptionType | OptionType[]) => void;
   //   isLoading?: boolean;
 } & Partial<ControllerRenderProps<FieldValues, string>>;
 
