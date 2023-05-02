@@ -173,7 +173,7 @@ const ItemCreatorPage = () => {
 
   const handleSubmitItemAvailabilityForm: SubmitHandler<ItemAvailabilityType> = async (data, e) => {
     e?.preventDefault();
-    if (!(brand && name && price && sex && description && fabrics && category)) {
+    if (!(brand && name && price && sex && fabrics && category)) {
       return;
     }
     if (isEdit) {
@@ -183,7 +183,7 @@ const ItemCreatorPage = () => {
         name,
         price,
         sex: sex.key,
-        description,
+        description: description && description.trim().length > 1 ? description : undefined,
         fabrics: (fabrics as any)[0].key,
         category,
         colors: data.colors
@@ -197,7 +197,7 @@ const ItemCreatorPage = () => {
         name,
         price,
         sex: sex.key,
-        description,
+        description: description && description.trim().length > 1 ? description : undefined,
         fabrics: (fabrics as any)[0].key,
         category,
         colors: data.colors
