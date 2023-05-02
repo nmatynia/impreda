@@ -75,14 +75,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
-// export const getServerSideProps: GetServerSideProps = async ctx => {
-//   const session = await getServerAuthSession(ctx);
-//   if (session) {
-//     return { redirect: { destination: '/' }, props: {} };
-//   }
-
-//   return {
-//     props: {}
-//   };
-// };
