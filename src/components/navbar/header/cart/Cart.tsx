@@ -22,12 +22,12 @@ export const Cart = ({ className, ...props }: CartProps) => {
       )}
       {...props}
     >
-      <CartContent buttonLink="/cart" buttonText="Go to cart" />
+      <CartContent />
     </Box>
   );
 };
 
-const CartContent = ({ buttonLink, buttonText }: { buttonLink: string; buttonText: string }) => {
+const CartContent = () => {
   const { data: session } = useSession();
   const isLoggedIn = !!session;
   const { data: cart } = trpc.cart.getCart.useQuery();

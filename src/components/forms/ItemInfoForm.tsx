@@ -53,7 +53,7 @@ export const ItemInfoForm = ({
   });
   const { data: categoryOptions } = trpc.categories.getAllCategories.useQuery();
   const { handleSubmit, formState, reset } = methods;
-  console.log(formState.errors);
+
   useEffect(() => {
     if (!isLoading) reset(defaultValues);
   }, [isLoading, defaultValues, reset]);
