@@ -3,7 +3,6 @@ import React from 'react';
 import clsxm from '../../utils/clsxm';
 import { Footer } from '../footer/Footer';
 import { Navbar } from '../navbar/Navbar';
-import OgImage from '../../../public/images/og-impreda.webp';
 import { WEBSITE_URL } from '../../utils/constants';
 
 type LayoutProps = {
