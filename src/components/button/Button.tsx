@@ -34,6 +34,7 @@ export const Button = ({
       type="button"
       className={clsxm(
         'relative w-fit rounded-md px-8 py-2',
+        'disabled:cursor-not-allowed disabled:opacity-50',
         buttonVariant[variant],
         isLoading && 'cursor-progress',
         className

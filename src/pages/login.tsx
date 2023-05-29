@@ -9,6 +9,7 @@ import LoginThumbnail from '../../public/images/login-thumbnail.webp';
 import { Container } from '../components/container/Container';
 import { Button } from '../components/button/Button';
 import { Input } from '../components/input/Input';
+import Tooltip from '../components/tooltip/Tooltip';
 
 const LoginPage = () => {
   const { status } = useSession();
@@ -34,12 +35,19 @@ const LoginPage = () => {
           <Input placeholder="Password*" className="w-full" type="password" color="white" />
 
           <div className="flex w-fit flex-col flex-wrap items-center  gap-4 sm:flex-row">
-            <Button
-              variant="outlined"
-              className="w-full border-primaryWhite text-primaryWhite sm:w-fit"
+            <Tooltip
+              className="w-56"
+              text="Apologies, but we don't currently support this type of login. Please consider logging in with Google instead."
+              alignment="left"
             >
-              Login
-            </Button>
+              <Button
+                variant="outlined"
+                className="w-full border-primaryWhite text-primaryWhite sm:w-fit"
+                disabled
+              >
+                Login
+              </Button>
+            </Tooltip>
             <BodyText>or</BodyText>
             <Button
               variant="outlined"

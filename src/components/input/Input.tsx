@@ -53,7 +53,7 @@ export const Input = React.forwardRef(
           className={clsxm(
             'w-full',
             'text-xs sm:text-sm',
-            'flex-1 bg-transparent focus-within:outline-none',
+            'flex-1 rounded-none bg-transparent focus-within:outline-none',
             'border-b-[1px] pb-2',
             colorVariant[color],
             styles.input,
