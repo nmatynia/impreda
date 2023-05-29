@@ -18,7 +18,7 @@ type TooltipProps = {
 
 const Tooltip = ({ children, text, className, alignment = 'center' }: TooltipProps) => {
   return (
-    <div className="relative text-primaryBlack [&:hover>span]:block">
+    <div className="relative w-full text-primaryBlack [&:hover>span]:block">
       {children}
       <span
         className={clsxm(

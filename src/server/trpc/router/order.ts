@@ -1,4 +1,4 @@
-import { router, publicProcedure, adminProcedure, protectedProcedure } from '../trpc';
+import { router, adminProcedure, protectedProcedure } from '../trpc';
 
 export const orderRouter = router({
   createOrder: protectedProcedure.mutation(async ({ ctx }) => {
