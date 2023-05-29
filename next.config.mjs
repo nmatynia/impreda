@@ -24,7 +24,6 @@ const config = {
     domains: ['s3.eu-west-2.amazonaws.com'],
     remotePatterns: [
       {
-        port: '',
         protocol: 'https',
         hostname: 'impreda-bucket.s3.eu-west-2.amazonaws.com',
         pathname: '/**'

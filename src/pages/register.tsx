@@ -9,6 +9,7 @@ import { Container } from '../components/container/Container';
 import { Button } from '../components/button/Button';
 import { Input } from '../components/input/Input';
 import { Checkbox } from '../components/checkbox/Checkbox';
+import Tooltip from '../components/tooltip/Tooltip';
 
 const RegisterPage = () => {
   const { status } = useSession();
@@ -47,12 +48,19 @@ const RegisterPage = () => {
             <Checkbox label="Subscribe for fashion updates & exclusive offers" />
           </div>
           <div className="flex w-fit flex-col flex-wrap items-center  gap-4 sm:flex-row">
-            <Button
-              variant="outlined"
-              className="w-full border-primaryWhite text-primaryWhite sm:w-fit"
+            <Tooltip
+              className="w-56"
+              text="Apologies, but we don't currently support this type of registration. Please consider signing up with Google instead."
+              alignment="left"
             >
-              Register
-            </Button>
+              <Button
+                variant="outlined"
+                className="w-full border-primaryWhite text-primaryWhite sm:w-fit"
+                disabled
+              >
+                Register
+              </Button>
+            </Tooltip>
             <BodyText>or</BodyText>
             <Button
               variant="outlined"
