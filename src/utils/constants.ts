@@ -1,4 +1,6 @@
 export const WEBSITE_NAME = 'Impreda';
+export const WEBSITE_URL =
+  process.env.NODE_ENV === 'production' ? 'https://impreda.vercel.app/' : 'localhost:3000';
 export const AUTHOR_NAME = 'Norbert Matynia';
 
 export const SIZE_OPTIONS = [
