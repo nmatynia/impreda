@@ -30,7 +30,8 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
     category: defaultCategoryValue
   } = router.query;
 
-  const { data: categories } = trpc.categories.getAllCategories.useQuery();
+  const { data: categories, isFetched: isCategoriesFetched } =
+    trpc.categories.getAllCategories.useQuery();
   const categoryOptions: OptionType[] = useMemo(
     () =>
       categories?.map(category => ({
@@ -76,7 +77,7 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
   };
 
   useEffect(() => {
-    if (!router.isReady) return;
+    if (!router.isReady || !isCategoriesFetched) return;
 
     const buildDefaultSelectedOptions = (
       defaultValue: string | string[] | undefined,
@@ -98,6 +99,7 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
     setCategory(buildDefaultSelectedOptions(defaultCategoryValue, categoryOptions));
   }, [
     router.isReady,
+    isCategoriesFetched,
     categoryOptions,
     defaultColorValue,
     defaultFabricValue,
@@ -108,7 +110,7 @@ export const ShopFilterMenu = ({ className, isOpen }: ShopFilterMenuProps) => {
   ]);
 
   useEffect(() => {
-    if (!router.isReady) return;
+    if (!router.isReady || !isCategoriesFetched) return;
     const buildQuery = (key: string, value: OptionType | OptionType[] | undefined) => {
       if (!value) {
         return '';
