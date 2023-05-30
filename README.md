@@ -7,7 +7,7 @@ I had complete autonomy and creative freedom over it. Everything from the idea t
 ### Why shopping app? 🤔
 As a Software Engineering major, I faced the challenge of balancing my passion for fashion and art alongside my studies. However, I refused to let these interests remain separate. I saw an opportunity to merge coding and fashion, which led me to embark on the creation of Impreda. My long-standing dream has been to establish my own clothing brand, and working on Impreda brings me closer to that goal. Through this project, I gained valuable insights into the requirements and necessities of developing a fashion-focused application. Even if I don't end up using Impreda directly, it has undoubtedly been one of the most rewarding coding experiences I've had so far, providing me with valuable lessons and knowledge.
 
-### What exactly Impreda is? 🧐
+### WWhat is Impreda all about? 🧐
 Impreda is envisioned as a high-end fashion shopping application, with its beginning rooted in my evolving fascination for the industry. The app was meant to be scalable, fast and easy-to-use for the user. But most importantly I aimed for a luxurious vibe of the site. Taking these two things into account I took a minimalistic approach to Impreda, treating the site as a "canvas" and products as "paint". I wanted the products to truly shine, so I made sure to maximize the available space and create an almost "window shopping" online experience.
 
 ## Design
